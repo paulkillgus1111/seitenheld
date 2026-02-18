@@ -1,0 +1,93 @@
+import { NextResponse } from "next/server";
+import { createSupabaseServerClient } from "@/lib/supabase-server";
+import { checkSubscriptionAccess } from "@/lib/subscription-check";
+import { z } from "zod";
+
+const updateEventSchema = z.object({
+  id: z.string().uuid(),
+  name: z.string().min(2).max(200, "Name darf maximal 200 Zeichen lang sein."),
+  start_date: z.string().max(50).nullable().optional(),
+  end_date: z.string().max(50).nullable().optional(),
+  estimated_costs: z.number().nullable().optional(),
+  phone_number_id: z.string().uuid("Telefonnummer ist erforderlich"),
+});
+
+export async function POST(request: Request) {
+  try {
+    const supabase = await createSupabaseServerClient();
+    const {
+      data: { user },
+    } = await supabase.auth.getUser();
+
+    if (!user) {
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    }
+
+    // ✅ Prüfe Subscription-Status (blockiert abgelaufene Trials)
+    const subscriptionCheck = await checkSubscriptionAccess(user.id);
+    if (!subscriptionCheck.allowed) {
+      return subscriptionCheck.response;
+    }
+
+    const body = await request.json();
+    const validated = updateEventSchema.safeParse(body);
+
+    if (!validated.success) {
+      return NextResponse.json(
+        { error: "Invalid request data" },
+        { status: 400 }
+      );
+    }
+
+    const { id, ...updateData } = validated.data;
+
+    // Verify event belongs to user
+    const { data: existingEvent } = await supabase
+      .from("events")
+      .select("id, user_id")
+      .eq("id", id)
+      .eq("user_id", user.id)
+      .maybeSingle();
+
+    if (!existingEvent) {
+      return NextResponse.json({ error: "Event not found" }, { status: 404 });
+    }
+
+    // Prüfe ob phone_number_id dem User gehört (falls geändert)
+    if (updateData.phone_number_id) {
+      const { data: phoneNumber } = await supabase
+        .from("phone_numbers")
+        .select("id, user_id")
+        .eq("id", updateData.phone_number_id)
+        .eq("user_id", user.id)
+        .maybeSingle();
+
+      if (!phoneNumber) {
+        return NextResponse.json(
+          { error: "Telefonnummer nicht gefunden oder Zugriff verweigert" },
+          { status: 404 }
+        );
+      }
+    }
+
+    const { error } = await supabase
+      .from("events")
+      .update(updateData)
+      .eq("id", id)
+      .eq("user_id", user.id);
+
+    if (error) {
+      return NextResponse.json(
+        { error: error.message },
+        { status: 500 }
+      );
+    }
+
+    return NextResponse.json({ success: true });
+  } catch {
+    return NextResponse.json(
+      { error: "Internal server error" },
+      { status: 500 }
+    );
+  }
+}

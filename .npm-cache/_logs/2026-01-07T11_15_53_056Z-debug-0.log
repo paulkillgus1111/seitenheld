@@ -1,0 +1,974 @@
+0 verbose cli /Users/paulkillgus/.nvm/versions/node/v23.11.0/bin/node /Users/paulkillgus/.nvm/versions/node/v23.11.0/bin/npm
+1 info using npm@10.9.2
+2 info using node@v23.11.0
+3 silly config load:file:/Users/paulkillgus/.nvm/versions/node/v23.11.0/lib/node_modules/npm/npmrc
+4 silly config load:file:/Users/paulkillgus/Desktop/Seitenheld Messe/leadcap/.npmrc
+5 silly config load:file:/Users/paulkillgus/.npmrc
+6 silly config load:file:/Users/paulkillgus/.nvm/versions/node/v23.11.0/etc/npmrc
+7 verbose title npm install @radix-ui/react-switch @radix-ui/react-tabs sonner next-themes @radix-ui/react-slot @radix-ui/react-alert-dialog
+8 verbose argv "install" "@radix-ui/react-switch" "@radix-ui/react-tabs" "sonner" "next-themes" "@radix-ui/react-slot" "@radix-ui/react-alert-dialog"
+9 verbose logfile logs-max:10 dir:/Users/paulkillgus/Desktop/Seitenheld Messe/leadcap/.npm-cache/_logs/2026-01-07T11_15_53_056Z-
+10 verbose logfile /Users/paulkillgus/Desktop/Seitenheld Messe/leadcap/.npm-cache/_logs/2026-01-07T11_15_53_056Z-debug-0.log
+11 silly logfile start cleaning logs, removing 1 files
+12 silly packumentCache heap:2197815296 maxSize:549453824 maxEntrySize:274726912
+13 silly logfile done cleaning log files
+14 silly idealTree buildDeps
+15 silly fetch manifest @radix-ui/react-slot@^1.2.4
+16 silly packumentCache full:https://registry.npmjs.org/@radix-ui%2freact-slot cache-miss
+17 http fetch GET 200 https://registry.npmjs.org/@radix-ui%2freact-slot 228ms (cache revalidated)
+18 silly packumentCache full:https://registry.npmjs.org/@radix-ui%2freact-slot set size:387271 disposed:false
+19 silly fetch manifest @types/react@^19
+20 silly packumentCache full:https://registry.npmjs.org/@types%2freact cache-miss
+21 http fetch GET 200 https://registry.npmjs.org/@types%2freact 56ms (cache revalidated)
+22 silly packumentCache full:https://registry.npmjs.org/@types%2freact set size:2541992 disposed:false
+23 silly fetch manifest react@19.2.3
+24 silly packumentCache full:https://registry.npmjs.org/react cache-miss
+25 http fetch GET 200 https://registry.npmjs.org/react 61ms (cache revalidated)
+26 silly packumentCache full:https://registry.npmjs.org/react set size:6362621 disposed:false
+27 silly fetch manifest @radix-ui/react-switch@*
+28 silly packumentCache full:https://registry.npmjs.org/@radix-ui%2freact-switch cache-miss
+29 http fetch GET 200 https://registry.npmjs.org/@radix-ui%2freact-switch 86ms (cache miss)
+30 silly packumentCache full:https://registry.npmjs.org/@radix-ui%2freact-switch set size:undefined disposed:false
+31 silly fetch manifest @types/react-dom@^19
+32 silly packumentCache full:https://registry.npmjs.org/@types%2freact-dom cache-miss
+33 http fetch GET 200 https://registry.npmjs.org/@types%2freact-dom 63ms (cache revalidated)
+34 silly packumentCache full:https://registry.npmjs.org/@types%2freact-dom set size:429026 disposed:false
+35 silly fetch manifest react-dom@19.2.3
+36 silly packumentCache full:https://registry.npmjs.org/react-dom cache-miss
+37 http fetch GET 200 https://registry.npmjs.org/react-dom 51ms (cache revalidated)
+38 silly packumentCache full:https://registry.npmjs.org/react-dom set size:8375290 disposed:false
+39 silly fetch manifest @radix-ui/react-tabs@*
+40 silly packumentCache full:https://registry.npmjs.org/@radix-ui%2freact-tabs cache-miss
+41 http fetch GET 200 https://registry.npmjs.org/@radix-ui%2freact-tabs 228ms (cache miss)
+42 silly packumentCache full:https://registry.npmjs.org/@radix-ui%2freact-tabs set size:undefined disposed:false
+43 silly fetch manifest sonner@*
+44 silly packumentCache full:https://registry.npmjs.org/sonner cache-miss
+45 http fetch GET 200 https://registry.npmjs.org/sonner 50ms (cache miss)
+46 silly packumentCache full:https://registry.npmjs.org/sonner set size:undefined disposed:false
+47 silly fetch manifest next-themes@*
+48 silly packumentCache full:https://registry.npmjs.org/next-themes cache-miss
+49 http fetch GET 200 https://registry.npmjs.org/next-themes 46ms (cache miss)
+50 silly packumentCache full:https://registry.npmjs.org/next-themes set size:undefined disposed:false
+51 silly fetch manifest @radix-ui/react-alert-dialog@*
+52 silly packumentCache full:https://registry.npmjs.org/@radix-ui%2freact-alert-dialog cache-miss
+53 http fetch GET 200 https://registry.npmjs.org/@radix-ui%2freact-alert-dialog 90ms (cache miss)
+54 silly packumentCache full:https://registry.npmjs.org/@radix-ui%2freact-alert-dialog set size:undefined disposed:false
+55 silly placeDep ROOT @radix-ui/react-alert-dialog@1.1.15 OK for: leadcap@0.1.0 want: *
+56 silly placeDep ROOT @radix-ui/react-slot@1.2.4 REPLACE for: leadcap@0.1.0 want: ^1.2.4
+57 silly placeDep ROOT @radix-ui/react-switch@1.2.6 OK for: leadcap@0.1.0 want: *
+58 silly placeDep ROOT @radix-ui/react-tabs@1.1.13 OK for: leadcap@0.1.0 want: *
+59 silly placeDep ROOT next-themes@0.4.6 OK for: leadcap@0.1.0 want: *
+60 silly placeDep ROOT sonner@2.0.7 OK for: leadcap@0.1.0 want: *
+61 silly fetch manifest @radix-ui/react-slot@1.2.3
+62 silly packumentCache full:https://registry.npmjs.org/@radix-ui%2freact-slot cache-hit
+63 silly fetch manifest @radix-ui/react-primitive@2.1.3
+64 silly packumentCache full:https://registry.npmjs.org/@radix-ui%2freact-primitive cache-miss
+65 silly fetch manifest @radix-ui/react-primitive@2.1.3
+66 silly packumentCache full:https://registry.npmjs.org/@radix-ui%2freact-primitive cache-miss
+67 silly fetch manifest @radix-ui/react-primitive@2.1.3
+68 silly packumentCache full:https://registry.npmjs.org/@radix-ui%2freact-primitive cache-miss
+69 silly fetch manifest @radix-ui/react-roving-focus@1.1.11
+70 silly packumentCache full:https://registry.npmjs.org/@radix-ui%2freact-roving-focus cache-miss
+71 http fetch GET 200 https://registry.npmjs.org/@radix-ui%2freact-roving-focus 70ms (cache miss)
+72 silly packumentCache full:https://registry.npmjs.org/@radix-ui%2freact-roving-focus set size:undefined disposed:false
+73 http fetch GET 200 https://registry.npmjs.org/@radix-ui%2freact-primitive 167ms (cache revalidated)
+74 silly packumentCache full:https://registry.npmjs.org/@radix-ui%2freact-primitive set size:595809 disposed:false
+75 http fetch GET 200 https://registry.npmjs.org/@radix-ui%2freact-primitive 171ms (cache revalidated)
+76 silly packumentCache full:https://registry.npmjs.org/@radix-ui%2freact-primitive set size:595809 disposed:false
+77 silly packumentCache full:https://registry.npmjs.org/@radix-ui%2freact-primitive dispose
+78 http fetch GET 200 https://registry.npmjs.org/@radix-ui%2freact-primitive 181ms (cache revalidated)
+79 silly packumentCache full:https://registry.npmjs.org/@radix-ui%2freact-primitive set size:595809 disposed:true
+80 silly packumentCache full:https://registry.npmjs.org/@radix-ui%2freact-primitive dispose
+81 silly fetch manifest @types/react@*
+82 silly packumentCache full:https://registry.npmjs.org/@types%2freact cache-miss
+83 http cache https://registry.npmjs.org/@types%2freact 5ms (cache hit)
+84 silly packumentCache full:https://registry.npmjs.org/@types%2freact set size:2541992 disposed:false
+85 silly fetch manifest react@^16.8 || ^17.0 || ^18.0 || ^19.0 || ^19.0.0-rc
+86 silly packumentCache full:https://registry.npmjs.org/react cache-miss
+87 http cache https://registry.npmjs.org/react 8ms (cache hit)
+88 silly packumentCache full:https://registry.npmjs.org/react set size:6362621 disposed:false
+89 silly fetch manifest @types/react-dom@*
+90 silly packumentCache full:https://registry.npmjs.org/@types%2freact-dom cache-hit
+91 silly fetch manifest react-dom@^16.8 || ^17.0 || ^18.0 || ^19.0 || ^19.0.0-rc
+92 silly packumentCache full:https://registry.npmjs.org/react-dom cache-miss
+93 http cache https://registry.npmjs.org/react-dom 12ms (cache hit)
+94 silly packumentCache full:https://registry.npmjs.org/react-dom set size:8375290 disposed:false
+95 silly placeDep node_modules/@radix-ui/react-alert-dialog @radix-ui/react-primitive@2.1.3 OK for: @radix-ui/react-alert-dialog@1.1.15 want: 2.1.3
+96 silly placeDep node_modules/@radix-ui/react-alert-dialog @radix-ui/react-slot@1.2.3 OK for: @radix-ui/react-alert-dialog@1.1.15 want: 1.2.3
+97 silly placeDep node_modules/@radix-ui/react-switch @radix-ui/react-primitive@2.1.3 OK for: @radix-ui/react-switch@1.2.6 want: 2.1.3
+98 silly placeDep node_modules/@radix-ui/react-tabs @radix-ui/react-primitive@2.1.3 OK for: @radix-ui/react-tabs@1.1.13 want: 2.1.3
+99 silly placeDep ROOT @radix-ui/react-roving-focus@1.1.11 OK for: @radix-ui/react-tabs@1.1.13 want: 1.1.11
+100 silly placeDep node_modules/@radix-ui/react-roving-focus @radix-ui/react-primitive@2.1.3 OK for: @radix-ui/react-roving-focus@1.1.11 want: 2.1.3
+101 silly placeDep node_modules/@radix-ui/react-roving-focus @radix-ui/react-slot@1.2.3 OK for: @radix-ui/react-primitive@2.1.3 want: 1.2.3
+102 silly placeDep node_modules/@radix-ui/react-switch @radix-ui/react-slot@1.2.3 OK for: @radix-ui/react-primitive@2.1.3 want: 1.2.3
+103 silly placeDep node_modules/@radix-ui/react-tabs @radix-ui/react-slot@1.2.3 OK for: @radix-ui/react-primitive@2.1.3 want: 1.2.3
+104 silly reify moves {}
+105 verbose reify failed optional dependency /Users/paulkillgus/Desktop/Seitenheld Messe/leadcap/node_modules/@tailwindcss/oxide-wasm32-wasi
+106 silly reify mark deleted [
+106 silly reify   '/Users/paulkillgus/Desktop/Seitenheld Messe/leadcap/node_modules/@tailwindcss/oxide-wasm32-wasi'
+106 silly reify ]
+107 silly audit bulk request {
+107 silly audit   '@alloc/quick-lru': [ '5.2.0' ],
+107 silly audit   '@babel/code-frame': [ '7.27.1' ],
+107 silly audit   '@babel/compat-data': [ '7.28.5' ],
+107 silly audit   '@babel/core': [ '7.28.5' ],
+107 silly audit   '@babel/generator': [ '7.28.5' ],
+107 silly audit   '@babel/helper-compilation-targets': [ '7.27.2' ],
+107 silly audit   '@babel/helper-globals': [ '7.28.0' ],
+107 silly audit   '@babel/helper-module-imports': [ '7.27.1' ],
+107 silly audit   '@babel/helper-module-transforms': [ '7.28.3' ],
+107 silly audit   '@babel/helper-string-parser': [ '7.27.1' ],
+107 silly audit   '@babel/helper-validator-identifier': [ '7.28.5' ],
+107 silly audit   '@babel/helper-validator-option': [ '7.27.1' ],
+107 silly audit   '@babel/helpers': [ '7.28.4' ],
+107 silly audit   '@babel/parser': [ '7.28.5' ],
+107 silly audit   '@babel/template': [ '7.27.2' ],
+107 silly audit   '@babel/traverse': [ '7.28.5' ],
+107 silly audit   '@babel/types': [ '7.28.5' ],
+107 silly audit   '@emnapi/core': [ '1.8.1' ],
+107 silly audit   '@emnapi/runtime': [ '1.8.1' ],
+107 silly audit   '@emnapi/wasi-threads': [ '1.1.0' ],
+107 silly audit   '@eslint-community/eslint-utils': [ '4.9.1' ],
+107 silly audit   'eslint-visitor-keys': [ '3.4.3', '4.2.1' ],
+107 silly audit   '@eslint-community/regexpp': [ '4.12.2' ],
+107 silly audit   '@eslint/config-array': [ '0.21.1' ],
+107 silly audit   '@eslint/config-helpers': [ '0.4.2' ],
+107 silly audit   '@eslint/core': [ '0.17.0' ],
+107 silly audit   '@eslint/eslintrc': [ '3.3.3' ],
+107 silly audit   '@eslint/js': [ '9.39.2' ],
+107 silly audit   '@eslint/object-schema': [ '2.1.7' ],
+107 silly audit   '@eslint/plugin-kit': [ '0.4.1' ],
+107 silly audit   '@floating-ui/core': [ '1.7.3' ],
+107 silly audit   '@floating-ui/dom': [ '1.7.4' ],
+107 silly audit   '@floating-ui/react-dom': [ '2.1.6' ],
+107 silly audit   '@floating-ui/utils': [ '0.2.10' ],
+107 silly audit   '@hookform/resolvers': [ '5.2.2' ],
+107 silly audit   '@humanfs/core': [ '0.19.1' ],
+107 silly audit   '@humanfs/node': [ '0.16.7' ],
+107 silly audit   '@humanwhocodes/module-importer': [ '1.0.1' ],
+107 silly audit   '@humanwhocodes/retry': [ '0.4.3' ],
+107 silly audit   '@img/colour': [ '1.0.0' ],
+107 silly audit   '@img/sharp-darwin-arm64': [ '0.34.5' ],
+107 silly audit   '@img/sharp-darwin-x64': [ '0.34.5' ],
+107 silly audit   '@img/sharp-libvips-darwin-arm64': [ '1.2.4' ],
+107 silly audit   '@img/sharp-libvips-darwin-x64': [ '1.2.4' ],
+107 silly audit   '@img/sharp-libvips-linux-arm': [ '1.2.4' ],
+107 silly audit   '@img/sharp-libvips-linux-arm64': [ '1.2.4' ],
+107 silly audit   '@img/sharp-libvips-linux-ppc64': [ '1.2.4' ],
+107 silly audit   '@img/sharp-libvips-linux-riscv64': [ '1.2.4' ],
+107 silly audit   '@img/sharp-libvips-linux-s390x': [ '1.2.4' ],
+107 silly audit   '@img/sharp-libvips-linux-x64': [ '1.2.4' ],
+107 silly audit   '@img/sharp-libvips-linuxmusl-arm64': [ '1.2.4' ],
+107 silly audit   '@img/sharp-libvips-linuxmusl-x64': [ '1.2.4' ],
+107 silly audit   '@img/sharp-linux-arm': [ '0.34.5' ],
+107 silly audit   '@img/sharp-linux-arm64': [ '0.34.5' ],
+107 silly audit   '@img/sharp-linux-ppc64': [ '0.34.5' ],
+107 silly audit   '@img/sharp-linux-riscv64': [ '0.34.5' ],
+107 silly audit   '@img/sharp-linux-s390x': [ '0.34.5' ],
+107 silly audit   '@img/sharp-linux-x64': [ '0.34.5' ],
+107 silly audit   '@img/sharp-linuxmusl-arm64': [ '0.34.5' ],
+107 silly audit   '@img/sharp-linuxmusl-x64': [ '0.34.5' ],
+107 silly audit   '@img/sharp-wasm32': [ '0.34.5' ],
+107 silly audit   '@img/sharp-win32-arm64': [ '0.34.5' ],
+107 silly audit   '@img/sharp-win32-ia32': [ '0.34.5' ],
+107 silly audit   '@img/sharp-win32-x64': [ '0.34.5' ],
+107 silly audit   '@jridgewell/gen-mapping': [ '0.3.13' ],
+107 silly audit   '@jridgewell/remapping': [ '2.3.5' ],
+107 silly audit   '@jridgewell/resolve-uri': [ '3.1.2' ],
+107 silly audit   '@jridgewell/sourcemap-codec': [ '1.5.5' ],
+107 silly audit   '@jridgewell/trace-mapping': [ '0.3.31' ],
+107 silly audit   '@napi-rs/wasm-runtime': [ '0.2.12' ],
+107 silly audit   '@next/env': [ '16.1.1' ],
+107 silly audit   '@next/eslint-plugin-next': [ '16.1.1' ],
+107 silly audit   '@next/swc-darwin-arm64': [ '16.1.1' ],
+107 silly audit   '@next/swc-darwin-x64': [ '16.1.1' ],
+107 silly audit   '@next/swc-linux-arm64-gnu': [ '16.1.1' ],
+107 silly audit   '@next/swc-linux-arm64-musl': [ '16.1.1' ],
+107 silly audit   '@next/swc-linux-x64-gnu': [ '16.1.1' ],
+107 silly audit   '@next/swc-linux-x64-musl': [ '16.1.1' ],
+107 silly audit   '@next/swc-win32-arm64-msvc': [ '16.1.1' ],
+107 silly audit   '@next/swc-win32-x64-msvc': [ '16.1.1' ],
+107 silly audit   '@nodelib/fs.scandir': [ '2.1.5' ],
+107 silly audit   '@nodelib/fs.stat': [ '2.0.5' ],
+107 silly audit   '@nodelib/fs.walk': [ '1.2.8' ],
+107 silly audit   '@nolyfill/is-core-module': [ '1.0.39' ],
+107 silly audit   '@radix-ui/number': [ '1.1.1' ],
+107 silly audit   '@radix-ui/primitive': [ '1.1.3' ],
+107 silly audit   '@radix-ui/react-arrow': [ '1.1.7' ],
+107 silly audit   '@radix-ui/react-primitive': [ '2.1.3', '2.1.4' ],
+107 silly audit   '@radix-ui/react-slot': [ '1.2.3', '1.2.4' ],
+107 silly audit   '@radix-ui/react-checkbox': [ '1.3.3' ],
+107 silly audit   '@radix-ui/react-collection': [ '1.1.7' ],
+107 silly audit   '@radix-ui/react-compose-refs': [ '1.1.2' ],
+107 silly audit   '@radix-ui/react-context': [ '1.1.2' ],
+107 silly audit   '@radix-ui/react-dialog': [ '1.1.15' ],
+107 silly audit   '@radix-ui/react-direction': [ '1.1.1' ],
+107 silly audit   '@radix-ui/react-dismissable-layer': [ '1.1.11' ],
+107 silly audit   '@radix-ui/react-focus-guards': [ '1.1.3' ],
+107 silly audit   '@radix-ui/react-focus-scope': [ '1.1.7' ],
+107 silly audit   '@radix-ui/react-id': [ '1.1.1' ],
+107 silly audit   '@radix-ui/react-label': [ '2.1.8' ],
+107 silly audit   '@radix-ui/react-popper': [ '1.2.8' ],
+107 silly audit   '@radix-ui/react-portal': [ '1.1.9' ],
+107 silly audit   '@radix-ui/react-presence': [ '1.1.5' ],
+107 silly audit   '@radix-ui/react-select': [ '2.2.6' ],
+107 silly audit   '@radix-ui/react-use-callback-ref': [ '1.1.1' ],
+107 silly audit   '@radix-ui/react-use-controllable-state': [ '1.2.2' ],
+107 silly audit   '@radix-ui/react-use-effect-event': [ '0.0.2' ],
+107 silly audit   '@radix-ui/react-use-escape-keydown': [ '1.1.1' ],
+107 silly audit   '@radix-ui/react-use-layout-effect': [ '1.1.1' ],
+107 silly audit   '@radix-ui/react-use-previous': [ '1.1.1' ],
+107 silly audit   '@radix-ui/react-use-rect': [ '1.1.1' ],
+107 silly audit   '@radix-ui/react-use-size': [ '1.1.1' ],
+107 silly audit   '@radix-ui/react-visually-hidden': [ '1.2.3' ],
+107 silly audit   '@radix-ui/rect': [ '1.1.1' ],
+107 silly audit   '@rtsao/scc': [ '1.1.0' ],
+107 silly audit   '@standard-schema/utils': [ '0.3.0' ],
+107 silly audit   '@supabase/auth-helpers-nextjs': [ '0.15.0' ],
+107 silly audit   '@supabase/auth-js': [ '2.89.0' ],
+107 silly audit   '@supabase/functions-js': [ '2.89.0' ],
+107 silly audit   '@supabase/postgrest-js': [ '2.89.0' ],
+107 silly audit   '@supabase/realtime-js': [ '2.89.0' ],
+107 silly audit   '@supabase/ssr': [ '0.8.0' ],
+107 silly audit   '@supabase/storage-js': [ '2.89.0' ],
+107 silly audit   '@supabase/supabase-js': [ '2.89.0' ],
+107 silly audit   '@swc/helpers': [ '0.5.15' ],
+107 silly audit   '@tailwindcss/node': [ '4.1.18' ],
+107 silly audit   '@tailwindcss/oxide': [ '4.1.18' ],
+107 silly audit   '@tailwindcss/oxide-android-arm64': [ '4.1.18' ],
+107 silly audit   '@tailwindcss/oxide-darwin-arm64': [ '4.1.18' ],
+107 silly audit   '@tailwindcss/oxide-darwin-x64': [ '4.1.18' ],
+107 silly audit   '@tailwindcss/oxide-freebsd-x64': [ '4.1.18' ],
+107 silly audit   '@tailwindcss/oxide-linux-arm-gnueabihf': [ '4.1.18' ],
+107 silly audit   '@tailwindcss/oxide-linux-arm64-gnu': [ '4.1.18' ],
+107 silly audit   '@tailwindcss/oxide-linux-arm64-musl': [ '4.1.18' ],
+107 silly audit   '@tailwindcss/oxide-linux-x64-gnu': [ '4.1.18' ],
+107 silly audit   '@tailwindcss/oxide-linux-x64-musl': [ '4.1.18' ],
+107 silly audit   '@tailwindcss/oxide-win32-arm64-msvc': [ '4.1.18' ],
+107 silly audit   '@tailwindcss/oxide-win32-x64-msvc': [ '4.1.18' ],
+107 silly audit   '@tailwindcss/postcss': [ '4.1.18' ],
+107 silly audit   '@tybys/wasm-util': [ '0.10.1' ],
+107 silly audit   '@types/estree': [ '1.0.8' ],
+107 silly audit   '@types/json-schema': [ '7.0.15' ],
+107 silly audit   '@types/json5': [ '0.0.29' ],
+107 silly audit   '@types/node': [ '20.19.27' ],
+107 silly audit   '@types/phoenix': [ '1.6.7' ],
+107 silly audit   '@types/react': [ '19.2.7' ],
+107 silly audit   '@types/react-dom': [ '19.2.3' ],
+107 silly audit   '@types/ws': [ '8.18.1' ],
+107 silly audit   '@typescript-eslint/eslint-plugin': [ '8.52.0' ],
+107 silly audit   ignore: [ '7.0.5', '5.3.2' ],
+107 silly audit   '@typescript-eslint/parser': [ '8.52.0' ],
+107 silly audit   '@typescript-eslint/project-service': [ '8.52.0' ],
+107 silly audit   '@typescript-eslint/scope-manager': [ '8.52.0' ],
+107 silly audit   '@typescript-eslint/tsconfig-utils': [ '8.52.0' ],
+107 silly audit   '@typescript-eslint/type-utils': [ '8.52.0' ],
+107 silly audit   '@typescript-eslint/types': [ '8.52.0' ],
+107 silly audit   '@typescript-eslint/typescript-estree': [ '8.52.0' ],
+107 silly audit   'brace-expansion': [ '2.0.2', '1.1.12' ],
+107 silly audit   minimatch: [ '9.0.5', '3.1.2' ],
+107 silly audit   semver: [ '7.7.3', '6.3.1' ],
+107 silly audit   '@typescript-eslint/utils': [ '8.52.0' ],
+107 silly audit   '@typescript-eslint/visitor-keys': [ '8.52.0' ],
+107 silly audit   '@unrs/resolver-binding-android-arm-eabi': [ '1.11.1' ],
+107 silly audit   '@unrs/resolver-binding-android-arm64': [ '1.11.1' ],
+107 silly audit   '@unrs/resolver-binding-darwin-arm64': [ '1.11.1' ],
+107 silly audit   '@unrs/resolver-binding-darwin-x64': [ '1.11.1' ],
+107 silly audit   '@unrs/resolver-binding-freebsd-x64': [ '1.11.1' ],
+107 silly audit   '@unrs/resolver-binding-linux-arm-gnueabihf': [ '1.11.1' ],
+107 silly audit   '@unrs/resolver-binding-linux-arm-musleabihf': [ '1.11.1' ],
+107 silly audit   '@unrs/resolver-binding-linux-arm64-gnu': [ '1.11.1' ],
+107 silly audit   '@unrs/resolver-binding-linux-arm64-musl': [ '1.11.1' ],
+107 silly audit   '@unrs/resolver-binding-linux-ppc64-gnu': [ '1.11.1' ],
+107 silly audit   '@unrs/resolver-binding-linux-riscv64-gnu': [ '1.11.1' ],
+107 silly audit   '@unrs/resolver-binding-linux-riscv64-musl': [ '1.11.1' ],
+107 silly audit   '@unrs/resolver-binding-linux-s390x-gnu': [ '1.11.1' ],
+107 silly audit   '@unrs/resolver-binding-linux-x64-gnu': [ '1.11.1' ],
+107 silly audit   '@unrs/resolver-binding-linux-x64-musl': [ '1.11.1' ],
+107 silly audit   '@unrs/resolver-binding-wasm32-wasi': [ '1.11.1' ],
+107 silly audit   '@unrs/resolver-binding-win32-arm64-msvc': [ '1.11.1' ],
+107 silly audit   '@unrs/resolver-binding-win32-ia32-msvc': [ '1.11.1' ],
+107 silly audit   '@unrs/resolver-binding-win32-x64-msvc': [ '1.11.1' ],
+107 silly audit   acorn: [ '8.15.0' ],
+107 silly audit   'acorn-jsx': [ '5.3.2' ],
+107 silly audit   ajv: [ '6.12.6' ],
+107 silly audit   'ansi-styles': [ '4.3.0' ],
+107 silly audit   argparse: [ '2.0.1' ],
+107 silly audit   'aria-hidden': [ '1.2.6' ],
+107 silly audit   'aria-query': [ '5.3.2' ],
+107 silly audit   'array-buffer-byte-length': [ '1.0.2' ],
+107 silly audit   'array-includes': [ '3.1.9' ],
+107 silly audit   'array.prototype.findlast': [ '1.2.5' ],
+107 silly audit   'array.prototype.findlastindex': [ '1.2.6' ],
+107 silly audit   'array.prototype.flat': [ '1.3.3' ],
+107 silly audit   'array.prototype.flatmap': [ '1.3.3' ],
+107 silly audit   'array.prototype.tosorted': [ '1.1.4' ],
+107 silly audit   'arraybuffer.prototype.slice': [ '1.0.4' ],
+107 silly audit   'ast-types-flow': [ '0.0.8' ],
+107 silly audit   'async-function': [ '1.0.0' ],
+107 silly audit   'available-typed-arrays': [ '1.0.7' ],
+107 silly audit   'axe-core': [ '4.11.1' ],
+107 silly audit   'axobject-query': [ '4.1.0' ],
+107 silly audit   'balanced-match': [ '1.0.2' ],
+107 silly audit   'baseline-browser-mapping': [ '2.9.11' ],
+107 silly audit   braces: [ '3.0.3' ],
+107 silly audit   browserslist: [ '4.28.1' ],
+107 silly audit   'call-bind': [ '1.0.8' ],
+107 silly audit   'call-bind-apply-helpers': [ '1.0.2' ],
+107 silly audit   'call-bound': [ '1.0.4' ],
+107 silly audit   callsites: [ '3.1.0' ],
+107 silly audit   'caniuse-lite': [ '1.0.30001762' ],
+107 silly audit   chalk: [ '4.1.2' ],
+107 silly audit   'class-variance-authority': [ '0.7.1' ],
+107 silly audit   'client-only': [ '0.0.1' ],
+107 silly audit   clsx: [ '2.1.1' ],
+107 silly audit   'color-convert': [ '2.0.1' ],
+107 silly audit   'color-name': [ '1.1.4' ],
+107 silly audit   'concat-map': [ '0.0.1' ],
+107 silly audit   'convert-source-map': [ '2.0.0' ],
+107 silly audit   cookie: [ '1.1.1' ],
+107 silly audit   'cross-spawn': [ '7.0.6' ],
+107 silly audit   csstype: [ '3.2.3' ],
+107 silly audit   'damerau-levenshtein': [ '1.0.8' ],
+107 silly audit   'data-view-buffer': [ '1.0.2' ],
+107 silly audit   'data-view-byte-length': [ '1.0.2' ],
+107 silly audit   'data-view-byte-offset': [ '1.0.1' ],
+107 silly audit   'date-fns': [ '4.1.0' ],
+107 silly audit   debug: [ '4.4.3', '3.2.7' ],
+107 silly audit   'deep-is': [ '0.1.4' ],
+107 silly audit   'define-data-property': [ '1.1.4' ],
+107 silly audit   'define-properties': [ '1.2.1' ],
+107 silly audit   'detect-libc': [ '2.1.2' ],
+107 silly audit   'detect-node-es': [ '1.1.0' ],
+107 silly audit   doctrine: [ '2.1.0' ],
+107 silly audit   'dunder-proto': [ '1.0.1' ],
+107 silly audit   'electron-to-chromium': [ '1.5.267' ],
+107 silly audit   'emoji-regex': [ '9.2.2' ],
+107 silly audit   'enhanced-resolve': [ '5.18.4' ],
+107 silly audit   'es-abstract': [ '1.24.1' ],
+107 silly audit   'es-define-property': [ '1.0.1' ],
+107 silly audit   'es-errors': [ '1.3.0' ],
+107 silly audit   'es-iterator-helpers': [ '1.2.2' ],
+107 silly audit   'es-object-atoms': [ '1.1.1' ],
+107 silly audit   'es-set-tostringtag': [ '2.1.0' ],
+107 silly audit   'es-shim-unscopables': [ '1.1.0' ],
+107 silly audit   'es-to-primitive': [ '1.3.0' ],
+107 silly audit   escalade: [ '3.2.0' ],
+107 silly audit   'escape-string-regexp': [ '4.0.0' ],
+107 silly audit   eslint: [ '9.39.2' ],
+107 silly audit   'eslint-config-next': [ '16.1.1' ],
+107 silly audit   globals: [ '16.4.0', '14.0.0' ],
+107 silly audit   'eslint-import-resolver-node': [ '0.3.9' ],
+107 silly audit   'eslint-import-resolver-typescript': [ '3.10.1' ],
+107 silly audit   'eslint-module-utils': [ '2.12.1' ],
+107 silly audit   'eslint-plugin-import': [ '2.32.0' ],
+107 silly audit   'eslint-plugin-jsx-a11y': [ '6.10.2' ],
+107 silly audit   'eslint-plugin-react': [ '7.37.5' ],
+107 silly audit   'eslint-plugin-react-hooks': [ '7.0.1' ],
+107 silly audit   resolve: [ '2.0.0-next.5', '1.22.11' ],
+107 silly audit   'eslint-scope': [ '8.4.0' ],
+107 silly audit   espree: [ '10.4.0' ],
+107 silly audit   esquery: [ '1.7.0' ],
+107 silly audit   esrecurse: [ '4.3.0' ],
+107 silly audit   estraverse: [ '5.3.0' ],
+107 silly audit   esutils: [ '2.0.3' ],
+107 silly audit   'fast-deep-equal': [ '3.1.3' ],
+107 silly audit   'fast-glob': [ '3.3.1' ],
+107 silly audit   'glob-parent': [ '5.1.2', '6.0.2' ],
+107 silly audit   'fast-json-stable-stringify': [ '2.1.0' ],
+107 silly audit   'fast-levenshtein': [ '2.0.6' ],
+107 silly audit   fastq: [ '1.20.1' ],
+107 silly audit   'file-entry-cache': [ '8.0.0' ],
+107 silly audit   'fill-range': [ '7.1.1' ],
+107 silly audit   'find-up': [ '5.0.0' ],
+107 silly audit   'flat-cache': [ '4.0.1' ],
+107 silly audit   flatted: [ '3.3.3' ],
+107 silly audit   'for-each': [ '0.3.5' ],
+107 silly audit   'function-bind': [ '1.1.2' ],
+107 silly audit   'function.prototype.name': [ '1.1.8' ],
+107 silly audit   'functions-have-names': [ '1.2.3' ],
+107 silly audit   'generator-function': [ '2.0.1' ],
+107 silly audit   gensync: [ '1.0.0-beta.2' ],
+107 silly audit   'get-intrinsic': [ '1.3.0' ],
+107 silly audit   'get-nonce': [ '1.0.1' ],
+107 silly audit   'get-proto': [ '1.0.1' ],
+107 silly audit   'get-symbol-description': [ '1.1.0' ],
+107 silly audit   'get-tsconfig': [ '4.13.0' ],
+107 silly audit   globalthis: [ '1.0.4' ],
+107 silly audit   gopd: [ '1.2.0' ],
+107 silly audit   'graceful-fs': [ '4.2.11' ],
+107 silly audit   'has-bigints': [ '1.1.0' ],
+107 silly audit   'has-flag': [ '4.0.0' ],
+107 silly audit   'has-property-descriptors': [ '1.0.2' ],
+107 silly audit   'has-proto': [ '1.2.0' ],
+107 silly audit   'has-symbols': [ '1.1.0' ],
+107 silly audit   'has-tostringtag': [ '1.0.2' ],
+107 silly audit   hasown: [ '2.0.2' ],
+107 silly audit   'hermes-estree': [ '0.25.1' ],
+107 silly audit   'hermes-parser': [ '0.25.1' ],
+107 silly audit   'iceberg-js': [ '0.8.1' ],
+107 silly audit   'import-fresh': [ '3.3.1' ],
+107 silly audit   imurmurhash: [ '0.1.4' ],
+107 silly audit   'internal-slot': [ '1.1.0' ],
+107 silly audit   'is-array-buffer': [ '3.0.5' ],
+107 silly audit   'is-async-function': [ '2.1.1' ],
+107 silly audit   'is-bigint': [ '1.1.0' ],
+107 silly audit   'is-boolean-object': [ '1.2.2' ],
+107 silly audit   'is-bun-module': [ '2.0.0' ],
+107 silly audit   'is-callable': [ '1.2.7' ],
+107 silly audit   'is-core-module': [ '2.16.1' ],
+107 silly audit   'is-data-view': [ '1.0.2' ],
+107 silly audit   'is-date-object': [ '1.1.0' ],
+107 silly audit   'is-extglob': [ '2.1.1' ],
+107 silly audit   'is-finalizationregistry': [ '1.1.1' ],
+107 silly audit   'is-generator-function': [ '1.1.2' ],
+107 silly audit   'is-glob': [ '4.0.3' ],
+107 silly audit   'is-map': [ '2.0.3' ],
+107 silly audit   'is-negative-zero': [ '2.0.3' ],
+107 silly audit   'is-number': [ '7.0.0' ],
+107 silly audit   'is-number-object': [ '1.1.1' ],
+107 silly audit   'is-regex': [ '1.2.1' ],
+107 silly audit   'is-set': [ '2.0.3' ],
+107 silly audit   'is-shared-array-buffer': [ '1.0.4' ],
+107 silly audit   'is-string': [ '1.1.1' ],
+107 silly audit   'is-symbol': [ '1.1.1' ],
+107 silly audit   'is-typed-array': [ '1.1.15' ],
+107 silly audit   'is-weakmap': [ '2.0.2' ],
+107 silly audit   'is-weakref': [ '1.1.1' ],
+107 silly audit   'is-weakset': [ '2.0.4' ],
+107 silly audit   isarray: [ '2.0.5' ],
+107 silly audit   isexe: [ '2.0.0' ],
+107 silly audit   'iterator.prototype': [ '1.1.5' ],
+107 silly audit   jiti: [ '2.6.1' ],
+107 silly audit   'js-tokens': [ '4.0.0' ],
+107 silly audit   'js-yaml': [ '4.1.1' ],
+107 silly audit   jsesc: [ '3.1.0' ],
+107 silly audit   'json-buffer': [ '3.0.1' ],
+107 silly audit   'json-schema-traverse': [ '0.4.1' ],
+107 silly audit   'json-stable-stringify-without-jsonify': [ '1.0.1' ],
+107 silly audit   json5: [ '2.2.3', '1.0.2' ],
+107 silly audit   'jsx-ast-utils': [ '3.3.5' ],
+107 silly audit   keyv: [ '4.5.4' ],
+107 silly audit   'language-subtag-registry': [ '0.3.23' ],
+107 silly audit   'language-tags': [ '1.0.9' ],
+107 silly audit   levn: [ '0.4.1' ],
+107 silly audit   lightningcss: [ '1.30.2' ],
+107 silly audit   'lightningcss-android-arm64': [ '1.30.2' ],
+107 silly audit   'lightningcss-darwin-arm64': [ '1.30.2' ],
+107 silly audit   'lightningcss-darwin-x64': [ '1.30.2' ],
+107 silly audit   'lightningcss-freebsd-x64': [ '1.30.2' ],
+107 silly audit   'lightningcss-linux-arm-gnueabihf': [ '1.30.2' ],
+107 silly audit   'lightningcss-linux-arm64-gnu': [ '1.30.2' ],
+107 silly audit   'lightningcss-linux-arm64-musl': [ '1.30.2' ],
+107 silly audit   'lightningcss-linux-x64-gnu': [ '1.30.2' ],
+107 silly audit   'lightningcss-linux-x64-musl': [ '1.30.2' ],
+107 silly audit   'lightningcss-win32-arm64-msvc': [ '1.30.2' ],
+107 silly audit   'lightningcss-win32-x64-msvc': [ '1.30.2' ],
+107 silly audit   'locate-path': [ '6.0.0' ],
+107 silly audit   'lodash.merge': [ '4.6.2' ],
+107 silly audit   'loose-envify': [ '1.4.0' ],
+107 silly audit   'lru-cache': [ '5.1.1' ],
+107 silly audit   'lucide-react': [ '0.562.0' ],
+107 silly audit   'magic-string': [ '0.30.21' ],
+107 silly audit   'math-intrinsics': [ '1.1.0' ],
+107 silly audit   merge2: [ '1.4.1' ],
+107 silly audit   micromatch: [ '4.0.8' ],
+107 silly audit   minimist: [ '1.2.8' ],
+107 silly audit   ms: [ '2.1.3' ],
+107 silly audit   nanoid: [ '3.3.11' ],
+107 silly audit   'napi-postinstall': [ '0.3.4' ],
+107 silly audit   'natural-compare': [ '1.4.0' ],
+107 silly audit   next: [ '16.1.1' ],
+107 silly audit   postcss: [ '8.4.31', '8.5.6' ],
+107 silly audit   'node-releases': [ '2.0.27' ],
+107 silly audit   'object-assign': [ '4.1.1' ],
+107 silly audit   'object-inspect': [ '1.13.4' ],
+107 silly audit   'object-keys': [ '1.1.1' ],
+107 silly audit   'object.assign': [ '4.1.7' ],
+107 silly audit   'object.entries': [ '1.1.9' ],
+107 silly audit   'object.fromentries': [ '2.0.8' ],
+107 silly audit   'object.groupby': [ '1.0.3' ],
+107 silly audit   'object.values': [ '1.2.1' ],
+107 silly audit   optionator: [ '0.9.4' ],
+107 silly audit   'own-keys': [ '1.0.1' ],
+107 silly audit   'p-limit': [ '3.1.0' ],
+107 silly audit   'p-locate': [ '5.0.0' ],
+107 silly audit   'parent-module': [ '1.0.1' ],
+107 silly audit   'path-exists': [ '4.0.0' ],
+107 silly audit   'path-key': [ '3.1.1' ],
+107 silly audit   'path-parse': [ '1.0.7' ],
+107 silly audit   picocolors: [ '1.1.1' ],
+107 silly audit   picomatch: [ '2.3.1', '4.0.3' ],
+107 silly audit   'possible-typed-array-names': [ '1.1.0' ],
+107 silly audit   'prelude-ls': [ '1.2.1' ],
+107 silly audit   'prop-types': [ '15.8.1' ],
+107 silly audit   punycode: [ '2.3.1' ],
+107 silly audit   'queue-microtask': [ '1.2.3' ],
+107 silly audit   react: [ '19.2.3' ],
+107 silly audit   'react-dom': [ '19.2.3' ],
+107 silly audit   'react-hook-form': [ '7.70.0' ],
+107 silly audit   'react-is': [ '16.13.1' ],
+107 silly audit   'react-remove-scroll': [ '2.7.2' ],
+107 silly audit   'react-remove-scroll-bar': [ '2.3.8' ],
+107 silly audit   'react-style-singleton': [ '2.2.3' ],
+107 silly audit   'reflect.getprototypeof': [ '1.0.10' ],
+107 silly audit   'regexp.prototype.flags': [ '1.5.4' ],
+107 silly audit   'resolve-from': [ '4.0.0' ],
+107 silly audit   'resolve-pkg-maps': [ '1.0.0' ],
+107 silly audit   reusify: [ '1.1.0' ],
+107 silly audit   'run-parallel': [ '1.2.0' ],
+107 silly audit   'safe-array-concat': [ '1.1.3' ],
+107 silly audit   'safe-push-apply': [ '1.0.0' ],
+107 silly audit   'safe-regex-test': [ '1.1.0' ],
+107 silly audit   scheduler: [ '0.27.0' ],
+107 silly audit   'set-function-length': [ '1.2.2' ],
+107 silly audit   'set-function-name': [ '2.0.2' ],
+107 silly audit   'set-proto': [ '1.0.0' ],
+107 silly audit   sharp: [ '0.34.5' ],
+107 silly audit   'shebang-command': [ '2.0.0' ],
+107 silly audit   'shebang-regex': [ '3.0.0' ],
+107 silly audit   'side-channel': [ '1.1.0' ],
+107 silly audit   'side-channel-list': [ '1.0.0' ],
+107 silly audit   'side-channel-map': [ '1.0.1' ],
+107 silly audit   'side-channel-weakmap': [ '1.0.2' ],
+107 silly audit   'source-map-js': [ '1.2.1' ],
+107 silly audit   'stable-hash': [ '0.0.5' ],
+107 silly audit   'stop-iteration-iterator': [ '1.1.0' ],
+107 silly audit   'string.prototype.includes': [ '2.0.1' ],
+107 silly audit   'string.prototype.matchall': [ '4.0.12' ],
+107 silly audit   'string.prototype.repeat': [ '1.0.0' ],
+107 silly audit   'string.prototype.trim': [ '1.2.10' ],
+107 silly audit   'string.prototype.trimend': [ '1.0.9' ],
+107 silly audit   'string.prototype.trimstart': [ '1.0.8' ],
+107 silly audit   'strip-bom': [ '3.0.0' ],
+107 silly audit   'strip-json-comments': [ '3.1.1' ],
+107 silly audit   'styled-jsx': [ '5.1.6' ],
+107 silly audit   'supports-color': [ '7.2.0' ],
+107 silly audit   'supports-preserve-symlinks-flag': [ '1.0.0' ],
+107 silly audit   'tailwind-merge': [ '3.4.0' ],
+107 silly audit   tailwindcss: [ '4.1.18' ],
+107 silly audit   tapable: [ '2.3.0' ],
+107 silly audit   tinyglobby: [ '0.2.15' ],
+107 silly audit   fdir: [ '6.5.0' ],
+107 silly audit   'to-regex-range': [ '5.0.1' ],
+107 silly audit   'ts-api-utils': [ '2.4.0' ],
+107 silly audit   'tsconfig-paths': [ '3.15.0' ],
+107 silly audit   tslib: [ '2.8.1' ],
+107 silly audit   'tw-animate-css': [ '1.4.0' ],
+107 silly audit   'type-check': [ '0.4.0' ],
+107 silly audit   'typed-array-buffer': [ '1.0.3' ],
+107 silly audit   'typed-array-byte-length': [ '1.0.3' ],
+107 silly audit   'typed-array-byte-offset': [ '1.0.4' ],
+107 silly audit   'typed-array-length': [ '1.0.7' ],
+107 silly audit   typescript: [ '5.9.3' ],
+107 silly audit   'typescript-eslint': [ '8.52.0' ],
+107 silly audit   'unbox-primitive': [ '1.1.0' ],
+107 silly audit   'undici-types': [ '6.21.0' ],
+107 silly audit   'unrs-resolver': [ '1.11.1' ],
+107 silly audit   'update-browserslist-db': [ '1.2.3' ],
+107 silly audit   'uri-js': [ '4.4.1' ],
+107 silly audit   'use-callback-ref': [ '1.3.3' ],
+107 silly audit   'use-sidecar': [ '1.1.3' ],
+107 silly audit   which: [ '2.0.2' ],
+107 silly audit   'which-boxed-primitive': [ '1.1.1' ],
+107 silly audit   'which-builtin-type': [ '1.2.1' ],
+107 silly audit   'which-collection': [ '1.0.2' ],
+107 silly audit   'which-typed-array': [ '1.1.19' ],
+107 silly audit   'word-wrap': [ '1.2.5' ],
+107 silly audit   ws: [ '8.19.0' ],
+107 silly audit   yallist: [ '3.1.1' ],
+107 silly audit   'yocto-queue': [ '0.1.0' ],
+107 silly audit   zod: [ '4.3.5' ],
+107 silly audit   'zod-validation-error': [ '4.0.2' ],
+107 silly audit   '@radix-ui/react-alert-dialog': [ '1.1.15' ],
+107 silly audit   '@radix-ui/react-switch': [ '1.2.6' ],
+107 silly audit   '@radix-ui/react-tabs': [ '1.1.13' ],
+107 silly audit   'next-themes': [ '0.4.6' ],
+107 silly audit   sonner: [ '2.0.7' ],
+107 silly audit   '@radix-ui/react-roving-focus': [ '1.1.11' ],
+107 silly audit   '@tailwindcss/oxide-wasm32-wasi': [ '4.1.18' ]
+107 silly audit }
+108 verbose reify failed optional dependency /Users/paulkillgus/Desktop/Seitenheld Messe/leadcap/node_modules/lightningcss-win32-x64-msvc
+109 silly reify mark deleted [
+109 silly reify   '/Users/paulkillgus/Desktop/Seitenheld Messe/leadcap/node_modules/lightningcss-win32-x64-msvc'
+109 silly reify ]
+110 verbose reify failed optional dependency /Users/paulkillgus/Desktop/Seitenheld Messe/leadcap/node_modules/lightningcss-win32-arm64-msvc
+111 silly reify mark deleted [
+111 silly reify   '/Users/paulkillgus/Desktop/Seitenheld Messe/leadcap/node_modules/lightningcss-win32-arm64-msvc'
+111 silly reify ]
+112 verbose reify failed optional dependency /Users/paulkillgus/Desktop/Seitenheld Messe/leadcap/node_modules/lightningcss-linux-x64-musl
+113 silly reify mark deleted [
+113 silly reify   '/Users/paulkillgus/Desktop/Seitenheld Messe/leadcap/node_modules/lightningcss-linux-x64-musl'
+113 silly reify ]
+114 verbose reify failed optional dependency /Users/paulkillgus/Desktop/Seitenheld Messe/leadcap/node_modules/lightningcss-linux-x64-gnu
+115 silly reify mark deleted [
+115 silly reify   '/Users/paulkillgus/Desktop/Seitenheld Messe/leadcap/node_modules/lightningcss-linux-x64-gnu'
+115 silly reify ]
+116 verbose reify failed optional dependency /Users/paulkillgus/Desktop/Seitenheld Messe/leadcap/node_modules/lightningcss-linux-arm64-musl
+117 silly reify mark deleted [
+117 silly reify   '/Users/paulkillgus/Desktop/Seitenheld Messe/leadcap/node_modules/lightningcss-linux-arm64-musl'
+117 silly reify ]
+118 verbose reify failed optional dependency /Users/paulkillgus/Desktop/Seitenheld Messe/leadcap/node_modules/lightningcss-linux-arm64-gnu
+119 silly reify mark deleted [
+119 silly reify   '/Users/paulkillgus/Desktop/Seitenheld Messe/leadcap/node_modules/lightningcss-linux-arm64-gnu'
+119 silly reify ]
+120 verbose reify failed optional dependency /Users/paulkillgus/Desktop/Seitenheld Messe/leadcap/node_modules/lightningcss-linux-arm-gnueabihf
+121 silly reify mark deleted [
+121 silly reify   '/Users/paulkillgus/Desktop/Seitenheld Messe/leadcap/node_modules/lightningcss-linux-arm-gnueabihf'
+121 silly reify ]
+122 verbose reify failed optional dependency /Users/paulkillgus/Desktop/Seitenheld Messe/leadcap/node_modules/lightningcss-freebsd-x64
+123 silly reify mark deleted [
+123 silly reify   '/Users/paulkillgus/Desktop/Seitenheld Messe/leadcap/node_modules/lightningcss-freebsd-x64'
+123 silly reify ]
+124 verbose reify failed optional dependency /Users/paulkillgus/Desktop/Seitenheld Messe/leadcap/node_modules/lightningcss-darwin-x64
+125 silly reify mark deleted [
+125 silly reify   '/Users/paulkillgus/Desktop/Seitenheld Messe/leadcap/node_modules/lightningcss-darwin-x64'
+125 silly reify ]
+126 verbose reify failed optional dependency /Users/paulkillgus/Desktop/Seitenheld Messe/leadcap/node_modules/lightningcss-android-arm64
+127 silly reify mark deleted [
+127 silly reify   '/Users/paulkillgus/Desktop/Seitenheld Messe/leadcap/node_modules/lightningcss-android-arm64'
+127 silly reify ]
+128 verbose reify failed optional dependency /Users/paulkillgus/Desktop/Seitenheld Messe/leadcap/node_modules/@unrs/resolver-binding-win32-x64-msvc
+129 silly reify mark deleted [
+129 silly reify   '/Users/paulkillgus/Desktop/Seitenheld Messe/leadcap/node_modules/@unrs/resolver-binding-win32-x64-msvc'
+129 silly reify ]
+130 verbose reify failed optional dependency /Users/paulkillgus/Desktop/Seitenheld Messe/leadcap/node_modules/@unrs/resolver-binding-win32-ia32-msvc
+131 silly reify mark deleted [
+131 silly reify   '/Users/paulkillgus/Desktop/Seitenheld Messe/leadcap/node_modules/@unrs/resolver-binding-win32-ia32-msvc'
+131 silly reify ]
+132 verbose reify failed optional dependency /Users/paulkillgus/Desktop/Seitenheld Messe/leadcap/node_modules/@unrs/resolver-binding-win32-arm64-msvc
+133 silly reify mark deleted [
+133 silly reify   '/Users/paulkillgus/Desktop/Seitenheld Messe/leadcap/node_modules/@unrs/resolver-binding-win32-arm64-msvc'
+133 silly reify ]
+134 verbose reify failed optional dependency /Users/paulkillgus/Desktop/Seitenheld Messe/leadcap/node_modules/@unrs/resolver-binding-wasm32-wasi
+135 silly reify mark deleted [
+135 silly reify   '/Users/paulkillgus/Desktop/Seitenheld Messe/leadcap/node_modules/@unrs/resolver-binding-wasm32-wasi'
+135 silly reify ]
+136 verbose reify failed optional dependency /Users/paulkillgus/Desktop/Seitenheld Messe/leadcap/node_modules/@unrs/resolver-binding-linux-x64-musl
+137 silly reify mark deleted [
+137 silly reify   '/Users/paulkillgus/Desktop/Seitenheld Messe/leadcap/node_modules/@unrs/resolver-binding-linux-x64-musl'
+137 silly reify ]
+138 verbose reify failed optional dependency /Users/paulkillgus/Desktop/Seitenheld Messe/leadcap/node_modules/@unrs/resolver-binding-linux-x64-gnu
+139 silly reify mark deleted [
+139 silly reify   '/Users/paulkillgus/Desktop/Seitenheld Messe/leadcap/node_modules/@unrs/resolver-binding-linux-x64-gnu'
+139 silly reify ]
+140 verbose reify failed optional dependency /Users/paulkillgus/Desktop/Seitenheld Messe/leadcap/node_modules/@unrs/resolver-binding-linux-s390x-gnu
+141 silly reify mark deleted [
+141 silly reify   '/Users/paulkillgus/Desktop/Seitenheld Messe/leadcap/node_modules/@unrs/resolver-binding-linux-s390x-gnu'
+141 silly reify ]
+142 verbose reify failed optional dependency /Users/paulkillgus/Desktop/Seitenheld Messe/leadcap/node_modules/@unrs/resolver-binding-linux-riscv64-musl
+143 silly reify mark deleted [
+143 silly reify   '/Users/paulkillgus/Desktop/Seitenheld Messe/leadcap/node_modules/@unrs/resolver-binding-linux-riscv64-musl'
+143 silly reify ]
+144 verbose reify failed optional dependency /Users/paulkillgus/Desktop/Seitenheld Messe/leadcap/node_modules/@unrs/resolver-binding-linux-riscv64-gnu
+145 silly reify mark deleted [
+145 silly reify   '/Users/paulkillgus/Desktop/Seitenheld Messe/leadcap/node_modules/@unrs/resolver-binding-linux-riscv64-gnu'
+145 silly reify ]
+146 verbose reify failed optional dependency /Users/paulkillgus/Desktop/Seitenheld Messe/leadcap/node_modules/@unrs/resolver-binding-linux-ppc64-gnu
+147 silly reify mark deleted [
+147 silly reify   '/Users/paulkillgus/Desktop/Seitenheld Messe/leadcap/node_modules/@unrs/resolver-binding-linux-ppc64-gnu'
+147 silly reify ]
+148 verbose reify failed optional dependency /Users/paulkillgus/Desktop/Seitenheld Messe/leadcap/node_modules/@unrs/resolver-binding-linux-arm64-musl
+149 silly reify mark deleted [
+149 silly reify   '/Users/paulkillgus/Desktop/Seitenheld Messe/leadcap/node_modules/@unrs/resolver-binding-linux-arm64-musl'
+149 silly reify ]
+150 verbose reify failed optional dependency /Users/paulkillgus/Desktop/Seitenheld Messe/leadcap/node_modules/@unrs/resolver-binding-linux-arm64-gnu
+151 silly reify mark deleted [
+151 silly reify   '/Users/paulkillgus/Desktop/Seitenheld Messe/leadcap/node_modules/@unrs/resolver-binding-linux-arm64-gnu'
+151 silly reify ]
+152 verbose reify failed optional dependency /Users/paulkillgus/Desktop/Seitenheld Messe/leadcap/node_modules/@unrs/resolver-binding-linux-arm-musleabihf
+153 silly reify mark deleted [
+153 silly reify   '/Users/paulkillgus/Desktop/Seitenheld Messe/leadcap/node_modules/@unrs/resolver-binding-linux-arm-musleabihf'
+153 silly reify ]
+154 verbose reify failed optional dependency /Users/paulkillgus/Desktop/Seitenheld Messe/leadcap/node_modules/@unrs/resolver-binding-linux-arm-gnueabihf
+155 silly reify mark deleted [
+155 silly reify   '/Users/paulkillgus/Desktop/Seitenheld Messe/leadcap/node_modules/@unrs/resolver-binding-linux-arm-gnueabihf'
+155 silly reify ]
+156 verbose reify failed optional dependency /Users/paulkillgus/Desktop/Seitenheld Messe/leadcap/node_modules/@unrs/resolver-binding-freebsd-x64
+157 silly reify mark deleted [
+157 silly reify   '/Users/paulkillgus/Desktop/Seitenheld Messe/leadcap/node_modules/@unrs/resolver-binding-freebsd-x64'
+157 silly reify ]
+158 verbose reify failed optional dependency /Users/paulkillgus/Desktop/Seitenheld Messe/leadcap/node_modules/@unrs/resolver-binding-darwin-x64
+159 silly reify mark deleted [
+159 silly reify   '/Users/paulkillgus/Desktop/Seitenheld Messe/leadcap/node_modules/@unrs/resolver-binding-darwin-x64'
+159 silly reify ]
+160 verbose reify failed optional dependency /Users/paulkillgus/Desktop/Seitenheld Messe/leadcap/node_modules/@unrs/resolver-binding-android-arm64
+161 silly reify mark deleted [
+161 silly reify   '/Users/paulkillgus/Desktop/Seitenheld Messe/leadcap/node_modules/@unrs/resolver-binding-android-arm64'
+161 silly reify ]
+162 verbose reify failed optional dependency /Users/paulkillgus/Desktop/Seitenheld Messe/leadcap/node_modules/@unrs/resolver-binding-android-arm-eabi
+163 silly reify mark deleted [
+163 silly reify   '/Users/paulkillgus/Desktop/Seitenheld Messe/leadcap/node_modules/@unrs/resolver-binding-android-arm-eabi'
+163 silly reify ]
+164 verbose reify failed optional dependency /Users/paulkillgus/Desktop/Seitenheld Messe/leadcap/node_modules/@tailwindcss/oxide-win32-x64-msvc
+165 silly reify mark deleted [
+165 silly reify   '/Users/paulkillgus/Desktop/Seitenheld Messe/leadcap/node_modules/@tailwindcss/oxide-win32-x64-msvc'
+165 silly reify ]
+166 verbose reify failed optional dependency /Users/paulkillgus/Desktop/Seitenheld Messe/leadcap/node_modules/@tailwindcss/oxide-win32-arm64-msvc
+167 silly reify mark deleted [
+167 silly reify   '/Users/paulkillgus/Desktop/Seitenheld Messe/leadcap/node_modules/@tailwindcss/oxide-win32-arm64-msvc'
+167 silly reify ]
+168 verbose reify failed optional dependency /Users/paulkillgus/Desktop/Seitenheld Messe/leadcap/node_modules/@tailwindcss/oxide-linux-x64-musl
+169 silly reify mark deleted [
+169 silly reify   '/Users/paulkillgus/Desktop/Seitenheld Messe/leadcap/node_modules/@tailwindcss/oxide-linux-x64-musl'
+169 silly reify ]
+170 verbose reify failed optional dependency /Users/paulkillgus/Desktop/Seitenheld Messe/leadcap/node_modules/@tailwindcss/oxide-linux-x64-gnu
+171 silly reify mark deleted [
+171 silly reify   '/Users/paulkillgus/Desktop/Seitenheld Messe/leadcap/node_modules/@tailwindcss/oxide-linux-x64-gnu'
+171 silly reify ]
+172 verbose reify failed optional dependency /Users/paulkillgus/Desktop/Seitenheld Messe/leadcap/node_modules/@tailwindcss/oxide-linux-arm64-musl
+173 silly reify mark deleted [
+173 silly reify   '/Users/paulkillgus/Desktop/Seitenheld Messe/leadcap/node_modules/@tailwindcss/oxide-linux-arm64-musl'
+173 silly reify ]
+174 verbose reify failed optional dependency /Users/paulkillgus/Desktop/Seitenheld Messe/leadcap/node_modules/@tailwindcss/oxide-linux-arm64-gnu
+175 silly reify mark deleted [
+175 silly reify   '/Users/paulkillgus/Desktop/Seitenheld Messe/leadcap/node_modules/@tailwindcss/oxide-linux-arm64-gnu'
+175 silly reify ]
+176 verbose reify failed optional dependency /Users/paulkillgus/Desktop/Seitenheld Messe/leadcap/node_modules/@tailwindcss/oxide-linux-arm-gnueabihf
+177 silly reify mark deleted [
+177 silly reify   '/Users/paulkillgus/Desktop/Seitenheld Messe/leadcap/node_modules/@tailwindcss/oxide-linux-arm-gnueabihf'
+177 silly reify ]
+178 verbose reify failed optional dependency /Users/paulkillgus/Desktop/Seitenheld Messe/leadcap/node_modules/@tailwindcss/oxide-freebsd-x64
+179 silly reify mark deleted [
+179 silly reify   '/Users/paulkillgus/Desktop/Seitenheld Messe/leadcap/node_modules/@tailwindcss/oxide-freebsd-x64'
+179 silly reify ]
+180 verbose reify failed optional dependency /Users/paulkillgus/Desktop/Seitenheld Messe/leadcap/node_modules/@tailwindcss/oxide-darwin-x64
+181 silly reify mark deleted [
+181 silly reify   '/Users/paulkillgus/Desktop/Seitenheld Messe/leadcap/node_modules/@tailwindcss/oxide-darwin-x64'
+181 silly reify ]
+182 verbose reify failed optional dependency /Users/paulkillgus/Desktop/Seitenheld Messe/leadcap/node_modules/@tailwindcss/oxide-android-arm64
+183 silly reify mark deleted [
+183 silly reify   '/Users/paulkillgus/Desktop/Seitenheld Messe/leadcap/node_modules/@tailwindcss/oxide-android-arm64'
+183 silly reify ]
+184 verbose reify failed optional dependency /Users/paulkillgus/Desktop/Seitenheld Messe/leadcap/node_modules/@next/swc-win32-x64-msvc
+185 silly reify mark deleted [
+185 silly reify   '/Users/paulkillgus/Desktop/Seitenheld Messe/leadcap/node_modules/@next/swc-win32-x64-msvc'
+185 silly reify ]
+186 verbose reify failed optional dependency /Users/paulkillgus/Desktop/Seitenheld Messe/leadcap/node_modules/@next/swc-win32-arm64-msvc
+187 silly reify mark deleted [
+187 silly reify   '/Users/paulkillgus/Desktop/Seitenheld Messe/leadcap/node_modules/@next/swc-win32-arm64-msvc'
+187 silly reify ]
+188 verbose reify failed optional dependency /Users/paulkillgus/Desktop/Seitenheld Messe/leadcap/node_modules/@next/swc-linux-x64-musl
+189 silly reify mark deleted [
+189 silly reify   '/Users/paulkillgus/Desktop/Seitenheld Messe/leadcap/node_modules/@next/swc-linux-x64-musl'
+189 silly reify ]
+190 verbose reify failed optional dependency /Users/paulkillgus/Desktop/Seitenheld Messe/leadcap/node_modules/@next/swc-linux-x64-gnu
+191 silly reify mark deleted [
+191 silly reify   '/Users/paulkillgus/Desktop/Seitenheld Messe/leadcap/node_modules/@next/swc-linux-x64-gnu'
+191 silly reify ]
+192 verbose reify failed optional dependency /Users/paulkillgus/Desktop/Seitenheld Messe/leadcap/node_modules/@next/swc-linux-arm64-musl
+193 silly reify mark deleted [
+193 silly reify   '/Users/paulkillgus/Desktop/Seitenheld Messe/leadcap/node_modules/@next/swc-linux-arm64-musl'
+193 silly reify ]
+194 verbose reify failed optional dependency /Users/paulkillgus/Desktop/Seitenheld Messe/leadcap/node_modules/@next/swc-linux-arm64-gnu
+195 silly reify mark deleted [
+195 silly reify   '/Users/paulkillgus/Desktop/Seitenheld Messe/leadcap/node_modules/@next/swc-linux-arm64-gnu'
+195 silly reify ]
+196 verbose reify failed optional dependency /Users/paulkillgus/Desktop/Seitenheld Messe/leadcap/node_modules/@next/swc-darwin-x64
+197 silly reify mark deleted [
+197 silly reify   '/Users/paulkillgus/Desktop/Seitenheld Messe/leadcap/node_modules/@next/swc-darwin-x64'
+197 silly reify ]
+198 verbose reify failed optional dependency /Users/paulkillgus/Desktop/Seitenheld Messe/leadcap/node_modules/@img/sharp-win32-x64
+199 silly reify mark deleted [
+199 silly reify   '/Users/paulkillgus/Desktop/Seitenheld Messe/leadcap/node_modules/@img/sharp-win32-x64'
+199 silly reify ]
+200 verbose reify failed optional dependency /Users/paulkillgus/Desktop/Seitenheld Messe/leadcap/node_modules/@img/sharp-win32-ia32
+201 silly reify mark deleted [
+201 silly reify   '/Users/paulkillgus/Desktop/Seitenheld Messe/leadcap/node_modules/@img/sharp-win32-ia32'
+201 silly reify ]
+202 verbose reify failed optional dependency /Users/paulkillgus/Desktop/Seitenheld Messe/leadcap/node_modules/@img/sharp-win32-arm64
+203 silly reify mark deleted [
+203 silly reify   '/Users/paulkillgus/Desktop/Seitenheld Messe/leadcap/node_modules/@img/sharp-win32-arm64'
+203 silly reify ]
+204 verbose reify failed optional dependency /Users/paulkillgus/Desktop/Seitenheld Messe/leadcap/node_modules/@img/sharp-wasm32
+205 silly reify mark deleted [
+205 silly reify   '/Users/paulkillgus/Desktop/Seitenheld Messe/leadcap/node_modules/@img/sharp-wasm32'
+205 silly reify ]
+206 verbose reify failed optional dependency /Users/paulkillgus/Desktop/Seitenheld Messe/leadcap/node_modules/@img/sharp-linuxmusl-x64
+207 silly reify mark deleted [
+207 silly reify   '/Users/paulkillgus/Desktop/Seitenheld Messe/leadcap/node_modules/@img/sharp-linuxmusl-x64'
+207 silly reify ]
+208 verbose reify failed optional dependency /Users/paulkillgus/Desktop/Seitenheld Messe/leadcap/node_modules/@img/sharp-linuxmusl-arm64
+209 silly reify mark deleted [
+209 silly reify   '/Users/paulkillgus/Desktop/Seitenheld Messe/leadcap/node_modules/@img/sharp-linuxmusl-arm64'
+209 silly reify ]
+210 verbose reify failed optional dependency /Users/paulkillgus/Desktop/Seitenheld Messe/leadcap/node_modules/@img/sharp-linux-x64
+211 silly reify mark deleted [
+211 silly reify   '/Users/paulkillgus/Desktop/Seitenheld Messe/leadcap/node_modules/@img/sharp-linux-x64'
+211 silly reify ]
+212 verbose reify failed optional dependency /Users/paulkillgus/Desktop/Seitenheld Messe/leadcap/node_modules/@img/sharp-linux-s390x
+213 silly reify mark deleted [
+213 silly reify   '/Users/paulkillgus/Desktop/Seitenheld Messe/leadcap/node_modules/@img/sharp-linux-s390x'
+213 silly reify ]
+214 verbose reify failed optional dependency /Users/paulkillgus/Desktop/Seitenheld Messe/leadcap/node_modules/@img/sharp-linux-riscv64
+215 silly reify mark deleted [
+215 silly reify   '/Users/paulkillgus/Desktop/Seitenheld Messe/leadcap/node_modules/@img/sharp-linux-riscv64'
+215 silly reify ]
+216 verbose reify failed optional dependency /Users/paulkillgus/Desktop/Seitenheld Messe/leadcap/node_modules/@img/sharp-linux-ppc64
+217 silly reify mark deleted [
+217 silly reify   '/Users/paulkillgus/Desktop/Seitenheld Messe/leadcap/node_modules/@img/sharp-linux-ppc64'
+217 silly reify ]
+218 verbose reify failed optional dependency /Users/paulkillgus/Desktop/Seitenheld Messe/leadcap/node_modules/@img/sharp-linux-arm64
+219 silly reify mark deleted [
+219 silly reify   '/Users/paulkillgus/Desktop/Seitenheld Messe/leadcap/node_modules/@img/sharp-linux-arm64'
+219 silly reify ]
+220 verbose reify failed optional dependency /Users/paulkillgus/Desktop/Seitenheld Messe/leadcap/node_modules/@img/sharp-linux-arm
+221 silly reify mark deleted [
+221 silly reify   '/Users/paulkillgus/Desktop/Seitenheld Messe/leadcap/node_modules/@img/sharp-linux-arm'
+221 silly reify ]
+222 verbose reify failed optional dependency /Users/paulkillgus/Desktop/Seitenheld Messe/leadcap/node_modules/@img/sharp-libvips-linuxmusl-x64
+223 silly reify mark deleted [
+223 silly reify   '/Users/paulkillgus/Desktop/Seitenheld Messe/leadcap/node_modules/@img/sharp-libvips-linuxmusl-x64'
+223 silly reify ]
+224 verbose reify failed optional dependency /Users/paulkillgus/Desktop/Seitenheld Messe/leadcap/node_modules/@img/sharp-libvips-linuxmusl-arm64
+225 silly reify mark deleted [
+225 silly reify   '/Users/paulkillgus/Desktop/Seitenheld Messe/leadcap/node_modules/@img/sharp-libvips-linuxmusl-arm64'
+225 silly reify ]
+226 verbose reify failed optional dependency /Users/paulkillgus/Desktop/Seitenheld Messe/leadcap/node_modules/@img/sharp-libvips-linux-x64
+227 silly reify mark deleted [
+227 silly reify   '/Users/paulkillgus/Desktop/Seitenheld Messe/leadcap/node_modules/@img/sharp-libvips-linux-x64'
+227 silly reify ]
+228 verbose reify failed optional dependency /Users/paulkillgus/Desktop/Seitenheld Messe/leadcap/node_modules/@img/sharp-libvips-linux-s390x
+229 silly reify mark deleted [
+229 silly reify   '/Users/paulkillgus/Desktop/Seitenheld Messe/leadcap/node_modules/@img/sharp-libvips-linux-s390x'
+229 silly reify ]
+230 verbose reify failed optional dependency /Users/paulkillgus/Desktop/Seitenheld Messe/leadcap/node_modules/@img/sharp-libvips-linux-riscv64
+231 silly reify mark deleted [
+231 silly reify   '/Users/paulkillgus/Desktop/Seitenheld Messe/leadcap/node_modules/@img/sharp-libvips-linux-riscv64'
+231 silly reify ]
+232 verbose reify failed optional dependency /Users/paulkillgus/Desktop/Seitenheld Messe/leadcap/node_modules/@img/sharp-libvips-linux-ppc64
+233 silly reify mark deleted [
+233 silly reify   '/Users/paulkillgus/Desktop/Seitenheld Messe/leadcap/node_modules/@img/sharp-libvips-linux-ppc64'
+233 silly reify ]
+234 verbose reify failed optional dependency /Users/paulkillgus/Desktop/Seitenheld Messe/leadcap/node_modules/@img/sharp-libvips-linux-arm64
+235 silly reify mark deleted [
+235 silly reify   '/Users/paulkillgus/Desktop/Seitenheld Messe/leadcap/node_modules/@img/sharp-libvips-linux-arm64'
+235 silly reify ]
+236 verbose reify failed optional dependency /Users/paulkillgus/Desktop/Seitenheld Messe/leadcap/node_modules/@img/sharp-libvips-linux-arm
+237 silly reify mark deleted [
+237 silly reify   '/Users/paulkillgus/Desktop/Seitenheld Messe/leadcap/node_modules/@img/sharp-libvips-linux-arm'
+237 silly reify ]
+238 verbose reify failed optional dependency /Users/paulkillgus/Desktop/Seitenheld Messe/leadcap/node_modules/@img/sharp-libvips-darwin-x64
+239 silly reify mark deleted [
+239 silly reify   '/Users/paulkillgus/Desktop/Seitenheld Messe/leadcap/node_modules/@img/sharp-libvips-darwin-x64'
+239 silly reify ]
+240 verbose reify failed optional dependency /Users/paulkillgus/Desktop/Seitenheld Messe/leadcap/node_modules/@img/sharp-darwin-x64
+241 silly reify mark deleted [
+241 silly reify   '/Users/paulkillgus/Desktop/Seitenheld Messe/leadcap/node_modules/@img/sharp-darwin-x64'
+241 silly reify ]
+242 http cache @radix-ui/react-roving-focus@https://registry.npmjs.org/@radix-ui/react-roving-focus/-/react-roving-focus-1.1.11.tgz 0ms (cache hit)
+243 http cache sonner@https://registry.npmjs.org/sonner/-/sonner-2.0.7.tgz 0ms (cache hit)
+244 http cache next-themes@https://registry.npmjs.org/next-themes/-/next-themes-0.4.6.tgz 0ms (cache hit)
+245 http cache @radix-ui/react-alert-dialog@https://registry.npmjs.org/@radix-ui/react-alert-dialog/-/react-alert-dialog-1.1.15.tgz 0ms (cache hit)
+246 http cache @radix-ui/react-tabs@https://registry.npmjs.org/@radix-ui/react-tabs/-/react-tabs-1.1.13.tgz 0ms (cache hit)
+247 http cache @radix-ui/react-switch@https://registry.npmjs.org/@radix-ui/react-switch/-/react-switch-1.2.6.tgz 0ms (cache hit)
+248 http cache @radix-ui/react-slot@https://registry.npmjs.org/@radix-ui/react-slot/-/react-slot-1.2.3.tgz 0ms (cache hit)
+249 http cache @radix-ui/react-slot@https://registry.npmjs.org/@radix-ui/react-slot/-/react-slot-1.2.3.tgz 0ms (cache hit)
+250 http cache @radix-ui/react-slot@https://registry.npmjs.org/@radix-ui/react-slot/-/react-slot-1.2.3.tgz 0ms (cache hit)
+251 http cache @radix-ui/react-primitive@https://registry.npmjs.org/@radix-ui/react-primitive/-/react-primitive-2.1.3.tgz 0ms (cache hit)
+252 http cache @radix-ui/react-primitive@https://registry.npmjs.org/@radix-ui/react-primitive/-/react-primitive-2.1.3.tgz 0ms (cache hit)
+253 http cache @radix-ui/react-primitive@https://registry.npmjs.org/@radix-ui/react-primitive/-/react-primitive-2.1.3.tgz 0ms (cache hit)
+254 http cache @radix-ui/react-slot@https://registry.npmjs.org/@radix-ui/react-slot/-/react-slot-1.2.3.tgz 0ms (cache hit)
+255 http cache @radix-ui/react-primitive@https://registry.npmjs.org/@radix-ui/react-primitive/-/react-primitive-2.1.3.tgz 0ms (cache hit)
+256 silly tarball no local data for @radix-ui/react-roving-focus@https://registry.npmjs.org/@radix-ui/react-roving-focus/-/react-roving-focus-1.1.11.tgz. Extracting by manifest.
+257 silly tarball no local data for sonner@https://registry.npmjs.org/sonner/-/sonner-2.0.7.tgz. Extracting by manifest.
+258 silly tarball no local data for next-themes@https://registry.npmjs.org/next-themes/-/next-themes-0.4.6.tgz. Extracting by manifest.
+259 silly tarball no local data for @radix-ui/react-alert-dialog@https://registry.npmjs.org/@radix-ui/react-alert-dialog/-/react-alert-dialog-1.1.15.tgz. Extracting by manifest.
+260 silly tarball no local data for @radix-ui/react-tabs@https://registry.npmjs.org/@radix-ui/react-tabs/-/react-tabs-1.1.13.tgz. Extracting by manifest.
+261 silly tarball no local data for @radix-ui/react-switch@https://registry.npmjs.org/@radix-ui/react-switch/-/react-switch-1.2.6.tgz. Extracting by manifest.
+262 http fetch GET 200 https://registry.npmjs.org/next-themes/-/next-themes-0.4.6.tgz 79ms (cache miss)
+263 http fetch GET 200 https://registry.npmjs.org/sonner/-/sonner-2.0.7.tgz 82ms (cache miss)
+264 http fetch GET 200 https://registry.npmjs.org/@radix-ui/react-roving-focus/-/react-roving-focus-1.1.11.tgz 102ms (cache miss)
+265 http fetch GET 200 https://registry.npmjs.org/@radix-ui/react-alert-dialog/-/react-alert-dialog-1.1.15.tgz 169ms (cache miss)
+266 http fetch GET 200 https://registry.npmjs.org/@radix-ui/react-tabs/-/react-tabs-1.1.13.tgz 173ms (cache miss)
+267 http fetch POST 200 https://registry.npmjs.org/-/npm/v1/security/advisories/bulk 220ms
+268 silly audit report {}
+269 http fetch GET 200 https://registry.npmjs.org/@radix-ui/react-switch/-/react-switch-1.2.6.tgz 226ms (cache miss)
+270 silly ADD node_modules/@radix-ui/react-roving-focus
+271 silly ADD node_modules/@radix-ui/react-roving-focus/node_modules/@radix-ui/react-slot
+272 silly ADD node_modules/@radix-ui/react-roving-focus/node_modules/@radix-ui/react-primitive
+273 silly ADD node_modules/sonner
+274 silly ADD node_modules/next-themes
+275 silly ADD node_modules/@radix-ui/react-tabs
+276 silly ADD node_modules/@radix-ui/react-tabs/node_modules/@radix-ui/react-slot
+277 silly ADD node_modules/@radix-ui/react-tabs/node_modules/@radix-ui/react-primitive
+278 silly ADD node_modules/@radix-ui/react-switch
+279 silly ADD node_modules/@radix-ui/react-switch/node_modules/@radix-ui/react-slot
+280 silly ADD node_modules/@radix-ui/react-switch/node_modules/@radix-ui/react-primitive
+281 silly ADD node_modules/@radix-ui/react-alert-dialog
+282 silly ADD node_modules/@radix-ui/react-alert-dialog/node_modules/@radix-ui/react-slot
+283 silly ADD node_modules/@radix-ui/react-alert-dialog/node_modules/@radix-ui/react-primitive
+284 silly ADD
+285 silly ADD
+286 silly ADD
+287 silly ADD
+288 silly ADD
+289 silly ADD
+290 silly ADD
+291 silly ADD
+292 silly ADD
+293 silly ADD
+294 silly ADD
+295 silly ADD
+296 silly ADD
+297 silly ADD
+298 silly ADD
+299 silly ADD
+300 silly ADD
+301 silly ADD
+302 silly ADD
+303 silly ADD
+304 silly ADD
+305 silly ADD
+306 silly ADD
+307 silly ADD
+308 silly ADD
+309 silly ADD
+310 silly ADD
+311 silly ADD
+312 silly ADD
+313 silly ADD
+314 silly ADD
+315 silly ADD
+316 silly ADD
+317 silly ADD
+318 silly ADD
+319 silly ADD
+320 silly ADD
+321 silly ADD
+322 silly ADD
+323 silly ADD
+324 silly ADD
+325 silly ADD
+326 silly ADD
+327 silly ADD
+328 silly ADD
+329 silly ADD
+330 silly ADD
+331 silly ADD
+332 silly ADD
+333 silly ADD
+334 silly ADD
+335 silly ADD
+336 silly ADD
+337 silly ADD
+338 silly ADD
+339 silly ADD
+340 silly ADD
+341 silly ADD
+342 silly ADD
+343 silly ADD
+344 silly ADD
+345 silly ADD
+346 silly ADD
+347 silly ADD
+348 silly ADD
+349 silly ADD
+350 silly ADD
+351 silly ADD
+352 verbose cwd /Users/paulkillgus/Desktop/Seitenheld Messe/leadcap
+353 verbose os Darwin 24.3.0
+354 verbose node v23.11.0
+355 verbose npm  v10.9.2
+356 verbose exit 0
+357 info ok

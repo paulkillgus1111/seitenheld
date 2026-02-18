@@ -1,0 +1,22 @@
+0 verbose cli /Users/paulkillgus/.nvm/versions/node/v23.11.0/bin/node /Users/paulkillgus/.nvm/versions/node/v23.11.0/lib/node_modules/npm/bin/npm-cli.js
+1 info using npm@10.9.2
+2 info using node@v23.11.0
+3 silly config load:file:/Users/paulkillgus/.nvm/versions/node/v23.11.0/lib/node_modules/npm/npmrc
+4 silly config load:file:/Users/paulkillgus/Desktop/Seitenheld Messe/leadcap/.npmrc
+5 silly config load:file:/Users/paulkillgus/.npmrc
+6 silly config load:file:/Users/paulkillgus/.nvm/versions/node/v23.11.0/etc/npmrc
+7 verbose title npm exec shadcn@latest add sheet
+8 verbose argv "exec" "--" "shadcn@latest" "add" "sheet"
+9 verbose logfile logs-max:10 dir:/Users/paulkillgus/Desktop/Seitenheld Messe/leadcap/.npm-cache/_logs/2026-01-07T10_48_11_167Z-
+10 verbose logfile /Users/paulkillgus/Desktop/Seitenheld Messe/leadcap/.npm-cache/_logs/2026-01-07T10_48_11_167Z-debug-0.log
+11 silly logfile done cleaning log files
+12 silly packumentCache heap:2197815296 maxSize:549453824 maxEntrySize:274726912
+13 http fetch GET 200 https://registry.npmjs.org/shadcn 224ms (cache revalidated)
+14 silly packumentCache heap:2197815296 maxSize:549453824 maxEntrySize:274726912
+15 silly packumentCache heap:2197815296 maxSize:549453824 maxEntrySize:274726912
+16 verbose cwd /Users/paulkillgus/Desktop/Seitenheld Messe/leadcap
+17 verbose os Darwin 24.3.0
+18 verbose node v23.11.0
+19 verbose npm  v10.9.2
+20 verbose exit 0
+21 info ok

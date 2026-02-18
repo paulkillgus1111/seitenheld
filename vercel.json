@@ -1,0 +1,8 @@
+{
+  "crons": [
+    {
+      "path": "/api/n8n/send-morning-messages",
+      "schedule": "0 * * * *"
+    }
+  ]
+}
