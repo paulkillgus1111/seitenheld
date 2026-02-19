@@ -48,6 +48,9 @@ export async function POST(request: Request) {
       }
     );
 
+    // Type assertion für Stripe Subscription
+    const subscriptionTyped = subscription as Stripe.Subscription;
+
     // Aktualisiere den Status in der Datenbank
     await ((supabase
       .from("profiles") as any)
@@ -59,10 +62,10 @@ export async function POST(request: Request) {
     return NextResponse.json({
       success: true,
       message: "Subscription will be cancelled at the end of the billing period",
-      cancel_at: subscription.cancel_at
-        ? new Date(subscription.cancel_at * 1000).toISOString()
-        : subscription.current_period_end
-        ? new Date(subscription.current_period_end * 1000).toISOString()
+      cancel_at: subscriptionTyped.cancel_at
+        ? new Date(subscriptionTyped.cancel_at * 1000).toISOString()
+        : subscriptionTyped.current_period_end
+        ? new Date(subscriptionTyped.current_period_end * 1000).toISOString()
         : null,
     });
   } catch (error) {
