@@ -35,6 +35,9 @@ export default async function DownloadsPage() {
     .eq("user_id", user.id)
     .order("start_date", { ascending: false });
 
+  // Type assertion für events query
+  const eventsTyped = (events || []) as { id: string; name: string }[];
+
   return (
     <>
       <header className="flex flex-col gap-2">
@@ -61,7 +64,7 @@ export default async function DownloadsPage() {
         <CardContent>
           <ExportLeadsWithFilter
             leads={leads as LeadRow[]}
-            events={events}
+            events={eventsTyped}
           />
         </CardContent>
       </Card>
