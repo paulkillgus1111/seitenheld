@@ -250,7 +250,7 @@ export async function POST(request: Request) {
       const errorMessage = n8nError instanceof Error ? n8nError.message : String(n8nError);
       console.error("n8n error:", {
         error: errorMessage,
-        templateId: template.id,
+        templateId: templateTyped.id,
         emailCount: emails.length,
         webhookUrl: "https://seitenheld.app.n8n.cloud/webhook-test/800af2a6-550c-48ab-8711-87d164792b69",
       });
