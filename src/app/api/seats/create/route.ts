@@ -80,7 +80,7 @@ export async function POST(request: Request) {
     }
 
     // Atomare Seat-Erstellung mit Prüfung (verhindert Race Conditions)
-    const { data: newSeatId, error: rpcError } = await supabase.rpc(
+    const { data: newSeatId, error: rpcError } = await (supabase.rpc as any)(
       "create_seat_atomic",
       {
         p_user_id: user.id,
