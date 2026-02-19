@@ -175,13 +175,13 @@ export async function POST(request: Request) {
       }
 
       // ✅ WhatsApp-Versand erfolgreich - JETZT Attempts zählen
-      const { error: attemptUpdateError } = await supabase
-        .from("phone_numbers")
+      const { error: attemptUpdateError } = await ((supabase
+        .from("phone_numbers") as any)
         .update({
           last_verification_request_at: new Date().toISOString(),
           verification_attempts: (phoneNumberTyped.verification_attempts || 0) + 1,
         })
-        .eq("id", validated.data.phone_number_id);
+        .eq("id", validated.data.phone_number_id));
 
       if (attemptUpdateError) {
         console.error("Failed to update verification attempts:", attemptUpdateError);
