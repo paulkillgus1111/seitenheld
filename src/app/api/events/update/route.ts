@@ -39,7 +39,22 @@ export async function POST(request: Request) {
       );
     }
 
-    const { id, ...updateData } = validated.data;
+    const { id, ...updateDataRaw } = validated.data;
+
+    // Typisiere updateData für Supabase
+    const updateData: {
+      name: string;
+      phone_number_id: string;
+      start_date?: string | null;
+      end_date?: string | null;
+      estimated_costs?: number | null;
+    } = {
+      name: updateDataRaw.name,
+      phone_number_id: updateDataRaw.phone_number_id,
+      start_date: updateDataRaw.start_date || null,
+      end_date: updateDataRaw.end_date || null,
+      estimated_costs: updateDataRaw.estimated_costs || null,
+    };
 
     // Verify event belongs to user
     const { data: existingEvent } = await supabase
@@ -72,7 +87,7 @@ export async function POST(request: Request) {
 
     const { error } = await supabase
       .from("events")
-      .update(updateData as any)
+      .update(updateData)
       .eq("id", id)
       .eq("user_id", user.id);
 
