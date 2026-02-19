@@ -273,10 +273,10 @@ export async function POST(request: Request) {
 
     // Aktualisiere followup_mail_sent_at in leads Tabelle
     const leadIdsToUpdate = emails.map((e) => e.leadId);
-    await supabase
-      .from("leads")
-      .update({ followup_mail_sent_at: new Date().toISOString() } as any)
-      .in("id", leadIdsToUpdate);
+    await ((supabase
+      .from("leads") as any)
+      .update({ followup_mail_sent_at: new Date().toISOString() })
+      .in("id", leadIdsToUpdate));
 
     // Speichere in sent_emails Tabelle
     const sentEmailsRecords = emails.map((email) => ({
