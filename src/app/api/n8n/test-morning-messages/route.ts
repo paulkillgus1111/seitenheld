@@ -115,10 +115,10 @@ export async function GET(request: Request) {
       clearTimeout(timeoutId);
 
       if (response.ok) {
-        await supabase
-          .from("events")
+        await ((supabase
+          .from("events") as any)
           .update({ morning_message_sent: true })
-          .eq("id", event.id);
+          .eq("id", event.id));
 
         results.push({ event_id: event.id, status: "sent" });
       } else {
