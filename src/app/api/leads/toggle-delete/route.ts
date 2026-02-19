@@ -50,7 +50,7 @@ export async function POST(request: Request) {
       .from("leads")
       .update({
         deleted_at: deleted ? new Date().toISOString() : null,
-      })
+      } as any)
       .eq("id", id);
 
     if (error) {
