@@ -21,6 +21,16 @@ export default async function MailsPage() {
     .eq("user_id", user.id)
     .order("created_at", { ascending: false });
 
+  // Type assertions für alle Queries
+  const templatesTyped = (templates || []) as Array<{
+    id: string;
+    name: string;
+    subject: string;
+    template: string;
+    created_at: string | null;
+    updated_at: string | null;
+  }>;
+
   const { data: leads = [] } = await supabase
     .from("leads")
     .select("id, vorname, nachname, email, firma, telefon, event_id")
@@ -28,11 +38,23 @@ export default async function MailsPage() {
     .order("created_at", { ascending: false })
     .limit(500);
 
+  const leadsTyped = (leads || []) as Array<{
+    id: string;
+    vorname: string | null;
+    nachname: string | null;
+    email: string | null;
+    firma: string | null;
+    telefon: string | null;
+    event_id: string | null;
+  }>;
+
   const { data: events = [] } = await supabase
     .from("events")
     .select("id, name")
     .eq("user_id", user.id)
     .order("start_date", { ascending: false });
+
+  const eventsTyped = (events || []) as { id: string; name: string }[];
 
   return (
     <>
@@ -58,11 +80,11 @@ export default async function MailsPage() {
         </TabsList>
 
         <TabsContent value="templates" className="space-y-4">
-          <TemplateManager initialTemplates={templates} />
+          <TemplateManager initialTemplates={templatesTyped} />
         </TabsContent>
 
         <TabsContent value="send" className="space-y-4">
-          <SendEmails templates={templates} leads={leads} events={events} />
+          <SendEmails templates={templatesTyped} leads={leadsTyped} events={eventsTyped} />
         </TabsContent>
       </Tabs>
     </>
