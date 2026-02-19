@@ -190,6 +190,65 @@ export interface Database {
           created_at?: string | null;
         };
       };
+      integrations: {
+        Row: {
+          user_id: string;
+          crm_type: string | null;
+          crm_access_token: string | null;
+          crm_refresh_token: string | null;
+          crm_token_expires_at: string | null;
+          crm_instance_url: string | null;
+          crm_org_id: string | null;
+          crm_user_id: string | null;
+          crm_connection_type: string | null;
+          salesforce_access_token: string | null;
+          salesforce_refresh_token: string | null;
+          salesforce_token_expires_at: string | null;
+          salesforce_instance_url: string | null;
+          salesforce_org_id: string | null;
+          salesforce_user_id: string | null;
+          salesforce_connection_type: string | null;
+          salesforce_field_mapping: Json | null;
+        };
+        Insert: {
+          user_id: string;
+          crm_type?: string | null;
+          crm_access_token?: string | null;
+          crm_refresh_token?: string | null;
+          crm_token_expires_at?: string | null;
+          crm_instance_url?: string | null;
+          crm_org_id?: string | null;
+          crm_user_id?: string | null;
+          crm_connection_type?: string | null;
+          salesforce_access_token?: string | null;
+          salesforce_refresh_token?: string | null;
+          salesforce_token_expires_at?: string | null;
+          salesforce_instance_url?: string | null;
+          salesforce_org_id?: string | null;
+          salesforce_user_id?: string | null;
+          salesforce_connection_type?: string | null;
+          salesforce_field_mapping?: Json | null;
+        };
+        Update: {
+          user_id?: string;
+          crm_type?: string | null;
+          crm_access_token?: string | null;
+          crm_refresh_token?: string | null;
+          crm_token_expires_at?: string | null;
+          crm_instance_url?: string | null;
+          crm_org_id?: string | null;
+          crm_user_id?: string | null;
+          crm_connection_type?: string | null;
+          salesforce_access_token?: string | null;
+          salesforce_refresh_token?: string | null;
+          salesforce_token_expires_at?: string | null;
+          salesforce_instance_url?: string | null;
+          salesforce_org_id?: string | null;
+          salesforce_user_id?: string | null;
+          salesforce_connection_type?: string | null;
+          salesforce_field_mapping?: Json | null;
+        };
+      };
     };
   };
 }
