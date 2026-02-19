@@ -79,6 +79,7 @@ export async function GET(
     // Speichere state und code_verifier in Cookies
     const cookieStore = await cookies();
     const isProduction = process.env.NODE_ENV === "production";
+    // Fixed: removed as const assertion to fix TypeScript error
     const sameSiteValue: "none" | "lax" = isProduction ? "none" : "lax";
     const cookieOptions = {
       httpOnly: true,
