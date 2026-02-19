@@ -25,6 +25,15 @@ export default async function DashboardPage() {
     .eq("user_id", user.id)
     .order("start_date", { ascending: false });
 
+  // Type assertion für events query
+  const eventsTyped = (events || []) as Array<{
+    id: string;
+    name: string;
+    start_date: string | null;
+    end_date: string | null;
+    estimated_costs: number | null;
+  }>;
+
   // Lade alle Leads für alle Events (wird clientseitig gefiltert)
   const { data: allLeads = [] } = await supabase
     .from("leads")
@@ -59,7 +68,7 @@ export default async function DashboardPage() {
       )}
       {!hasVerifiedPhone && <PhoneVerificationBanner />}
       <DashboardContent
-        events={events}
+        events={eventsTyped}
         allLeads={allLeads as LeadRow[]}
       />
     </>
