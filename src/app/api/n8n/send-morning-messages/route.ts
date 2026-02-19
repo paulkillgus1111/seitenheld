@@ -144,7 +144,8 @@ export async function GET(request: Request) {
         continue; // Überspringe nicht verifizierte Telefonnummern
       }
 
-      const userName = profile?.full_name || profile?.email || "Nutzer";
+      const profileTyped = profile as { full_name: string | null; email: string | null } | null;
+      const userName = profileTyped?.full_name || profileTyped?.email || "Nutzer";
       const eventName = event.name;
 
       try {

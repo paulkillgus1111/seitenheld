@@ -57,7 +57,15 @@ export async function POST(request: Request) {
       );
     }
 
-    if (phoneNumber.verified) {
+    const phoneNumberTyped = phoneNumber as {
+      id: string;
+      verification_code: string | null;
+      verification_code_expires_at: string | null;
+      verification_attempts: number;
+      verified: boolean;
+    };
+
+    if (phoneNumberTyped.verified) {
       return NextResponse.json(
         { error: "Phone number already verified" },
         { status: 400 }
@@ -66,8 +74,8 @@ export async function POST(request: Request) {
 
     // Prüfe ob Code abgelaufen
     if (
-      !phoneNumber.verification_code ||
-      !phoneNumber.verification_code_expires_at
+      !phoneNumberTyped.verification_code ||
+      !phoneNumberTyped.verification_code_expires_at
     ) {
       return NextResponse.json(
         {
@@ -78,7 +86,7 @@ export async function POST(request: Request) {
       );
     }
 
-    const expiresAt = new Date(phoneNumber.verification_code_expires_at);
+    const expiresAt = new Date(phoneNumberTyped.verification_code_expires_at);
     if (expiresAt < new Date()) {
       return NextResponse.json(
         {
@@ -90,14 +98,14 @@ export async function POST(request: Request) {
     }
 
     // Prüfe Code
-    if (phoneNumber.verification_code !== validated.data.code) {
+    if (phoneNumberTyped.verification_code !== validated.data.code) {
       // Erhöhe Versuche
-      await supabase
-        .from("phone_numbers")
+      await ((supabase
+        .from("phone_numbers") as any)
         .update({
-          verification_attempts: (phoneNumber.verification_attempts || 0) + 1,
+          verification_attempts: (phoneNumberTyped.verification_attempts || 0) + 1,
         })
-        .eq("id", validated.data.phone_number_id);
+        .eq("id", validated.data.phone_number_id));
 
       return NextResponse.json(
         { error: "Invalid verification code" },
@@ -106,15 +114,15 @@ export async function POST(request: Request) {
     }
 
     // Code ist korrekt - verifiziere Telefonnummer
-    const { error: verifyError } = await supabase
-      .from("phone_numbers")
+    const { error: verifyError } = await ((supabase
+      .from("phone_numbers") as any)
       .update({
         verified: true,
         verification_code: null, // Lösche Code nach Verifizierung
         verification_code_expires_at: null,
         verification_attempts: 0,
       })
-      .eq("id", validated.data.phone_number_id);
+      .eq("id", validated.data.phone_number_id));
 
     if (verifyError) {
       return NextResponse.json(
@@ -131,21 +139,25 @@ export async function POST(request: Request) {
         .eq("id", validated.data.phone_number_id)
         .single();
 
+      const phoneNumberDataTyped = phoneNumberData as { phone_number: string } | null;
+
       const { data: profile } = await supabase
         .from("profiles")
         .select("full_name")
         .eq("id", user.id)
         .maybeSingle();
 
-      if (phoneNumberData?.phone_number) {
-        const userName = profile?.full_name || user.email || "Nutzer";
+      const profileTyped = profile as { full_name: string | null } | null;
+
+      if (phoneNumberDataTyped?.phone_number) {
+        const userName = profileTyped?.full_name || user.email || "Nutzer";
 
         // Sende Welcome-Nachricht (nicht-blockierend)
         fetch("/api/n8n/send-welcome-message", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
-            phone_number: phoneNumberData.phone_number,
+            phone_number: phoneNumberDataTyped.phone_number,
             user_name: userName,
           }),
         }).catch((error) => {
