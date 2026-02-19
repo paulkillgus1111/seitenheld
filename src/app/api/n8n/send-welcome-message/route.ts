@@ -40,7 +40,12 @@ export async function POST(request: Request) {
       .eq("user_id", user.id)
       .maybeSingle();
 
-    if (!phoneNumber || !phoneNumber.verified) {
+    const phoneNumberTyped = phoneNumber as {
+      id: string;
+      verified: boolean;
+    } | null;
+
+    if (!phoneNumberTyped || !phoneNumberTyped.verified) {
       return NextResponse.json(
         { error: "Phone number not found or not verified" },
         { status: 404 }
