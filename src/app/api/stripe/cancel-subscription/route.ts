@@ -49,12 +49,12 @@ export async function POST(request: Request) {
     );
 
     // Aktualisiere den Status in der Datenbank
-    await supabase
-      .from("profiles")
+    await ((supabase
+      .from("profiles") as any)
       .update({
         subscription_cancel_at_period_end: true,
       })
-      .eq("id", user.id);
+      .eq("id", user.id));
 
     return NextResponse.json({
       success: true,
