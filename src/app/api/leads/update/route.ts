@@ -73,10 +73,10 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: "Lead not found" }, { status: 404 });
     }
 
-    const { error } = await supabase
-      .from("leads")
-      .update(updateData as any)
-      .eq("id", id);
+    const { error } = await ((supabase
+      .from("leads") as any)
+      .update(updateData)
+      .eq("id", id));
 
     if (error) {
       return NextResponse.json(
