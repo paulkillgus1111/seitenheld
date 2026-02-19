@@ -89,28 +89,44 @@ export default async function CrmPage({
     .eq("user_id", user.id)
     .maybeSingle();
 
+  // Type assertion für integration query
+  const integrationTyped = integration as {
+    crm_type: string | null;
+    crm_access_token: string | null;
+    crm_instance_url: string | null;
+    crm_connection_type: string | null;
+    salesforce_access_token: string | null;
+    salesforce_instance_url: string | null;
+    salesforce_connection_type: string | null;
+    salesforce_field_mapping: {
+      summary?: boolean;
+      email?: boolean;
+      phone?: boolean;
+    } | null;
+  } | null;
+
   // Erstelle Integrations-Objekt für alle CRMs
   // Unterstütze sowohl neue generische Felder als auch Legacy Salesforce-Felder
-  const salesforceIntegration = integration
+  const salesforceIntegration = integrationTyped
     ? {
-        crm_type: (integration.crm_type || "salesforce") as CRMType,
+        crm_type: (integrationTyped.crm_type || "salesforce") as CRMType,
         crm_access_token:
-          integration.crm_access_token || integration.salesforce_access_token,
+          integrationTyped.crm_access_token || integrationTyped.salesforce_access_token,
         crm_instance_url:
-          integration.crm_instance_url || integration.salesforce_instance_url,
+          integrationTyped.crm_instance_url || integrationTyped.salesforce_instance_url,
         crm_connection_type:
-          integration.crm_connection_type ||
-          integration.salesforce_connection_type,
-        salesforce_field_mapping: integration.salesforce_field_mapping,
+          integrationTyped.crm_connection_type ||
+          integrationTyped.salesforce_connection_type,
+        salesforce_field_mapping: integrationTyped.salesforce_field_mapping,
       }
     : null;
 
   const integrations: Record<CRMType, any> = {
     salesforce: salesforceIntegration,
-    pipedrive: integration?.crm_type === "pipedrive" ? integration : null,
-    hubspot: integration?.crm_type === "hubspot" ? integration : null,
-    zoho: integration?.crm_type === "zoho" ? integration : null,
-    dynamics365: integration?.crm_type === "dynamics365" ? integration : null,
+    pipedrive: integrationTyped?.crm_type === "pipedrive" ? integrationTyped : null,
+    hubspot: integrationTyped?.crm_type === "hubspot" ? integrationTyped : null,
+    zoho: integrationTyped?.crm_type === "zoho" ? integrationTyped : null,
+    dynamics365: integrationTyped?.crm_type === "dynamics365" ? integrationTyped : null,
   };
 
   // URL Parameter für Status-Messages
