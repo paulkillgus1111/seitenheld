@@ -196,19 +196,19 @@ export async function POST(request: Request) {
           // Hole quantity aus Subscription
           const quantity = subscription.items.data[0]?.quantity || 1;
 
-          await supabase
-            .from("profiles")
+          await ((supabase
+            .from("profiles") as any)
             .update({
               stripe_subscription_id: subscription.id,
               subscription_status: subscription.status,
               subscription_current_period_end: new Date(
-                subscription.current_period_end * 1000
+                (subscription as any).current_period_end * 1000
               ).toISOString(),
               subscription_cancel_at_period_end:
-                subscription.cancel_at_period_end || false,
+                (subscription as any).cancel_at_period_end || false,
               seat_count: quantity,
             })
-            .eq("id", profile.id);
+            .eq("id", profile.id));
         }
         break;
       }
@@ -238,18 +238,18 @@ export async function POST(request: Request) {
             // Stripe wird die Änderung trotzdem durchführen, aber wir warnen
           }
 
-          await supabase
-            .from("profiles")
+          await ((supabase
+            .from("profiles") as any)
             .update({
               subscription_status: subscription.status,
               subscription_current_period_end: new Date(
-                subscription.current_period_end * 1000
+                (subscription as any).current_period_end * 1000
               ).toISOString(),
               subscription_cancel_at_period_end:
-                subscription.cancel_at_period_end || false,
+                (subscription as any).cancel_at_period_end || false,
               seat_count: quantity,
             })
-            .eq("id", profile.id);
+            .eq("id", profile.id));
         }
         break;
       }
