@@ -42,7 +42,25 @@ const eventSchema = z.object({
   timezone: z.string().default("Europe/Berlin"),
 });
 
-type EventValues = z.infer<typeof eventSchema>;
+// Type für Form-Input (vor Transform)
+type EventFormInput = {
+  name: string;
+  startDate?: string;
+  endDate?: string;
+  budget?: string;
+  phone_number_id: string;
+  timezone: string;
+};
+
+// Type für Form-Output (nach Transform)
+type EventValues = {
+  name: string;
+  startDate?: string;
+  endDate?: string;
+  budget: number | null;
+  phone_number_id: string;
+  timezone: string;
+};
 
 type PhoneNumber = {
   id: string;
