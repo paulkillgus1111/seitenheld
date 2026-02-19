@@ -79,10 +79,11 @@ export async function GET(
     // Speichere state und code_verifier in Cookies
     const cookieStore = await cookies();
     const isProduction = process.env.NODE_ENV === "production";
+    const sameSiteValue: "none" | "lax" = isProduction ? "none" : "lax";
     const cookieOptions = {
       httpOnly: true,
       secure: isProduction,
-      sameSite: (isProduction ? "none" : "lax") as const,
+      sameSite: sameSiteValue,
       maxAge: 600,
       path: "/",
     };
