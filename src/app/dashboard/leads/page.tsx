@@ -32,6 +32,9 @@ export default async function LeadsPage({ searchParams }: LeadsPageProps) {
     .eq("user_id", user.id)
     .order("start_date", { ascending: false });
 
+  // Type assertion für events query
+  const eventsTyped = (events || []) as { id: string; name: string }[];
+
   const { data: leads = [] } = await supabase
     .from("leads")
     .select(
@@ -60,7 +63,7 @@ export default async function LeadsPage({ searchParams }: LeadsPageProps) {
       </header>
 
       <div className="space-y-6">
-        <AddLeadForm events={events} />
+        <AddLeadForm events={eventsTyped} />
 
         <Card className="border border-border/70 shadow-sm overflow-hidden">
           <CardHeader>
@@ -76,7 +79,7 @@ export default async function LeadsPage({ searchParams }: LeadsPageProps) {
             <div className="px-4 sm:px-0 pb-4 sm:pb-0">
               <LeadsDataTable
                 leads={(leads || []) as LeadRow[]}
-                events={events}
+                events={eventsTyped}
                 initialEventId={eventIdParam}
               />
             </div>
