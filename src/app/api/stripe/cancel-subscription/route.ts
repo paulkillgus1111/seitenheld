@@ -65,8 +65,8 @@ export async function POST(request: Request) {
       message: "Subscription will be cancelled at the end of the billing period",
       cancel_at: subscriptionTyped.cancel_at
         ? new Date(subscriptionTyped.cancel_at * 1000).toISOString()
-        : subscriptionTyped.current_period_end
-        ? new Date(subscriptionTyped.current_period_end * 1000).toISOString()
+        : (subscriptionTyped as any).current_period_end
+        ? new Date((subscriptionTyped as any).current_period_end * 1000).toISOString()
         : null,
     });
   } catch (error) {
