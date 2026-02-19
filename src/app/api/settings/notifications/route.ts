@@ -15,12 +15,14 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
-    await supabase.from("user_settings").upsert({
-      user_id: session.user.id,
-      email_on_lead: email_on_lead ?? false,
-      weekly_summary: weekly_summary ?? false,
-      crm_sync_reports: crm_sync_reports ?? false,
-    } as any);
+    await ((supabase
+      .from("user_settings") as any)
+      .upsert({
+        user_id: session.user.id,
+        email_on_lead: email_on_lead ?? false,
+        weekly_summary: weekly_summary ?? false,
+        crm_sync_reports: crm_sync_reports ?? false,
+      }));
 
     return NextResponse.json({ success: true });
   } catch {

@@ -15,14 +15,14 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
-    await supabase
-      .from("profiles")
+    await ((supabase
+      .from("profiles") as any)
       .upsert({
         id: session.user.id,
         full_name: full_name ?? null,
         phone_number: phone_number ?? null,
         email: session.user.email ?? null,
-      } as any);
+      }));
 
     return NextResponse.json({ success: true });
   } catch {
