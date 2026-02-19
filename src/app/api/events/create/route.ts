@@ -90,8 +90,8 @@ export async function POST(request: Request) {
       );
     }
 
-    const { data: newEvent, error: insertError } = await supabase
-      .from("events")
+    const { data: newEvent, error: insertError } = await ((supabase
+      .from("events") as any)
       .insert({
         user_id: user.id,
         name: validated.data.name,
@@ -101,9 +101,9 @@ export async function POST(request: Request) {
         phone_number_id: validated.data.phone_number_id,
         timezone: validated.data.timezone || "Europe/Berlin",
         morning_message_sent: false,
-      } as any)
+      })
       .select()
-      .single();
+      .single());
 
     if (insertError) {
       // Prüfe ob es ein LTD-Limit-Fehler ist

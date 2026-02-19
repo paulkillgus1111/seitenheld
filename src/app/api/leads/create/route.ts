@@ -129,14 +129,14 @@ export async function POST(request: Request) {
       );
     }
 
-    const { data: newLead, error } = await supabase
-      .from("leads")
+    const { data: newLead, error } = await ((supabase
+      .from("leads") as any)
       .insert({
         event_id,
         ...leadData,
-      } as any)
+      })
       .select()
-      .single();
+      .single());
 
     if (error) {
       return NextResponse.json(
