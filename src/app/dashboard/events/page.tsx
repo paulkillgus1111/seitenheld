@@ -27,6 +27,15 @@ export default async function EventsPage() {
     .eq("user_id", user.id)
     .order("start_date", { ascending: false });
 
+  // Type assertion für events query
+  const eventsTyped = (events || []) as Array<{
+    id: string;
+    name: string;
+    start_date: string | null;
+    end_date: string | null;
+    estimated_costs: number | null;
+  }>;
+
   return (
     <>
       <header className="flex flex-col gap-2">
@@ -52,7 +61,7 @@ export default async function EventsPage() {
             </CardDescription>
           </CardHeader>
           <CardContent>
-            <EventList events={events} />
+            <EventList events={eventsTyped} />
           </CardContent>
         </Card>
 
