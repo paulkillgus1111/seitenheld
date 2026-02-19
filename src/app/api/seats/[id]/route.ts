@@ -122,12 +122,12 @@ export async function PUT(
       updateData.is_active = validated.data.is_active;
     }
 
-    const { data: updatedSeat, error } = await supabase
-      .from("phone_numbers")
+    const { data: updatedSeat, error } = await ((supabase
+      .from("phone_numbers") as any)
       .update(updateData)
       .eq("id", id)
       .select()
-      .single();
+      .single());
 
     if (error) {
       return NextResponse.json(
@@ -189,10 +189,10 @@ export async function DELETE(
 
     if (seatTyped.assigned_to_event_id) {
       // Optional: Setze is_active auf false statt zu löschen
-      const { error } = await supabase
-        .from("phone_numbers")
+      const { error } = await ((supabase
+        .from("phone_numbers") as any)
         .update({ is_active: false })
-        .eq("id", id);
+        .eq("id", id));
 
       if (error) {
         return NextResponse.json(
