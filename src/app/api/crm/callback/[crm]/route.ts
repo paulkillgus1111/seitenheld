@@ -190,7 +190,7 @@ export async function GET(
           salesforce_org_id: userInfo.organization_id,
           salesforce_user_id: userInfo.user_id,
           salesforce_connection_type: "oauth2",
-        },
+        } as any,
         {
           onConflict: "user_id",
         }
