@@ -57,7 +57,7 @@ export async function GET(request: Request) {
     const cookieOptions = {
       httpOnly: true,
       secure: isProduction, // In Development: false (HTTP), Production: true (HTTPS)
-      sameSite: (isProduction ? "none" : "lax") as const, // Production: none für Cross-Site, Development: lax
+      sameSite: (isProduction ? "none" : "lax") as "none" | "lax", // Production: none für Cross-Site, Development: lax
       maxAge: 600, // 10 Minuten
       path: "/",
     };
