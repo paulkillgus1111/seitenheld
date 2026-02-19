@@ -46,8 +46,10 @@ export async function POST(request: Request) {
   const supabase = await createSupabaseServerClient();
 
   // Replay-Attack-Prävention: Prüfe ob Event bereits verarbeitet wurde
-  const { data: isProcessed, error: checkError } = await supabase
-    .rpc("is_webhook_event_processed", { p_event_id: event.id });
+  const { data: isProcessed, error: checkError } = await (supabase.rpc as any)(
+    "is_webhook_event_processed",
+    { p_event_id: event.id }
+  );
 
   if (checkError) {
     console.error("Error checking webhook event:", checkError);
@@ -58,10 +60,13 @@ export async function POST(request: Request) {
   }
 
   // Markiere Event als verarbeitet (idempotent)
-  const { error: markError } = await supabase.rpc("mark_webhook_event_processed", {
-    p_event_id: event.id,
-    p_event_type: event.type,
-  });
+  const { error: markError } = await (supabase.rpc as any)(
+    "mark_webhook_event_processed",
+    {
+      p_event_id: event.id,
+      p_event_type: event.type,
+    }
+  );
 
   if (markError) {
     console.error("Error marking webhook event as processed:", markError);
