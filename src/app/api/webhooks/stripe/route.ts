@@ -154,11 +154,12 @@ export async function POST(request: Request) {
           const subscription = await stripe.subscriptions.retrieve(
             subscriptionId
           );
+          const subscriptionTyped = subscription as Stripe.Subscription;
           updateData.subscription_current_period_end =
-            new Date(subscription.current_period_end * 1000).toISOString();
+            new Date((subscriptionTyped as any).current_period_end * 1000).toISOString();
           
           // Setze seat_count basierend auf Subscription quantity
-          const subscriptionQuantity = subscription.items.data[0]?.quantity || seatCount;
+          const subscriptionQuantity = subscriptionTyped.items.data[0]?.quantity || seatCount;
           updateData.seat_count = subscriptionQuantity;
         } else {
           // One-time Payment: Setze Status auf 'active' ohne Subscription
@@ -293,15 +294,15 @@ export async function POST(request: Request) {
             const subscription = await stripe.subscriptions.retrieve(
               subscriptionId
             );
-            await supabase
-              .from("profiles")
+            await ((supabase
+              .from("profiles") as any)
               .update({
                 subscription_current_period_end: new Date(
-                  subscription.current_period_end * 1000
+                  (subscription as any).current_period_end * 1000
                 ).toISOString(),
                 subscription_status: subscription.status,
               })
-              .eq("id", profile.id);
+              .eq("id", profile.id));
           }
         }
         break;
