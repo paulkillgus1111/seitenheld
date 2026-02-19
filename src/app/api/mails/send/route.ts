@@ -142,6 +142,13 @@ export async function POST(request: Request) {
       );
     }
 
+    const templateTyped = template as {
+      id: string;
+      name: string;
+      subject: string;
+      template: string;
+    };
+
     // Lade Leads
     const { data: leads, error: leadsError } = await supabase
       .from("leads")
@@ -199,8 +206,8 @@ export async function POST(request: Request) {
           datum: new Date().toLocaleDateString("de-DE"),
         };
 
-        const subject = renderTemplate(template.subject, leadData);
-        const body = renderTemplate(template.template, leadData);
+        const subject = renderTemplate(templateTyped.subject, leadData);
+        const body = renderTemplate(templateTyped.template, leadData);
 
         return {
           leadId: lead.id,
@@ -220,15 +227,15 @@ export async function POST(request: Request) {
 
     // Sende an n8n
     const n8nPayload = {
-      templateId: template.id,
-      templateName: template.name,
+      templateId: templateTyped.id,
+      templateName: templateTyped.name,
       userId: session.user.id,
       emails,
     };
 
     console.log("Preparing to send to n8n:", {
-      templateId: template.id,
-      templateName: template.name,
+      templateId: templateTyped.id,
+      templateName: templateTyped.name,
       emailCount: emails.length,
       firstEmail: emails[0] ? {
         to: emails[0].to,
