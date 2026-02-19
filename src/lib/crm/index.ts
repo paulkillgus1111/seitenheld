@@ -11,6 +11,9 @@ import { hubspotProvider } from "./hubspot";
 import { zohoProvider } from "./zoho";
 import { dynamics365Provider } from "./dynamics365";
 
+// Re-export types for easier imports
+export type { CRMType, CRMProvider } from "./base";
+
 export const crmProviders: Record<CRMType, CRMProvider> = {
   salesforce: salesforceProvider,
   pipedrive: pipedriveProvider,
