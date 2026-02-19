@@ -28,6 +28,7 @@ export interface Database {
           trial_expires_at: string | null;
           seat_count: number | null;
           seats_used: number | null;
+          ltd_events_used: number | null;
         };
         Insert: {
           id: string;
@@ -47,6 +48,7 @@ export interface Database {
           trial_expires_at?: string | null;
           seat_count?: number | null;
           seats_used?: number | null;
+          ltd_events_used?: number | null;
         };
         Update: {
           id?: string;
@@ -66,6 +68,7 @@ export interface Database {
           trial_expires_at?: string | null;
           seat_count?: number | null;
           seats_used?: number | null;
+          ltd_events_used?: number | null;
         };
       };
       events: {
