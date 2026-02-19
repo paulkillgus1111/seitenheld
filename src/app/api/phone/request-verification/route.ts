@@ -25,7 +25,7 @@ export async function POST(request: Request) {
 
     // Rate Limiting: Maximal 3 Anfragen pro Stunde
     const rateLimitResult = await withRateLimit(request, {
-      config: { limit: 3, window: 3600 }, // 3 pro Stunde
+      config: { windowMs: 60 * 60 * 1000, maxRequests: 3 }, // 3 pro Stunde
       identifier: user.id,
     });
 
