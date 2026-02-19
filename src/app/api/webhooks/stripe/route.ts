@@ -168,10 +168,10 @@ export async function POST(request: Request) {
           updateData.seat_count = seatCount;
         }
 
-        await supabase
-          .from("profiles")
-          .update(updateData as any)
-          .eq("id", userId);
+        await ((supabase
+          .from("profiles") as any)
+          .update(updateData)
+          .eq("id", userId));
 
         console.log("Updated profile after checkout.session.completed", {
           userId,
