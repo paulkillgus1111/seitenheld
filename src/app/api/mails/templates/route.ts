@@ -83,17 +83,16 @@ export async function POST(request: Request) {
       );
     }
 
-    const { data: template, error } = await supabase
-      .from("mail_templates")
+    const { data: template, error } = await ((supabase
+      .from("mail_templates") as any)
       .insert({
         user_id: session.user.id,
         name: validated.data.name,
         subject: validated.data.subject,
         template: validated.data.template,
-        id: undefined, // Lass Supabase die ID generieren
       })
       .select()
-      .single();
+      .single());
 
     if (error) {
       return NextResponse.json(
@@ -148,8 +147,8 @@ export async function PUT(request: Request) {
       );
     }
 
-    const { data: template, error } = await supabase
-      .from("mail_templates")
+    const { data: template, error } = await ((supabase
+      .from("mail_templates") as any)
       .update({
         name: validated.data.name,
         subject: validated.data.subject,
@@ -158,7 +157,7 @@ export async function PUT(request: Request) {
       .eq("id", validated.data.id)
       .eq("user_id", session.user.id)
       .select()
-      .single();
+      .single());
 
     if (error) {
       return NextResponse.json(
