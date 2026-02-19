@@ -60,8 +60,17 @@ export async function POST(request: Request) {
       );
     }
 
+    const phoneNumberTyped = phoneNumber as {
+      id: string;
+      phone_number: string;
+      verified: boolean;
+      verification_code_expires_at: string | null;
+      verification_attempts: number;
+      last_verification_request_at: string | null;
+    };
+
     // Prüfe ob bereits verifiziert
-    if (phoneNumber.verified) {
+    if (phoneNumberTyped.verified) {
       return NextResponse.json(
         { error: "Phone number already verified" },
         { status: 400 }
@@ -70,14 +79,14 @@ export async function POST(request: Request) {
 
     // Prüfe Rate Limiting: Maximal 5 Versuche pro Stunde
     const oneHourAgo = new Date(Date.now() - 3600000);
-    const lastRequest = phoneNumber.last_verification_request_at
-      ? new Date(phoneNumber.last_verification_request_at)
+    const lastRequest = phoneNumberTyped.last_verification_request_at
+      ? new Date(phoneNumberTyped.last_verification_request_at)
       : null;
 
     if (
       lastRequest &&
       lastRequest > oneHourAgo &&
-      phoneNumber.verification_attempts >= 5
+      phoneNumberTyped.verification_attempts >= 5
     ) {
       const retryAfter = Math.ceil(
         (lastRequest.getTime() + 3600000 - Date.now()) / 1000
@@ -99,14 +108,14 @@ export async function POST(request: Request) {
     const expiresAt = new Date(Date.now() + 10 * 60 * 1000); // 10 Minuten
 
     // Speichere Code in Datenbank (NOCH OHNE verification_attempts Update)
-    const { error: updateError } = await supabase
-      .from("phone_numbers")
+    const { error: updateError } = await ((supabase
+      .from("phone_numbers") as any)
       .update({
         verification_code: verificationCode,
         verification_code_expires_at: expiresAt.toISOString(),
         // NICHT: last_verification_request_at und verification_attempts hier updaten
       })
-      .eq("id", validated.data.phone_number_id);
+      .eq("id", validated.data.phone_number_id));
 
     if (updateError) {
       return NextResponse.json(
@@ -129,7 +138,7 @@ export async function POST(request: Request) {
       // Sende an n8n Webhook für WhatsApp
       const n8nPayload = {
         type: "phone_verification",
-        phone_number: phoneNumber.phone_number,
+        phone_number: phoneNumberTyped.phone_number,
         verification_code: verificationCode,
         user_name: userName,
         expires_in_minutes: 10,
@@ -170,7 +179,7 @@ export async function POST(request: Request) {
         .from("phone_numbers")
         .update({
           last_verification_request_at: new Date().toISOString(),
-          verification_attempts: (phoneNumber.verification_attempts || 0) + 1,
+          verification_attempts: (phoneNumberTyped.verification_attempts || 0) + 1,
         })
         .eq("id", validated.data.phone_number_id);
 
