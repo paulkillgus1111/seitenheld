@@ -101,7 +101,7 @@ export async function POST(request: Request) {
         phone_number_id: validated.data.phone_number_id,
         timezone: validated.data.timezone || "Europe/Berlin",
         morning_message_sent: false,
-      })
+      } as any)
       .select()
       .single();
 
