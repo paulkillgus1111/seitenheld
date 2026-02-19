@@ -287,7 +287,7 @@ export async function POST(request: Request) {
       case "invoice.payment_succeeded": {
         const invoice = event.data.object as Stripe.Invoice;
         const customerId = invoice.customer as string;
-        const subscriptionId = invoice.subscription as string | null;
+        const subscriptionId = (invoice as any).subscription as string | null;
 
         if (subscriptionId) {
           const { data: profile } = await supabase
