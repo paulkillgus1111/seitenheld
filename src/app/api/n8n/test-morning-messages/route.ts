@@ -59,9 +59,26 @@ export async function GET(request: Request) {
     });
   }
 
+  const eventsTyped = events as Array<{
+    id: string;
+    name: string;
+    start_date: string | null;
+    timezone: string | null;
+    phone_numbers: Array<{ phone_number: string; verified: boolean }> | null;
+    profiles: { full_name: string | null; email: string | null } | null;
+  }> | null;
+
+  if (!eventsTyped) {
+    return NextResponse.json({
+      success: true,
+      message: "No events today or all messages already sent",
+      count: 0,
+    });
+  }
+
   // Sende WhatsApp-Nachrichten
   const results = [];
-  for (const event of events) {
+  for (const event of eventsTyped) {
     const phoneNumber = (event.phone_numbers as any)?.[0];
     const profile = (event.profiles as any)?.[0];
 
