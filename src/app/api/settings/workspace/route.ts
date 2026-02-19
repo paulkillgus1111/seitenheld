@@ -15,10 +15,10 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
-    await supabase
-      .from("profiles")
+    await ((supabase
+      .from("profiles") as any)
       .update({ workspace_name: workspace_name ?? null })
-      .eq("id", session.user.id);
+      .eq("id", session.user.id));
 
     return NextResponse.json({ success: true });
   } catch {
