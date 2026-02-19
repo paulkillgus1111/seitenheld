@@ -36,7 +36,13 @@ export async function POST(request: Request) {
       .eq("id", id)
       .maybeSingle();
 
-    if (!lead || (lead.events as { user_id: string }).user_id !== user.id) {
+    const leadTyped = lead as {
+      id: string;
+      event_id: string;
+      events: { user_id: string };
+    } | null;
+
+    if (!leadTyped || leadTyped.events.user_id !== user.id) {
       return NextResponse.json({ error: "Lead not found" }, { status: 404 });
     }
 
