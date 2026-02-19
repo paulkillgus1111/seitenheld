@@ -134,7 +134,7 @@ export async function POST(request: Request) {
       .insert({
         event_id,
         ...leadData,
-      })
+      } as any)
       .select()
       .single();
 
