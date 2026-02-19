@@ -95,11 +95,13 @@ export async function POST(request: Request) {
       .select("id")
       .eq("user_id", user.id);
 
+    const userEventsTyped = userEvents as { id: string }[] | null;
+
     let isFirstLead = false;
     let totalLeadCount = 0;
     
-    if (userEvents && userEvents.length > 0) {
-      const eventIds = userEvents.map((e) => e.id);
+    if (userEventsTyped && userEventsTyped.length > 0) {
+      const eventIds = userEventsTyped.map((e) => e.id);
       const { count: existingLeadCount } = await supabase
         .from("leads")
         .select("*", { count: "exact", head: true })
