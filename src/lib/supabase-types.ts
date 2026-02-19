@@ -252,6 +252,52 @@ export interface Database {
           salesforce_field_mapping?: Json | null;
         };
       };
+      sent_emails: {
+        Row: {
+          id: string;
+          user_id: string;
+          lead_id: string | null;
+          subject: string;
+          body: string;
+          sent_at: string | null;
+        };
+        Insert: {
+          id?: string;
+          user_id: string;
+          lead_id?: string | null;
+          subject: string;
+          body: string;
+          sent_at?: string | null;
+        };
+        Update: {
+          id?: string;
+          user_id?: string;
+          lead_id?: string | null;
+          subject?: string;
+          body?: string;
+          sent_at?: string | null;
+        };
+      };
+      user_settings: {
+        Row: {
+          user_id: string;
+          email_on_lead: boolean | null;
+          weekly_summary: boolean | null;
+          crm_sync_reports: boolean | null;
+        };
+        Insert: {
+          user_id: string;
+          email_on_lead?: boolean | null;
+          weekly_summary?: boolean | null;
+          crm_sync_reports?: boolean | null;
+        };
+        Update: {
+          user_id?: string;
+          email_on_lead?: boolean | null;
+          weekly_summary?: boolean | null;
+          crm_sync_reports?: boolean | null;
+        };
+      };
     };
   };
 }

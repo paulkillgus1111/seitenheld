@@ -20,7 +20,7 @@ export async function POST(request: Request) {
       email_on_lead: email_on_lead ?? false,
       weekly_summary: weekly_summary ?? false,
       crm_sync_reports: crm_sync_reports ?? false,
-    });
+    } as any);
 
     return NextResponse.json({ success: true });
   } catch {

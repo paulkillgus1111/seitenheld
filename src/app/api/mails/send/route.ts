@@ -257,7 +257,7 @@ export async function POST(request: Request) {
     const leadIdsToUpdate = emails.map((e) => e.leadId);
     await supabase
       .from("leads")
-      .update({ followup_mail_sent_at: new Date().toISOString() })
+      .update({ followup_mail_sent_at: new Date().toISOString() } as any)
       .in("id", leadIdsToUpdate);
 
     // Speichere in sent_emails Tabelle
@@ -268,7 +268,7 @@ export async function POST(request: Request) {
       body: email.body,
     }));
 
-    await supabase.from("sent_emails").insert(sentEmailsRecords);
+    await supabase.from("sent_emails").insert(sentEmailsRecords as any);
 
     // Berechne verbleibendes Limit nach dem Versenden
     const newTodayCount = (todaySentCount || 0) + emails.length;

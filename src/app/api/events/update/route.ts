@@ -87,15 +87,7 @@ export async function POST(request: Request) {
 
     const { error } = await supabase
       .from("events")
-      .update(updateData as {
-        name: string;
-        phone_number_id: string;
-        start_date?: string | null;
-        end_date?: string | null;
-        estimated_costs?: number | null;
-        timezone?: string | null;
-        morning_message_sent?: boolean | null;
-      })
+      .update(updateData as any)
       .eq("id", id)
       .eq("user_id", user.id);
 

@@ -164,7 +164,7 @@ export async function POST(request: Request) {
 
         await supabase
           .from("profiles")
-          .update(updateData)
+          .update(updateData as any)
           .eq("id", userId);
 
         console.log("Updated profile after checkout.session.completed", {

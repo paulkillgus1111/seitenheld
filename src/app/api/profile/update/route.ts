@@ -22,7 +22,7 @@ export async function POST(request: Request) {
         full_name: full_name ?? null,
         phone_number: phone_number ?? null,
         email: session.user.email ?? null,
-      });
+      } as any);
 
     return NextResponse.json({ success: true });
   } catch {

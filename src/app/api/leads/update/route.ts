@@ -69,7 +69,7 @@ export async function POST(request: Request) {
 
     const { error } = await supabase
       .from("leads")
-      .update(updateData)
+      .update(updateData as any)
       .eq("id", id);
 
     if (error) {
