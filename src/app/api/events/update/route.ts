@@ -85,13 +85,11 @@ export async function POST(request: Request) {
       }
     }
 
-    const query = supabase
-      .from("events")
-      .update(updateData as any)
+    const { error } = await ((supabase
+      .from("events") as any)
+      .update(updateData)
       .eq("id", id)
-      .eq("user_id", user.id);
-    
-    const { error } = await (query as any);
+      .eq("user_id", user.id));
 
     if (error) {
       return NextResponse.json(
