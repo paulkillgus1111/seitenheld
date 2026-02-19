@@ -78,13 +78,13 @@ export async function POST(request: Request) {
       ltd_events_used: number | null;
     } | null;
 
-    if (profileTyped?.plan_type === "ltd" && profileTyped.ltd_events_used >= 50) {
+    if (profileTyped?.plan_type === "ltd" && (profileTyped.ltd_events_used ?? 0) >= 50) {
       return NextResponse.json(
         {
           error: "Event-Limit erreicht",
           details: "Du hast das maximale Limit von 50 Events für LTD-User erreicht.",
           maxEvents: 50,
-          currentEvents: profileTyped.ltd_events_used,
+          currentEvents: profileTyped.ltd_events_used ?? 0,
         },
         { status: 403 }
       );
