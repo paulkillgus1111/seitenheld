@@ -32,12 +32,12 @@ async function saveFieldMapping(crm: CRMType, formData: FormData) {
   }
 
   // Aktualisiere nur das Field-Mapping (aktuell nur Salesforce)
-  await supabase
-    .from("integrations")
+  await ((supabase
+    .from("integrations") as any)
     .update({
       salesforce_field_mapping: mapping,
     })
-    .eq("user_id", user.id);
+    .eq("user_id", user.id));
 }
 
 async function testConnection(crm: CRMType) {
