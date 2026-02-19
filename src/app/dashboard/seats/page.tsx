@@ -34,8 +34,17 @@ export default async function SeatsPage() {
     .eq("user_id", user.id)
     .order("created_at", { ascending: false });
 
+  // Type assertion für seats query
+  const seatsRaw = (seats || []) as Array<{
+    id: string;
+    phone_number: string;
+    is_active: boolean;
+    verified: boolean | null;
+    created_at: string | null;
+  }>;
+
   // Sicherstellen dass verified nicht null ist
-  const safeSeats = (seats || []).map((seat) => ({
+  const safeSeats = seatsRaw.map((seat) => ({
     ...seat,
     verified: seat.verified ?? false,
   }));
