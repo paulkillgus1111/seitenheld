@@ -121,7 +121,7 @@ export function EventForm() {
     // Validiere und transformiere mit Zod
     const result = eventSchema.safeParse(values);
     if (!result.success) {
-      setError(result.error.errors[0]?.message || "Ungültige Eingabe");
+      setError(result.error.issues[0]?.message || "Ungültige Eingabe");
       return;
     }
     
