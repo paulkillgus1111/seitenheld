@@ -38,7 +38,17 @@ export async function GET() {
       );
     }
 
-    return NextResponse.json({ success: true, seats: seats || [] });
+    // Type assertion für komplexe Relation-Query
+    const seatsTyped = seats as Array<{
+      id: string;
+      phone_number: string;
+      assigned_to_event_id: string | null;
+      is_active: boolean;
+      created_at: string | null;
+      events: { id: string; name: string } | null;
+    }> | null;
+
+    return NextResponse.json({ success: true, seats: seatsTyped || [] });
   } catch (error) {
     console.error("Get seats error:", error);
     return NextResponse.json(
