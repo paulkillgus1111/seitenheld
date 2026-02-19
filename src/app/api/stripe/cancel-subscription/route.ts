@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { createSupabaseServerClient } from "@/lib/supabase-server";
 import { stripe } from "@/lib/stripe";
+import type Stripe from "stripe";
 
 export async function POST(request: Request) {
   try {
