@@ -36,9 +36,9 @@ export async function POST(request: Request) {
     const validated = eventCreatedSchema.safeParse(body);
 
     if (!validated.success) {
-      logger.error("❌ [API] Validation failed:", validated.error.errors);
+      logger.error("❌ [API] Validation failed:", validated.error.issues);
       return NextResponse.json(
-        { error: "Invalid request data", details: validated.error.errors },
+        { error: "Invalid request data", details: validated.error.issues },
         { status: 400 }
       );
     }
