@@ -163,18 +163,29 @@ export async function POST(request: Request) {
       );
     }
 
+    const leadsTyped = leads as {
+      id: string;
+      vorname: string | null;
+      nachname: string | null;
+      email: string | null;
+      firma: string | null;
+      telefon: string | null;
+      event_id: string;
+    }[];
+
     // Lade Events für Lead-Daten
-    const eventIds = [...new Set(leads.map((lead) => lead.event_id).filter(Boolean))];
+    const eventIds = [...new Set(leadsTyped.map((lead) => lead.event_id).filter(Boolean))];
     const { data: events } = await supabase
       .from("events")
       .select("id, name")
       .in("id", eventIds)
       .eq("user_id", session.user.id);
 
-    const eventMap = new Map(events?.map((e) => [e.id, e.name]) || []);
+    const eventsTyped = events as { id: string; name: string }[] | null;
+    const eventMap = new Map(eventsTyped?.map((e) => [e.id, e.name]) || []);
 
     // Rendere Templates für jeden Lead
-    const emails = leads
+    const emails = leadsTyped
       .filter((lead) => lead.email) // Nur Leads mit E-Mail
       .map((lead) => {
         const eventName = eventMap.get(lead.event_id || "") || "Unbekanntes Event";
