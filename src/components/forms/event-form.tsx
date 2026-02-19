@@ -25,10 +25,29 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 
-const eventSchema = z.object({
+// Schema für Form-Validierung (ohne Transform, da useForm den Input-Typ erwartet)
+const eventFormSchema = z.object({
   name: z.string().min(2, "Bitte einen Namen angeben.").max(200, "Name darf maximal 200 Zeichen lang sein."),
   startDate: z.string().max(50).optional(),
   endDate: z.string().max(50).optional(),
+  budget: z
+    .string()
+    .max(20)
+    .optional()
+    .refine(
+      (value) => {
+        if (!value || value === "") return true;
+        const num = Number(value.replace(",", "."));
+        return !Number.isNaN(num) && num >= 0;
+      },
+      "Budget muss eine Zahl ≥ 0 sein."
+    ),
+  phone_number_id: z.string().uuid("Bitte wähle eine Telefonnummer aus."),
+  timezone: z.string().default("Europe/Berlin"),
+});
+
+// Schema für API-Request (mit Transform)
+const eventApiSchema = eventFormSchema.extend({
   budget: z
     .string()
     .max(20)
@@ -38,15 +57,10 @@ const eventSchema = z.object({
       (value) => value === null || (!Number.isNaN(value) && value >= 0),
       "Budget muss eine Zahl ≥ 0 sein."
     ),
-  phone_number_id: z.string().uuid("Bitte wähle eine Telefonnummer aus."),
-  timezone: z.string().default("Europe/Berlin"),
 });
 
-// Type für Form-Input (vor Transform) - muss mit Zod Schema übereinstimmen
-type EventFormInput = z.input<typeof eventSchema>;
-
-// Type für Form-Output (nach Transform)
-type EventValues = z.output<typeof eventSchema>;
+type EventFormInput = z.infer<typeof eventFormSchema>;
+type EventValues = z.infer<typeof eventApiSchema>;
 
 type PhoneNumber = {
   id: string;
@@ -64,7 +78,7 @@ export function EventForm() {
   const [isMounted, setIsMounted] = useState(false);
 
   const form = useForm<EventFormInput>({
-    resolver: zodResolver(eventSchema),
+    resolver: zodResolver(eventFormSchema),
     defaultValues: {
       name: "",
       startDate: "",
@@ -105,7 +119,7 @@ export function EventForm() {
     setError(null);
     
     // Validiere und transformiere mit Zod
-    const result = eventSchema.safeParse(values);
+    const result = eventApiSchema.safeParse(values);
     if (!result.success) {
       setError(result.error.issues[0]?.message || "Ungültige Eingabe");
       return;
