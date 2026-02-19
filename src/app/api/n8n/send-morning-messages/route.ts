@@ -68,9 +68,26 @@ export async function GET(request: Request) {
     }
 
     // Prüfe für jedes Event, ob es heute startet und 6 Uhr in dessen Zeitzone ist
-    const eventsToSend = [];
+    const eventsTyped = events as Array<{
+      id: string;
+      name: string;
+      start_date: string | null;
+      timezone: string | null;
+      phone_numbers: Array<{ phone_number: string; verified: boolean }> | null;
+      profiles: { full_name: string | null; email: string | null } | null;
+    }> | null;
     
-    for (const event of events) {
+    const eventsToSend: typeof eventsTyped = [];
+    
+    if (!eventsTyped) {
+      return NextResponse.json({
+        success: true,
+        message: "No events to process",
+        count: 0,
+      });
+    }
+    
+    for (const event of eventsTyped) {
       const eventTimezone = event.timezone || "Europe/Berlin"; // Fallback
       const eventStartDate = event.start_date;
       
