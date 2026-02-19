@@ -163,8 +163,8 @@ export async function GET(request: Request) {
       ).toISOString();
 
       // Speichere Tokens in DB
-      const { error: upsertError } = await (supabase
-        .from("integrations")
+      const { error: upsertError } = await ((supabase
+        .from("integrations") as any)
         .upsert(
           {
             user_id: user.id,
@@ -180,7 +180,7 @@ export async function GET(request: Request) {
           {
             onConflict: "user_id",
           }
-        ) as any); // Type assertion for integrations table
+        )); // Type assertion for integrations table
 
       if (upsertError) {
         console.error("Failed to save Salesforce tokens:", upsertError);
