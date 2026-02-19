@@ -133,7 +133,8 @@ export async function POST(request: Request) {
         .eq("id", user.id)
         .maybeSingle();
 
-      const userName = profile?.full_name || user.email || "Nutzer";
+      const profileTyped = profile as { full_name: string | null } | null;
+      const userName = profileTyped?.full_name || user.email || "Nutzer";
 
       // Sende an n8n Webhook für WhatsApp
       const n8nPayload = {
