@@ -192,7 +192,9 @@ export async function POST(request: Request) {
           .eq("stripe_customer_id", customerId)
           .maybeSingle();
 
-        if (profile) {
+        const profileTyped = profile as { id: string } | null;
+
+        if (profileTyped) {
           // Hole quantity aus Subscription
           const quantity = subscription.items.data[0]?.quantity || 1;
 
@@ -208,7 +210,7 @@ export async function POST(request: Request) {
                 (subscription as any).cancel_at_period_end || false,
               seat_count: quantity,
             })
-            .eq("id", profile.id));
+            .eq("id", profileTyped.id));
         }
         break;
       }
@@ -223,16 +225,18 @@ export async function POST(request: Request) {
           .eq("stripe_customer_id", customerId)
           .maybeSingle();
 
-        if (profile) {
+        const profileTyped = profile as { id: string; seats_used: number | null } | null;
+
+        if (profileTyped) {
           // Hole quantity aus Subscription
           const quantity = subscription.items.data[0]?.quantity || 1;
-          const currentSeatsUsed = (profile as { seats_used: number | null }).seats_used || 0;
+          const currentSeatsUsed = profileTyped.seats_used || 0;
 
           // Validierung: Wenn quantity reduziert wird, prüfe ob genug Seats frei sind
           if (quantity < currentSeatsUsed) {
             console.warn(
               `Cannot reduce seat_count to ${quantity} because ${currentSeatsUsed} seats are in use`,
-              { userId: profile.id, quantity, currentSeatsUsed }
+              { userId: profileTyped.id, quantity, currentSeatsUsed }
             );
             // In diesem Fall behalten wir den alten seat_count
             // Stripe wird die Änderung trotzdem durchführen, aber wir warnen
@@ -249,7 +253,7 @@ export async function POST(request: Request) {
                 (subscription as any).cancel_at_period_end || false,
               seat_count: quantity,
             })
-            .eq("id", profile.id));
+            .eq("id", profileTyped.id));
         }
         break;
       }
@@ -264,16 +268,18 @@ export async function POST(request: Request) {
           .eq("stripe_customer_id", customerId)
           .maybeSingle();
 
-        if (profile) {
-          await supabase
-            .from("profiles")
+        const profileTyped = profile as { id: string } | null;
+
+        if (profileTyped) {
+          await ((supabase
+            .from("profiles") as any)
             .update({
               subscription_status: "canceled",
               stripe_subscription_id: null,
               subscription_current_period_end: null,
               subscription_cancel_at_period_end: false,
             })
-            .eq("id", profile.id);
+            .eq("id", profileTyped.id));
         }
         break;
       }
@@ -290,7 +296,9 @@ export async function POST(request: Request) {
             .eq("stripe_customer_id", customerId)
             .maybeSingle();
 
-          if (profile) {
+          const profileTyped = profile as { id: string } | null;
+
+          if (profileTyped) {
             const subscription = await stripe.subscriptions.retrieve(
               subscriptionId
             );
@@ -302,7 +310,7 @@ export async function POST(request: Request) {
                 ).toISOString(),
                 subscription_status: subscription.status,
               })
-              .eq("id", profile.id));
+              .eq("id", profileTyped.id));
           }
         }
         break;
@@ -318,13 +326,15 @@ export async function POST(request: Request) {
           .eq("stripe_customer_id", customerId)
           .maybeSingle();
 
-        if (profile) {
-          await supabase
-            .from("profiles")
+        const profileTyped = profile as { id: string } | null;
+
+        if (profileTyped) {
+          await ((supabase
+            .from("profiles") as any)
             .update({
               subscription_status: "past_due",
             })
-            .eq("id", profile.id);
+            .eq("id", profileTyped.id));
         }
         break;
       }
