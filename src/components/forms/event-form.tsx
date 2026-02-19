@@ -115,8 +115,18 @@ export function EventForm() {
     loadPhoneNumbers();
   }, []);
 
-  const onSubmit = (values: EventValues) => {
+  const onSubmit = async (values: EventFormInput) => {
     setError(null);
+    
+    // Validiere und transformiere mit Zod
+    const result = eventSchema.safeParse(values);
+    if (!result.success) {
+      setError(result.error.errors[0]?.message || "Ungültige Eingabe");
+      return;
+    }
+    
+    const transformedValues = result.data;
+    
     startTransition(async () => {
       const {
         data: { user },
@@ -128,7 +138,7 @@ export function EventForm() {
         return;
       }
 
-      if (!values.phone_number_id) {
+      if (!transformedValues.phone_number_id) {
         setError("Bitte wähle eine Telefonnummer aus.");
         return;
       }
@@ -138,15 +148,15 @@ export function EventForm() {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          name: values.name,
-          start_date: values.startDate || null,
-          end_date: values.endDate || null,
+          name: transformedValues.name,
+          start_date: transformedValues.startDate || null,
+          end_date: transformedValues.endDate || null,
           estimated_costs:
-            values.budget === null || values.budget === undefined
+            transformedValues.budget === null || transformedValues.budget === undefined
               ? null
-              : values.budget,
-          phone_number_id: values.phone_number_id,
-          timezone: values.timezone || "Europe/Berlin",
+              : transformedValues.budget,
+          phone_number_id: transformedValues.phone_number_id,
+          timezone: transformedValues.timezone || "Europe/Berlin",
         }),
       });
 
