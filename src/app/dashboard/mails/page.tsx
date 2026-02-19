@@ -22,21 +22,23 @@ export default async function MailsPage() {
     .order("created_at", { ascending: false });
 
   // Type assertions für alle Queries
-  const templatesTyped = (templates || []).map((t) => ({
+  const templatesRaw = (templates || []) as Array<{
+    id: string;
+    name: string;
+    subject: string;
+    template: string;
+    created_at: string | null;
+    updated_at: string | null;
+  }>;
+
+  const templatesTyped = templatesRaw.map((t) => ({
     id: t.id,
     name: t.name,
     subject: t.subject,
     template: t.template,
     created_at: t.created_at || "",
     updated_at: t.updated_at || "",
-  })) as Array<{
-    id: string;
-    name: string;
-    subject: string;
-    template: string;
-    created_at: string;
-    updated_at: string;
-  }>;
+  }));
 
   const { data: leads = [] } = await supabase
     .from("leads")
