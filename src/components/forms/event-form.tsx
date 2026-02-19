@@ -77,7 +77,7 @@ export function EventForm() {
   const [isLoadingPhoneNumbers, setIsLoadingPhoneNumbers] = useState(true);
   const [isMounted, setIsMounted] = useState(false);
 
-  const form = useForm<EventValues>({
+  const form = useForm<EventFormInput>({
     resolver: zodResolver(eventSchema),
     defaultValues: {
       name: "",
