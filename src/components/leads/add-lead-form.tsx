@@ -85,7 +85,7 @@ export function AddLeadForm({ events }: AddLeadFormProps) {
           firma: "",
           telefon: "",
           zusammenfassung: "",
-          potential: "",
+          potential: null,
           jobtitel: "",
         });
         router.refresh();
