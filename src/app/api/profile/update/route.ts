@@ -8,20 +8,21 @@ export async function POST(request: Request) {
 
     const supabase = await createSupabaseServerClient();
     const {
-      data: { session },
-    } = await supabase.auth.getSession();
+      data: { user },
+      error: authError,
+    } = await supabase.auth.getUser();
 
-    if (!session?.user) {
+    if (authError || !user) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
     await ((supabase
       .from("profiles") as any)
       .upsert({
-        id: session.user.id,
+        id: user.id,
         full_name: full_name ?? null,
         phone_number: phone_number ?? null,
-        email: session.user.email ?? null,
+        email: user.email ?? null,
       }));
 
     return NextResponse.json({ success: true });

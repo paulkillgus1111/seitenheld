@@ -19,17 +19,18 @@ export async function GET() {
   try {
     const supabase = await createSupabaseServerClient();
     const {
-      data: { session },
-    } = await supabase.auth.getSession();
+      data: { user },
+      error: authError,
+    } = await supabase.auth.getUser();
 
-    if (!session?.user) {
+    if (authError || !user) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
     const { data: templates, error } = await supabase
       .from("mail_templates")
       .select("id, name, subject, template, created_at, updated_at")
-      .eq("user_id", session.user.id)
+      .eq("user_id", user.id)
       .order("created_at", { ascending: false });
 
     if (error) {
@@ -53,10 +54,11 @@ export async function POST(request: Request) {
   try {
     const supabase = await createSupabaseServerClient();
     const {
-      data: { session },
-    } = await supabase.auth.getSession();
+      data: { user },
+      error: authError,
+    } = await supabase.auth.getUser();
 
-    if (!session?.user) {
+    if (authError || !user) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
@@ -64,7 +66,7 @@ export async function POST(request: Request) {
     const { count } = await supabase
       .from("mail_templates")
       .select("*", { count: "exact", head: true })
-      .eq("user_id", session.user.id);
+      .eq("user_id", user.id);
 
     if (count && count >= MAX_TEMPLATES) {
       return NextResponse.json(
@@ -86,7 +88,7 @@ export async function POST(request: Request) {
     const { data: template, error } = await ((supabase
       .from("mail_templates") as any)
       .insert({
-        user_id: session.user.id,
+        user_id: user.id,
         name: validated.data.name,
         subject: validated.data.subject,
         template: validated.data.template,
@@ -115,10 +117,11 @@ export async function PUT(request: Request) {
   try {
     const supabase = await createSupabaseServerClient();
     const {
-      data: { session },
-    } = await supabase.auth.getSession();
+      data: { user },
+      error: authError,
+    } = await supabase.auth.getUser();
 
-    if (!session?.user) {
+    if (authError || !user) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
@@ -137,7 +140,7 @@ export async function PUT(request: Request) {
       .from("mail_templates")
       .select("id, user_id")
       .eq("id", validated.data.id)
-      .eq("user_id", session.user.id)
+      .eq("user_id", user.id)
       .single();
 
     if (!existing) {
@@ -155,7 +158,7 @@ export async function PUT(request: Request) {
         template: validated.data.template,
       })
       .eq("id", validated.data.id)
-      .eq("user_id", session.user.id)
+      .eq("user_id", user.id)
       .select()
       .single());
 
@@ -180,10 +183,11 @@ export async function DELETE(request: Request) {
   try {
     const supabase = await createSupabaseServerClient();
     const {
-      data: { session },
-    } = await supabase.auth.getSession();
+      data: { user },
+      error: authError,
+    } = await supabase.auth.getUser();
 
-    if (!session?.user) {
+    if (authError || !user) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
@@ -202,7 +206,7 @@ export async function DELETE(request: Request) {
       .from("mail_templates")
       .select("id, user_id")
       .eq("id", id)
-      .eq("user_id", session.user.id)
+      .eq("user_id", user.id)
       .single();
 
     if (!existing) {
@@ -216,7 +220,7 @@ export async function DELETE(request: Request) {
       .from("mail_templates")
       .delete()
       .eq("id", id)
-      .eq("user_id", session.user.id);
+      .eq("user_id", user.id);
 
     if (error) {
       return NextResponse.json(

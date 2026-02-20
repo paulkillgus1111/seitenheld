@@ -41,10 +41,11 @@ export async function POST(request: Request) {
   try {
     const supabase = await createSupabaseServerClient();
     const {
-      data: { session },
-    } = await supabase.auth.getSession();
+      data: { user },
+      error: authError,
+    } = await supabase.auth.getUser();
 
-    if (!session?.user) {
+    if (authError || !user) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
@@ -52,7 +53,7 @@ export async function POST(request: Request) {
     const { data: profile } = await supabase
       .from("profiles")
       .select("subscription_status")
-      .eq("id", session.user.id)
+      .eq("id", user.id)
       .maybeSingle();
 
     const profileTyped = profile as {
@@ -63,7 +64,7 @@ export async function POST(request: Request) {
       "none") as "active" | "past_due" | "canceled" | "trialing" | "incomplete" | "none";
 
     // Prüfe auch Trial-Status
-    const trialStatus = await getTrialStatus(session.user.id);
+    const trialStatus = await getTrialStatus(user.id);
 
     // Für E-Mail-Versand: Nur aktive Subscription oder aktiver Trial erlauben
     // "available" Trial reicht nicht - User muss erst einen Lead erstellen
@@ -83,7 +84,7 @@ export async function POST(request: Request) {
     // Rate Limiting: E-Mail-Missbrauch-Schutz
     const rateLimitResult = await withRateLimit(request, {
       config: rateLimitConfigs.emailSend,
-      identifier: session.user.id, // User-ID für user-basierte Limits
+      identifier: user.id, // User-ID für user-basierte Limits
     });
 
     if (!rateLimitResult.success) {
@@ -110,7 +111,7 @@ export async function POST(request: Request) {
     const { count: todaySentCount } = await supabase
       .from("sent_emails")
       .select("*", { count: "exact", head: true })
-      .eq("user_id", session.user.id)
+      .eq("user_id", user.id)
       .gte("sent_at", todayISO);
 
     const availableLimit = DAILY_LEAD_LIMIT - (todaySentCount || 0);
@@ -132,7 +133,7 @@ export async function POST(request: Request) {
       .from("mail_templates")
       .select("id, name, subject, template")
       .eq("id", templateId)
-      .eq("user_id", session.user.id)
+      .eq("user_id", user.id)
       .single();
 
     if (templateError || !template) {
@@ -186,7 +187,7 @@ export async function POST(request: Request) {
       .from("events")
       .select("id, name")
       .in("id", eventIds)
-      .eq("user_id", session.user.id);
+      .eq("user_id", user.id);
 
     const eventsTyped = events as { id: string; name: string }[] | null;
     const eventMap = new Map(eventsTyped?.map((e) => [e.id, e.name]) || []);
@@ -229,7 +230,7 @@ export async function POST(request: Request) {
     const n8nPayload = {
       templateId: templateTyped.id,
       templateName: templateTyped.name,
-      userId: session.user.id,
+      userId: user.id,
       emails,
     };
 
@@ -280,7 +281,7 @@ export async function POST(request: Request) {
 
     // Speichere in sent_emails Tabelle
     const sentEmailsRecords = emails.map((email) => ({
-      user_id: session.user.id,
+      user_id: user.id,
       lead_id: email.leadId,
       subject: email.subject,
       body: email.body,

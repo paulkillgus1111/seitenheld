@@ -8,17 +8,18 @@ export async function POST(request: Request) {
 
     const supabase = await createSupabaseServerClient();
     const {
-      data: { session },
-    } = await supabase.auth.getSession();
+      data: { user },
+      error: authError,
+    } = await supabase.auth.getUser();
 
-    if (!session?.user) {
+    if (authError || !user) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
     await ((supabase
       .from("profiles") as any)
       .update({ workspace_name: workspace_name ?? null })
-      .eq("id", session.user.id));
+      .eq("id", user.id));
 
     return NextResponse.json({ success: true });
   } catch {

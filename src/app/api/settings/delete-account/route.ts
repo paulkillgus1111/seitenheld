@@ -5,15 +5,16 @@ export async function POST() {
   try {
     const supabase = await createSupabaseServerClient();
     const {
-      data: { session },
-    } = await supabase.auth.getSession();
+      data: { user },
+      error: authError,
+    } = await supabase.auth.getUser();
 
-    if (!session?.user) {
+    if (authError || !user) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
     // Delete user account (this will cascade delete related data via foreign keys)
-    const { error } = await supabase.auth.admin.deleteUser(session.user.id);
+    const { error } = await supabase.auth.admin.deleteUser(user.id);
 
     if (error) {
       // If admin API is not available, use regular delete

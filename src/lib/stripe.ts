@@ -30,7 +30,6 @@ export async function createCheckoutSession({
 }) {
   const sessionParams: Stripe.Checkout.SessionCreateParams = {
     mode,
-    customer_email: customerEmail,
     line_items: [
       {
         price: priceId,
@@ -46,8 +45,12 @@ export async function createCheckoutSession({
     cancel_url: `${process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000"}/dashboard/pricing/cancel`,
   };
 
+  // WICHTIG: Nur EINES von beiden setzen
   if (customerId) {
     sessionParams.customer = customerId;
+    // customer_email NICHT setzen, wenn customer gesetzt ist
+  } else {
+    sessionParams.customer_email = customerEmail;
   }
 
   if (mode === "subscription") {

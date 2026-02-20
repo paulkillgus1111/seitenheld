@@ -8,17 +8,18 @@ export async function POST(request: Request) {
 
     const supabase = await createSupabaseServerClient();
     const {
-      data: { session },
-    } = await supabase.auth.getSession();
+      data: { user },
+      error: authError,
+    } = await supabase.auth.getUser();
 
-    if (!session?.user) {
+    if (authError || !user) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
     await ((supabase
       .from("user_settings") as any)
       .upsert({
-        user_id: session.user.id,
+        user_id: user.id,
         email_on_lead: email_on_lead ?? false,
         weekly_summary: weekly_summary ?? false,
         crm_sync_reports: crm_sync_reports ?? false,

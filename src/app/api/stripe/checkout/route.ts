@@ -31,17 +31,18 @@ export async function POST(request: Request) {
   try {
     const supabase = await createSupabaseServerClient();
     const {
-      data: { session },
-    } = await supabase.auth.getSession();
+      data: { user },
+      error: authError,
+    } = await supabase.auth.getUser();
 
-    if (!session?.user) {
+    if (authError || !user) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
     // Rate Limiting: Payment-Schutz (verhindert Checkout-Spam)
     const rateLimitResult = await withRateLimit(request, {
       config: rateLimitConfigs.checkout,
-      identifier: session.user.id, // User-ID für user-basierte Limits
+      identifier: user.id, // User-ID für user-basierte Limits
     });
 
     if (!rateLimitResult.success) {
@@ -70,7 +71,7 @@ export async function POST(request: Request) {
     const { data: profile } = await supabase
       .from("profiles")
       .select("email, stripe_customer_id")
-      .eq("id", session.user.id)
+      .eq("id", user.id)
       .maybeSingle();
 
     const profileTyped = profile as {
@@ -79,7 +80,7 @@ export async function POST(request: Request) {
     } | null;
 
     const customerEmail =
-      profileTyped?.email || session.user.email || "";
+      profileTyped?.email || user.email || "";
     const customerId = profileTyped?.stripe_customer_id || undefined;
 
     if (!customerEmail) {
@@ -97,7 +98,7 @@ export async function POST(request: Request) {
       customerEmail,
       priceId: config.priceId,
       planType: planType as PlanType,
-      userId: session.user.id,
+      userId: user.id,
       mode: config.mode,
       quantity: quantity,
     });
