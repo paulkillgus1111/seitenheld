@@ -10,34 +10,40 @@ export async function getTrialStatus(userId: string): Promise<TrialStatus> {
     .eq("id", userId)
     .maybeSingle();
 
-  if (!profile) return "available";
+  const profileTyped = profile as {
+    trial_started_at: string | null;
+    trial_used: boolean | null;
+    trial_expires_at: string | null;
+    subscription_status: string | null;
+  } | null;
+
+  if (!profileTyped) return "available";
 
   // Wenn bereits bezahlt, kein Trial mehr
-  if (profile.subscription_status === "active") {
+  if (profileTyped.subscription_status === "active") {
     return "used";
   }
 
   // Wenn Trial bereits verwendet wurde
-  if (profile.trial_used) {
+  if (profileTyped.trial_used) {
     return "used";
   }
 
   // Wenn Trial aktiv ist
-  if (profile.trial_started_at && profile.trial_expires_at) {
+  if (profileTyped.trial_started_at && profileTyped.trial_expires_at) {
     const now = new Date();
-    const expiresAt = new Date(profile.trial_expires_at);
+    const expiresAt = new Date(profileTyped.trial_expires_at);
 
     // ✅ NEU: Prüfe ob Trial abgelaufen ist und aktualisiere subscription_status automatisch
-    if (now >= expiresAt && profile.subscription_status === "trialing") {
+    if (now >= expiresAt && profileTyped.subscription_status === "trialing") {
       // Trial ist abgelaufen - aktualisiere subscription_status automatisch
-      await supabase
-        .from("profiles")
+      await ((supabase.from("profiles") as any)
         .update({
           subscription_status: "none",
           trial_used: true,
         })
         .eq("id", userId)
-        .eq("subscription_status", "trialing"); // Zusätzliche Bedingung verhindert Race Conditions
+        .eq("subscription_status", "trialing")); // Zusätzliche Bedingung verhindert Race Conditions
       
       return "expired";
     }
@@ -61,9 +67,11 @@ export async function startTrialOnFirstLead(userId: string): Promise<boolean> {
     .select("id")
     .eq("user_id", userId);
 
+  const userEventsTyped = userEvents as { id: string }[] | null;
+
   // Wenn bereits Events existieren, prüfe ob Leads existieren
-  if (userEvents && userEvents.length > 0) {
-    const eventIds = userEvents.map((e) => e.id);
+  if (userEventsTyped && userEventsTyped.length > 0) {
+    const eventIds = userEventsTyped.map((e) => e.id);
     const { count: actualLeadCount } = await supabase
       .from("leads")
       .select("*", { count: "exact", head: true })
@@ -82,12 +90,18 @@ export async function startTrialOnFirstLead(userId: string): Promise<boolean> {
     .eq("id", userId)
     .maybeSingle();
 
-  if (profile?.trial_used || profile?.subscription_status === "active") {
+  const profileTyped = profile as {
+    trial_used: boolean | null;
+    subscription_status: string | null;
+    trial_started_at: string | null;
+  } | null;
+
+  if (profileTyped?.trial_used || profileTyped?.subscription_status === "active") {
     return false;
   }
 
   // Wenn Trial bereits gestartet wurde, nicht erneut starten
-  if (profile?.trial_started_at) {
+  if (profileTyped?.trial_started_at) {
     return false;
   }
 
@@ -96,14 +110,13 @@ export async function startTrialOnFirstLead(userId: string): Promise<boolean> {
   const expiresAt = new Date(now);
   expiresAt.setHours(expiresAt.getHours() + 24); // 24 Stunden Trial
 
-  const { error } = await supabase
-    .from("profiles")
+  const { error } = await ((supabase.from("profiles") as any)
     .update({
       trial_started_at: now.toISOString(),
       trial_expires_at: expiresAt.toISOString(),
       subscription_status: "trialing",
     })
-    .eq("id", userId);
+    .eq("id", userId));
 
   return !error;
 }
@@ -118,9 +131,13 @@ export async function getTrialExpiresAt(
     .eq("id", userId)
     .maybeSingle();
 
-  if (!profile?.trial_expires_at) {
+  const profileTyped = profile as {
+    trial_expires_at: string | null;
+  } | null;
+
+  if (!profileTyped?.trial_expires_at) {
     return null;
   }
 
-  return new Date(profile.trial_expires_at);
+  return new Date(profileTyped.trial_expires_at);
 }
