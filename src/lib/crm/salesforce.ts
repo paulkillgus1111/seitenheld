@@ -18,17 +18,27 @@ async function getCRMIntegration(
     .eq("crm_type", "salesforce")
     .maybeSingle();
 
-  if (error || !integration) return null;
+  const integrationTyped = integration as {
+    crm_type: string | null;
+    crm_access_token: string | null;
+    crm_refresh_token: string | null;
+    crm_token_expires_at: string | null;
+    crm_instance_url: string | null;
+    crm_connection_type: string | null;
+    salesforce_field_mapping: any;
+  } | null;
+
+  if (error || !integrationTyped) return null;
   return {
-    crm_type: integration.crm_type as "salesforce",
-    crm_access_token: integration.crm_access_token,
-    crm_refresh_token: integration.crm_refresh_token,
-    crm_token_expires_at: integration.crm_token_expires_at,
-    crm_instance_url: integration.crm_instance_url,
+    crm_type: integrationTyped.crm_type as "salesforce",
+    crm_access_token: integrationTyped.crm_access_token,
+    crm_refresh_token: integrationTyped.crm_refresh_token,
+    crm_token_expires_at: integrationTyped.crm_token_expires_at,
+    crm_instance_url: integrationTyped.crm_instance_url,
     crm_org_id: null, // Wird später aus userInfo geholt
     crm_user_id: null, // Wird später aus userInfo geholt
-    crm_connection_type: integration.crm_connection_type,
-    field_mapping: integration.salesforce_field_mapping,
+    crm_connection_type: integrationTyped.crm_connection_type,
+    field_mapping: integrationTyped.salesforce_field_mapping,
   };
 }
 
@@ -43,25 +53,32 @@ async function getAccessToken(userId: string): Promise<string> {
     .eq("crm_type", "salesforce")
     .maybeSingle();
 
-  if (error || !integration?.crm_access_token) {
+  const integrationTyped = integration as {
+    crm_access_token: string | null;
+    crm_refresh_token: string | null;
+    crm_token_expires_at: string | null;
+    crm_instance_url: string | null;
+  } | null;
+
+  if (error || !integrationTyped?.crm_access_token) {
     throw new Error("Salesforce not connected");
   }
 
-  const expiresAt = integration.crm_token_expires_at
-    ? new Date(integration.crm_token_expires_at)
+  const expiresAt = integrationTyped.crm_token_expires_at
+    ? new Date(integrationTyped.crm_token_expires_at)
     : null;
   const now = new Date();
   const isExpired = expiresAt ? expiresAt < now : false;
 
-  if (isExpired && integration.crm_refresh_token) {
-    return await refreshToken(userId, integration.crm_refresh_token);
+  if (isExpired && integrationTyped.crm_refresh_token) {
+    return await refreshToken(userId, integrationTyped.crm_refresh_token);
   }
 
-  if (!integration.crm_access_token) {
+  if (!integrationTyped.crm_access_token) {
     throw new Error("No access token available");
   }
 
-  return integration.crm_access_token;
+  return integrationTyped.crm_access_token;
 }
 
 async function refreshToken(
@@ -100,14 +117,13 @@ async function refreshToken(
     Date.now() + (tokenData.expires_in || 7200) * 1000
   ).toISOString();
 
-  const { error: updateError } = await supabase
-    .from("integrations")
+  const { error: updateError } = await ((supabase.from("integrations") as any)
     .update({
       crm_access_token: tokenData.access_token,
       crm_token_expires_at: expiresAt,
     })
     .eq("user_id", userId)
-    .eq("crm_type", "salesforce");
+    .eq("crm_type", "salesforce"));
 
   if (updateError) {
     console.error("Failed to update refreshed token:", updateError);
