@@ -221,11 +221,11 @@ export function AddLeadForm({ events }: AddLeadFormProps) {
             <div className="space-y-2">
               <Label htmlFor="potential">Potential</Label>
               <Select
-                value={formData.potential}
+                value={formData.potential || undefined}
                 onValueChange={(value) =>
                   setFormData({
                     ...formData,
-                    potential: value as "Hoch" | "Medium" | "Niedrig" | "strukturiert",
+                    potential: value as "Hoch" | "Medium" | "Niedrig" | null,
                   })
                 }
               >
