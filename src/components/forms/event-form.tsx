@@ -43,7 +43,7 @@ const eventFormSchema = z.object({
       "Budget muss eine Zahl ≥ 0 sein."
     ),
   phone_number_id: z.string().uuid("Bitte wähle eine Telefonnummer aus."),
-  timezone: z.string().default("Europe/Berlin"),
+  timezone: z.string().optional(),
 });
 
 // Schema für API-Request (mit Transform)
