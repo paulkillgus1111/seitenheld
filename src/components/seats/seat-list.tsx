@@ -34,6 +34,7 @@ type Seat = {
   is_active: boolean;
   verified?: boolean | null;
   created_at: string;
+  assigned_to_event_id?: string | null;
 };
 
 type SeatListProps = {
