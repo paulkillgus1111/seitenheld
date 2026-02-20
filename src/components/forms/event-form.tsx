@@ -254,10 +254,9 @@ export function EventForm() {
 
               if (response.ok) {
                 logger.log("✅ [Event Form] WhatsApp sent successfully, marking morning_message_sent");
-                await supabase
-                  .from("events")
+                await ((supabase.from("events") as any)
                   .update({ morning_message_sent: true })
-                  .eq("id", newEvent.id);
+                  .eq("id", newEvent.id));
               } else {
                 logger.error("❌ [Event Form] Failed to send WhatsApp:", responseData);
               }
