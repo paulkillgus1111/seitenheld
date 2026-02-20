@@ -193,12 +193,17 @@ export function EventForm() {
               .eq("id", values.phone_number_id)
               .single();
 
+            const phoneNumberTyped = phoneNumber as {
+              phone_number: string | null;
+              verified: boolean;
+            } | null;
+
             logger.log("📞 [Event Form] Phone number check:", {
               phone_number_id: values.phone_number_id,
               phoneNumber,
               phoneError: phoneError?.message,
-              is_verified: phoneNumber?.verified,
-              has_phone: !!phoneNumber?.phone_number,
+              is_verified: phoneNumberTyped?.verified,
+              has_phone: !!phoneNumberTyped?.phone_number,
             });
 
             if (phoneError) {
@@ -211,13 +216,18 @@ export function EventForm() {
               .eq("id", user.id)
               .single();
 
-            if (phoneNumber?.verified && phoneNumber?.phone_number) {
-              const userName = profile?.full_name || user.email || "Nutzer";
+            const profileTyped = profile as {
+              full_name: string | null;
+              email: string | null;
+            } | null;
+
+            if (phoneNumberTyped?.verified && phoneNumberTyped?.phone_number) {
+              const userName = profileTyped?.full_name || user.email || "Nutzer";
 
               logger.log("📤 [Event Form] Sending event created message:", {
                 event_id: newEvent.id,
                 event_name: newEvent.name,
-                phone_number: phoneNumber.phone_number,
+                phone_number: phoneNumberTyped.phone_number,
                 user_name: userName,
               });
 
@@ -229,7 +239,7 @@ export function EventForm() {
                   body: JSON.stringify({
                     event_id: newEvent.id,
                     event_name: newEvent.name,
-                    phone_number: phoneNumber.phone_number,
+                    phone_number: phoneNumberTyped.phone_number,
                     user_name: userName,
                   }),
                 }
@@ -253,8 +263,8 @@ export function EventForm() {
               }
             } else {
               logger.log("⚠️ [Event Form] Phone number not verified or missing:", {
-                verified: phoneNumber?.verified,
-                phone_number: phoneNumber?.phone_number,
+                verified: phoneNumberTyped?.verified,
+                phone_number: phoneNumberTyped?.phone_number,
               });
             }
           } catch (error) {
