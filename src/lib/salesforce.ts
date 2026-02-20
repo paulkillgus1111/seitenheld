@@ -34,28 +34,36 @@ async function getAccessToken(userId: string): Promise<string> {
     .eq("user_id", userId)
     .maybeSingle();
 
-  if (error || !integration?.salesforce_access_token) {
+  const integrationTyped = integration as {
+    salesforce_access_token: string | null;
+    salesforce_refresh_token: string | null;
+    salesforce_token_expires_at: string | null;
+    salesforce_instance_url: string | null;
+    salesforce_connection_type: string | null;
+  } | null;
+
+  if (error || !integrationTyped?.salesforce_access_token) {
     throw new Error("Salesforce not connected");
   }
 
   // Prüfe ob Token abgelaufen
-  const expiresAt = integration.salesforce_token_expires_at
-    ? new Date(integration.salesforce_token_expires_at)
+  const expiresAt = integrationTyped.salesforce_token_expires_at
+    ? new Date(integrationTyped.salesforce_token_expires_at)
     : null;
 
   const now = new Date();
   const isExpired = expiresAt ? expiresAt < now : false;
 
-  if (isExpired && integration.salesforce_refresh_token) {
+  if (isExpired && integrationTyped.salesforce_refresh_token) {
     // Token erneuern
-    return await refreshToken(userId, integration.salesforce_refresh_token);
+    return await refreshToken(userId, integrationTyped.salesforce_refresh_token);
   }
 
-  if (!integration.salesforce_access_token) {
+  if (!integrationTyped.salesforce_access_token) {
     throw new Error("No access token available");
   }
 
-  return integration.salesforce_access_token;
+  return integrationTyped.salesforce_access_token;
 }
 
 /**
@@ -100,14 +108,13 @@ async function refreshToken(
     Date.now() + (tokenData.expires_in || 7200) * 1000
   ).toISOString();
 
-  const { error: updateError } = await supabase
-    .from("integrations")
+  const { error: updateError } = await ((supabase.from("integrations") as any)
     .update({
       salesforce_access_token: tokenData.access_token,
       salesforce_token_expires_at: expiresAt,
       // Refresh Token bleibt gleich (wird nur bei OAuth2 Flow neu gesetzt)
     })
-    .eq("user_id", userId);
+    .eq("user_id", userId));
 
   if (updateError) {
     console.error("Failed to update refreshed token:", updateError);
