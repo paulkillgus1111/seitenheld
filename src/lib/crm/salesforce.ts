@@ -37,7 +37,7 @@ async function getCRMIntegration(
     crm_instance_url: integrationTyped.crm_instance_url,
     crm_org_id: null, // Wird später aus userInfo geholt
     crm_user_id: null, // Wird später aus userInfo geholt
-    crm_connection_type: integrationTyped.crm_connection_type,
+    crm_connection_type: integrationTyped.crm_connection_type as "oauth2" | "client_credentials" | null,
     field_mapping: integrationTyped.salesforce_field_mapping,
   };
 }
