@@ -152,18 +152,42 @@ export async function POST(request: Request) {
       if (phoneNumberDataTyped?.phone_number) {
         const userName = profileTyped?.full_name || user.email || "Nutzer";
 
-        // Sende Welcome-Nachricht (nicht-blockierend)
-        fetch("/api/n8n/send-welcome-message", {
+        // Sende Welcome-Nachricht direkt an n8n Webhook (nicht über API Route)
+        const N8N_WELCOME_WEBHOOK_URL =
+          process.env.N8N_WELCOME_WEBHOOK_URL ||
+          "https://seitenheld.app.n8n.cloud/webhook/[WEBHOOK_3]";
+
+        const payload = {
+          type: "welcome_message",
+          phone_number: phoneNumberDataTyped.phone_number,
+          user_name: userName,
+        };
+
+        const controller = new AbortController();
+        const timeoutId = setTimeout(() => controller.abort(), 30000);
+
+        // Rufe n8n Webhook direkt auf (nicht-blockierend)
+        fetch(N8N_WELCOME_WEBHOOK_URL, {
           method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            phone_number: phoneNumberDataTyped.phone_number,
-            user_name: userName,
-          }),
-        }).catch((error) => {
-          console.error("Error sending welcome message:", error);
-          // Nicht kritisch - Verifizierung war erfolgreich
-        });
+          headers: {
+            "Content-Type": "application/json",
+            Accept: "application/json",
+            "User-Agent": "Seitenheld/1.0",
+          },
+          body: JSON.stringify(payload),
+          signal: controller.signal,
+        })
+          .then((response) => {
+            clearTimeout(timeoutId);
+            if (!response.ok) {
+              console.error("n8n welcome webhook error:", response.status);
+            }
+          })
+          .catch((error) => {
+            clearTimeout(timeoutId);
+            console.error("Error sending welcome message:", error);
+            // Nicht kritisch - Verifizierung war erfolgreich
+          });
       }
     } catch (welcomeError) {
       console.error("Welcome message error:", welcomeError);
