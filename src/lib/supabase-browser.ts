@@ -12,12 +12,27 @@ export function createSupabaseBrowserClient() {
   return createBrowserClient<Database>(supabaseUrl, supabaseKey, {
     cookies: {
       getAll() {
-        return document.cookie.split(';').map(cookie => {
-          const [name, ...rest] = cookie.trim().split('=');
-          return { name, value: rest.join('=') };
-        });
+        // Prüfe ob wir im Browser sind (document existiert)
+        if (typeof document === 'undefined') {
+          return [];
+        }
+        // Prüfe ob Cookies vorhanden sind
+        if (!document.cookie) {
+          return [];
+        }
+        return document.cookie.split(';')
+          .map(cookie => cookie.trim())
+          .filter(cookie => cookie.length > 0) // Filtere leere Strings
+          .map(cookie => {
+            const [name, ...rest] = cookie.split('=');
+            return { name, value: rest.join('=') };
+          });
       },
       setAll(cookiesToSet) {
+        // Prüfe ob wir im Browser sind (document existiert)
+        if (typeof document === 'undefined') {
+          return; // Ignoriere Cookie-Set während SSR
+        }
         cookiesToSet.forEach(({ name, value, options }) => {
           let cookieString = `${name}=${value}`;
           if (options?.maxAge) cookieString += `; max-age=${options.maxAge}`;
