@@ -30,15 +30,20 @@ export function LandingPageContent({ user }: LandingPageContentProps) {
     if (user) {
       // Prüfe Profil asynchron
       const checkProfile = async () => {
-        const { data: profile } = await supabase
-          .from("profiles")
-          .select("phone_number")
-          .eq("id", user.id)
+        // Prüfe ob verifizierter Seat existiert (NEUE Logik)
+        const { data: phoneNumber } = await supabase
+          .from("phone_numbers")
+          .select("id, verified")
+          .eq("user_id", user.id)
+          .eq("verified", true)
           .maybeSingle();
 
-        const profileWithPhone = profile as { phone_number: string | null } | null;
+        const phoneNumberTyped = phoneNumber as {
+          id: string;
+          verified: boolean;
+        } | null;
 
-        if (profileWithPhone?.phone_number) {
+        if (phoneNumberTyped?.verified) {
           router.replace("/dashboard");
         } else {
           router.replace("/onboarding");
