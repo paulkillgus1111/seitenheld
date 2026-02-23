@@ -1,8 +1,9 @@
 import { NextResponse } from "next/server";
-import { createSupabaseServerClient } from "@/lib/supabase-server";
+import { createSupabaseServerClient, createSupabaseAdminClient } from "@/lib/supabase-server";
 
 export async function POST() {
   try {
+    // Prüfe Authentifizierung mit normalem Client
     const supabase = await createSupabaseServerClient();
     const {
       data: { user },
@@ -13,19 +14,21 @@ export async function POST() {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
-    // Delete user account (this will cascade delete related data via foreign keys)
-    const { error } = await supabase.auth.admin.deleteUser(user.id);
+    // Verwende Admin Client für Account-Löschung (benötigt Service Role Key)
+    const adminSupabase = await createSupabaseAdminClient();
+    const { error } = await adminSupabase.auth.admin.deleteUser(user.id);
 
     if (error) {
-      // If admin API is not available, use regular delete
+      console.error("Error deleting user:", error);
       return NextResponse.json(
-        { error: "Account deletion requires admin privileges" },
-        { status: 403 }
+        { error: error.message || "Failed to delete account" },
+        { status: 500 }
       );
     }
 
     return NextResponse.json({ success: true });
-  } catch {
+  } catch (error) {
+    console.error("Error in delete-account route:", error);
     return NextResponse.json(
       { error: "Internal server error" },
       { status: 500 }
