@@ -23,14 +23,16 @@ export async function GET(request: Request) {
   today.setHours(0, 0, 0, 0);
   const todayStr = today.toISOString().split("T")[0];
 
-  // Finde Events die heute starten
+  // Finde Events die heute aktiv sind
   const { data: events, error: eventsError } = await supabase
     .from("events")
     .select(`
       id,
       name,
       start_date,
+      end_date,
       timezone,
+      last_morning_message_date,
       phone_numbers:phone_number_id (
         phone_number,
         verified
@@ -40,9 +42,8 @@ export async function GET(request: Request) {
         email
       )
     `)
-    .eq("start_date", todayStr)
-    .eq("morning_message_sent", false)
-    .not("phone_number_id", "is", null);
+    .not("phone_number_id", "is", null)
+    .not("start_date", "is", null);
 
   if (eventsError) {
     return NextResponse.json(
@@ -63,12 +64,43 @@ export async function GET(request: Request) {
     id: string;
     name: string;
     start_date: string | null;
+    end_date: string | null;
     timezone: string | null;
+    last_morning_message_date: string | null;
     phone_numbers: Array<{ phone_number: string; verified: boolean }> | null;
     profiles: { full_name: string | null; email: string | null } | null;
   }> | null;
 
   if (!eventsTyped) {
+    return NextResponse.json({
+      success: true,
+      message: "No events to process",
+      count: 0,
+    });
+  }
+
+  // Filtere Events die heute aktiv sind und heute noch keine Nachricht erhalten haben
+  const eventsToSend = eventsTyped.filter((event) => {
+    if (!event.start_date) return false;
+    
+    const startDate = new Date(event.start_date + "T00:00:00");
+    const endDate = event.end_date ? new Date(event.end_date + "T23:59:59") : null;
+    const today = new Date(todayStr + "T00:00:00");
+    
+    // Prüfe ob Event heute aktiv ist
+    const isEventActiveToday = 
+      today >= startDate && 
+      (endDate === null || today <= endDate);
+    
+    if (!isEventActiveToday) return false;
+    
+    // Prüfe ob heute schon eine Nachricht gesendet wurde
+    const messageSentToday = event.last_morning_message_date === todayStr;
+    
+    return !messageSentToday;
+  });
+
+  if (eventsToSend.length === 0) {
     return NextResponse.json({
       success: true,
       message: "No events today or all messages already sent",
@@ -78,7 +110,7 @@ export async function GET(request: Request) {
 
   // Sende WhatsApp-Nachrichten
   const results = [];
-  for (const event of eventsTyped) {
+  for (const event of eventsToSend) {
     const phoneNumber = (event.phone_numbers as any)?.[0];
     const profile = (event.profiles as any)?.[0];
 
@@ -118,7 +150,7 @@ export async function GET(request: Request) {
       if (response.ok) {
         await ((supabase
           .from("events") as any)
-          .update({ morning_message_sent: true })
+          .update({ last_morning_message_date: todayStr })
           .eq("id", event.id));
 
         results.push({ event_id: event.id, status: "sent" });
@@ -132,7 +164,7 @@ export async function GET(request: Request) {
 
   return NextResponse.json({
     success: true,
-    message: `Processed ${events.length} events`,
+    message: `Processed ${eventsToSend.length} events`,
     results,
   });
 }

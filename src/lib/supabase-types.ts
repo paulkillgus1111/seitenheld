@@ -81,7 +81,8 @@ export interface Database {
           estimated_costs: number | null;
           phone_number_id: string | null;
           timezone: string | null;
-          morning_message_sent: boolean | null;
+          morning_message_sent: boolean | null; // Legacy, wird durch last_morning_message_date ersetzt
+          last_morning_message_date: string | null;
         };
         Insert: {
           id?: string;
@@ -92,7 +93,8 @@ export interface Database {
           estimated_costs?: number | null;
           phone_number_id?: string | null;
           timezone?: string | null;
-          morning_message_sent?: boolean | null;
+          morning_message_sent?: boolean | null; // Legacy
+          last_morning_message_date?: string | null;
         };
         Update: {
           id?: string;
@@ -103,7 +105,8 @@ export interface Database {
           estimated_costs?: number | null;
           phone_number_id?: string | null;
           timezone?: string | null;
-          morning_message_sent?: boolean | null;
+          morning_message_sent?: boolean | null; // Legacy
+          last_morning_message_date?: string | null;
         };
       };
       leads: {

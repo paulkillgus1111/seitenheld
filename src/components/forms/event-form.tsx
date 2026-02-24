@@ -253,9 +253,10 @@ export function EventForm() {
               });
 
               if (response.ok) {
-                logger.log("✅ [Event Form] WhatsApp sent successfully, marking morning_message_sent");
+                logger.log("✅ [Event Form] WhatsApp sent successfully, marking last_morning_message_date");
+                const todayStr = new Date().toISOString().split("T")[0]; // YYYY-MM-DD
                 await ((supabase.from("events") as any)
-                  .update({ morning_message_sent: true })
+                  .update({ last_morning_message_date: todayStr })
                   .eq("id", newEvent.id));
               } else {
                 logger.error("❌ [Event Form] Failed to send WhatsApp:", responseData);

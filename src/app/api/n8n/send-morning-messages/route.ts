@@ -40,14 +40,16 @@ export async function GET(request: Request) {
     // Aktuelle UTC-Zeit
     const now = new Date();
 
-    // Finde alle Events die noch keine Morgen-Nachricht erhalten haben
+    // Finde alle Events mit start_date, end_date und phone_number
     const { data: events, error: eventsError } = await supabase
       .from("events")
       .select(`
         id,
         name,
         start_date,
+        end_date,
         timezone,
+        last_morning_message_date,
         phone_numbers:phone_number_id (
           phone_number,
           verified
@@ -57,7 +59,6 @@ export async function GET(request: Request) {
           email
         )
       `)
-      .eq("morning_message_sent", false)
       .not("phone_number_id", "is", null)
       .not("start_date", "is", null);
 
@@ -77,12 +78,14 @@ export async function GET(request: Request) {
       });
     }
 
-    // Prüfe für jedes Event, ob es heute startet und 6 Uhr in dessen Zeitzone ist
+    // Prüfe für jedes Event, ob es heute aktiv ist und 6 Uhr in dessen Zeitzone ist
     const eventsTyped = events as Array<{
       id: string;
       name: string;
       start_date: string | null;
+      end_date: string | null;
       timezone: string | null;
+      last_morning_message_date: string | null;
       phone_numbers: Array<{ phone_number: string; verified: boolean }> | null;
       profiles: { full_name: string | null; email: string | null } | null;
     }> | null;
@@ -97,25 +100,33 @@ export async function GET(request: Request) {
       });
     }
     
+    // Heute als Date-String (YYYY-MM-DD) für Vergleich
+    const todayStr = now.toISOString().split("T")[0];
+    
     for (const event of eventsTyped) {
       const eventTimezone = event.timezone || "Europe/Berlin"; // Fallback
       const eventStartDate = event.start_date;
+      const eventEndDate = event.end_date;
       
       if (!eventStartDate) continue;
 
       try {
-        // Prüfe ob Event heute startet (in Event-Zeitzone)
-        const eventDate = new Date(eventStartDate + "T00:00:00");
-        const todayInTimezone = new Date(
-          now.toLocaleString("en-US", { timeZone: eventTimezone })
-        );
+        // Prüfe ob Event heute aktiv ist (heute >= start_date && heute <= end_date)
+        const startDate = new Date(eventStartDate + "T00:00:00");
+        const endDate = eventEndDate ? new Date(eventEndDate + "T23:59:59") : null;
+        const today = new Date(todayStr + "T00:00:00");
         
-        const isToday = 
-          eventDate.getFullYear() === todayInTimezone.getFullYear() &&
-          eventDate.getMonth() === todayInTimezone.getMonth() &&
-          eventDate.getDate() === todayInTimezone.getDate();
+        const isEventActiveToday = 
+          today >= startDate && 
+          (endDate === null || today <= endDate);
         
-        if (!isToday) continue;
+        if (!isEventActiveToday) continue;
+        
+        // Prüfe ob heute schon eine Nachricht gesendet wurde
+        const lastMessageDate = event.last_morning_message_date;
+        const messageSentToday = lastMessageDate === todayStr;
+        
+        if (messageSentToday) continue; // Heute schon gesendet
         
         // Prüfe ob es 6 Uhr in der Event-Zeitzone ist
         const currentHourInTimezone = parseInt(
@@ -184,10 +195,10 @@ export async function GET(request: Request) {
         clearTimeout(timeoutId);
 
         if (response.ok) {
-          // Markiere als gesendet
+          // Markiere als gesendet (heute)
           await ((supabase
             .from("events") as any)
-            .update({ morning_message_sent: true })
+            .update({ last_morning_message_date: todayStr })
             .eq("id", event.id));
 
           results.push({ event_id: event.id, status: "sent" });

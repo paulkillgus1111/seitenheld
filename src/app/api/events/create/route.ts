@@ -100,7 +100,7 @@ export async function POST(request: Request) {
         estimated_costs: validated.data.estimated_costs || null,
         phone_number_id: validated.data.phone_number_id,
         timezone: validated.data.timezone || "Europe/Berlin",
-        morning_message_sent: false,
+        last_morning_message_date: null,
       })
       .select()
       .single());
