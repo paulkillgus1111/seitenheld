@@ -27,6 +27,7 @@ export async function middleware(request: NextRequest) {
     "/datenschutz", // Öffentliche Datenschutz-Seite (für nicht-eingeloggte Nutzer)
     "/onboarding",
     "/api/webhooks/stripe", // Webhook-Route (hat eigene Auth)
+    "/api/n8n/send-morning-messages", // Cron-Job Route (hat eigene Auth mit CRON_SECRET)
   ];
 
   // Prüfe ob Route öffentlich ist (exakte Übereinstimmung oder mit /)
