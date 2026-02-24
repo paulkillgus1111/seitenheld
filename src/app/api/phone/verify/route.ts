@@ -190,38 +190,46 @@ export async function POST(request: Request) {
         const controller = new AbortController();
         const timeoutId = setTimeout(() => controller.abort(), 30000);
 
-        // Rufe n8n Webhook direkt auf (nicht-blockierend)
-        fetch(N8N_WELCOME_WEBHOOK_URL, {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            Accept: "application/json",
-            "User-Agent": "Seitenheld/1.0",
-          },
-          body: JSON.stringify(payload),
-          signal: controller.signal,
-        })
-          .then((response) => {
-            clearTimeout(timeoutId);
-            console.log("📥 [WELCOME] Webhook response", {
-              status: response.status,
-              ok: response.ok,
-              statusText: response.statusText,
-            });
-            if (!response.ok) {
-              console.error("❌ [WELCOME] n8n welcome webhook error:", response.status);
-            } else {
-              console.log("✅ [WELCOME] Welcome message sent successfully");
-            }
-          })
-          .catch((error) => {
-            clearTimeout(timeoutId);
-            console.error("❌ [WELCOME] Error sending welcome message:", {
-              error_name: error.name,
-              error_message: error.message,
-            });
-            // Nicht kritisch - Verifizierung war erfolgreich
+        // Rufe n8n Webhook direkt auf (blockierend mit await, damit Logs geschrieben werden)
+        try {
+          const response = await fetch(N8N_WELCOME_WEBHOOK_URL, {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              Accept: "application/json",
+              "User-Agent": "Seitenheld/1.0",
+            },
+            body: JSON.stringify(payload),
+            signal: controller.signal,
           });
+
+          clearTimeout(timeoutId);
+          console.log("📥 [WELCOME] Webhook response", {
+            status: response.status,
+            ok: response.ok,
+            statusText: response.statusText,
+          });
+
+          if (!response.ok) {
+            console.error("❌ [WELCOME] n8n welcome webhook error:", response.status);
+            // Versuche Response-Text zu lesen für mehr Details
+            try {
+              const errorText = await response.text();
+              console.error("❌ [WELCOME] Error response body:", errorText.substring(0, 500));
+            } catch (textError) {
+              // Ignoriere Fehler beim Lesen des Response-Texts
+            }
+          } else {
+            console.log("✅ [WELCOME] Welcome message sent successfully");
+          }
+        } catch (error) {
+          clearTimeout(timeoutId);
+          console.error("❌ [WELCOME] Error sending welcome message:", {
+            error_name: error instanceof Error ? error.name : "Unknown",
+            error_message: error instanceof Error ? error.message : String(error),
+          });
+          // Nicht kritisch - Verifizierung war erfolgreich
+        }
       } else {
         console.warn("⚠️ [WELCOME] Phone number not found, skipping welcome message");
       }
