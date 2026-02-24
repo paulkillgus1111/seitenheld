@@ -67,6 +67,10 @@ export default async function PricingPage() {
             "E-Mail Support",
             "9,99€ pro Monat",
             "Jährlich kündbar",
+            "10 Events pro Jahr",
+            "500 Leads pro Tag pro Seat",
+            "20 Follow up Mails pro Tag",
+            "Telefonnummern tauschbar",
           ]}
           planType="yearly"
           isCurrentPlan={subscription?.planType === "yearly"}
@@ -82,6 +86,9 @@ export default async function PricingPage() {
             "Alle Features",
             "E-Mail Support",
             "Einmalige Zahlung",
+            "500 Leads pro Tag pro Seat",
+            "20 Follow up Mails pro Tag",
+            "Telefonnummer tauschbar",
           ]}
           planType="messe_pass"
           isCurrentPlan={subscription?.planType === "messe_pass"}
@@ -95,6 +102,10 @@ export default async function PricingPage() {
             "Alle Features",
             "Priority Support",
             "Einmalige Zahlung",
+            "50 Messen",
+            "500 Leads pro Tag pro Seat",
+            "20 Follow up Mails pro Tag",
+            "Telefonnummer tauschbar",
           ]}
           planType="ltd"
           isCurrentPlan={subscription?.planType === "ltd"}
