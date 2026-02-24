@@ -160,8 +160,19 @@ export async function POST(request: Request) {
             subscriptionId
           );
           const subscriptionTyped = subscription as Stripe.Subscription;
-          updateData.subscription_current_period_end =
-            new Date((subscriptionTyped as any).current_period_end * 1000).toISOString();
+          
+          // ✅ Prüfe ob current_period_end existiert und gültig ist
+          const currentPeriodEnd = (subscriptionTyped as any).current_period_end;
+          if (currentPeriodEnd && typeof currentPeriodEnd === 'number' && currentPeriodEnd > 0) {
+            updateData.subscription_current_period_end =
+              new Date(currentPeriodEnd * 1000).toISOString();
+          } else {
+            console.warn("⚠️ [STRIPE] Invalid current_period_end in subscription", {
+              subscriptionId,
+              currentPeriodEnd,
+            });
+            updateData.subscription_current_period_end = null;
+          }
           
           // Setze seat_count basierend auf Subscription quantity
           const subscriptionQuantity = subscriptionTyped.items.data[0]?.quantity || seatCount;
@@ -221,14 +232,18 @@ export async function POST(request: Request) {
           // Hole quantity aus Subscription
           const quantity = subscription.items.data[0]?.quantity || 1;
 
+          // ✅ Prüfe current_period_end
+          const currentPeriodEnd = (subscription as any).current_period_end;
+          const periodEndISO = currentPeriodEnd && typeof currentPeriodEnd === 'number' && currentPeriodEnd > 0
+            ? new Date(currentPeriodEnd * 1000).toISOString()
+            : null;
+
           await ((supabase
             .from("profiles") as any)
             .update({
               stripe_subscription_id: subscription.id,
               subscription_status: subscription.status,
-              subscription_current_period_end: new Date(
-                (subscription as any).current_period_end * 1000
-              ).toISOString(),
+              subscription_current_period_end: periodEndISO,
               subscription_cancel_at_period_end:
                 (subscription as any).cancel_at_period_end || false,
               seat_count: quantity,
@@ -265,13 +280,17 @@ export async function POST(request: Request) {
             // Stripe wird die Änderung trotzdem durchführen, aber wir warnen
           }
 
+          // ✅ Prüfe current_period_end
+          const currentPeriodEnd = (subscription as any).current_period_end;
+          const periodEndISO = currentPeriodEnd && typeof currentPeriodEnd === 'number' && currentPeriodEnd > 0
+            ? new Date(currentPeriodEnd * 1000).toISOString()
+            : null;
+
           await ((supabase
             .from("profiles") as any)
             .update({
               subscription_status: subscription.status,
-              subscription_current_period_end: new Date(
-                (subscription as any).current_period_end * 1000
-              ).toISOString(),
+              subscription_current_period_end: periodEndISO,
               subscription_cancel_at_period_end:
                 (subscription as any).cancel_at_period_end || false,
               seat_count: quantity,
@@ -325,12 +344,17 @@ export async function POST(request: Request) {
             const subscription = await stripe.subscriptions.retrieve(
               subscriptionId
             );
+            
+            // ✅ Prüfe current_period_end
+            const currentPeriodEnd = (subscription as any).current_period_end;
+            const periodEndISO = currentPeriodEnd && typeof currentPeriodEnd === 'number' && currentPeriodEnd > 0
+              ? new Date(currentPeriodEnd * 1000).toISOString()
+              : null;
+
             await ((supabase
               .from("profiles") as any)
               .update({
-                subscription_current_period_end: new Date(
-                  (subscription as any).current_period_end * 1000
-                ).toISOString(),
+                subscription_current_period_end: periodEndISO,
                 subscription_status: subscription.status,
               })
               .eq("id", profileTyped.id));
