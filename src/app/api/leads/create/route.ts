@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { createSupabaseServerClient } from "@/lib/supabase-server";
 import { startTrialOnFirstLead } from "@/lib/trial-server";
 import { checkSubscriptionAccess } from "@/lib/subscription-check";
+import { activateMessePassForEvent } from "@/lib/messe-pass-server";
 import { withRateLimit } from "@/lib/rate-limit-middleware";
 import { rateLimitConfigs } from "@/lib/rate-limit";
 import { z } from "zod";
@@ -153,6 +154,14 @@ export async function POST(request: Request) {
         // Trial-Fehler nicht kritisch, nur loggen
         console.log("Trial start error (non-critical):", trialError);
       }
+    }
+
+    // ✅ Aktiviere Messe-Pass für Event beim ersten Lead dieses Events
+    try {
+      await activateMessePassForEvent(user.id, event_id);
+    } catch (messePassError) {
+      // Messe-Pass-Fehler nicht kritisch, nur loggen
+      console.log("Messe-Pass activation error (non-critical):", messePassError);
     }
 
     return NextResponse.json({ success: true, lead: newLead });
