@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { headers } from "next/headers";
 import { stripe } from "@/lib/stripe";
-import { createSupabaseServerClient } from "@/lib/supabase-server";
+import { createSupabaseAdminClient } from "@/lib/supabase-server";
 import Stripe from "stripe";
 
 export const runtime = "nodejs";
@@ -43,7 +43,8 @@ export async function POST(request: Request) {
     );
   }
 
-  const supabase = await createSupabaseServerClient();
+  // ✅ Verwende Admin Client (umgeht RLS, da Webhooks keine User-Session haben)
+  const supabase = await createSupabaseAdminClient();
 
   // Replay-Attack-Prävention: Prüfe ob Event bereits verarbeitet wurde
   const { data: isProcessed, error: checkError } = await (supabase.rpc as any)(
@@ -96,7 +97,7 @@ export async function POST(request: Request) {
         }
 
         // Zusätzliche Validierung: Prüfe ob User in Supabase existiert
-        // Verwende normale Query statt Admin API (Admin API benötigt Service Role Key)
+        // Verwende Admin Client (umgeht RLS für Webhook-Operationen)
         const { data: userProfile, error: profileError } = await supabase
           .from("profiles")
           .select("id")
@@ -144,6 +145,10 @@ export async function POST(request: Request) {
           stripe_customer_id: customerId,
           plan_type: planType,
           stripe_price_id: priceId,
+          // ✅ Trial-Felder zurücksetzen, wenn Abo gekauft wird
+          trial_used: true,
+          trial_started_at: null,
+          trial_expires_at: null,
         };
 
         if (subscriptionId) {
@@ -164,20 +169,38 @@ export async function POST(request: Request) {
         } else {
           // One-time Payment: Setze Status auf 'active' ohne Subscription
           updateData.subscription_status = "active";
-          // Für one-time payments: Setze seat_count aus metadata
-          updateData.seat_count = seatCount;
+
+          // ✅ Für bestehende Abos: Seats addieren, nicht ersetzen
+          const { data: existingProfile } = await supabase
+            .from("profiles")
+            .select("seat_count")
+            .eq("id", userId)
+            .maybeSingle();
+
+          const existingSeatCount = (existingProfile as { seat_count: number | null } | null)?.seat_count || 0;
+          updateData.seat_count = existingSeatCount + seatCount; // Addiere statt ersetzen
         }
 
-        await ((supabase
+        const { error: updateError } = await ((supabase
           .from("profiles") as any)
           .update(updateData)
           .eq("id", userId));
 
-        console.log("Updated profile after checkout.session.completed", {
-          userId,
-          planType,
-          customerId,
-        });
+        if (updateError) {
+          console.error("❌ [STRIPE] Failed to update profile:", {
+            userId,
+            error: updateError.message,
+            updateData,
+          });
+        } else {
+          console.log("✅ [STRIPE] Updated profile after checkout.session.completed", {
+            userId,
+            planType,
+            customerId,
+            seat_count: updateData.seat_count,
+            subscription_status: updateData.subscription_status,
+          });
+        }
         break;
       }
 
