@@ -57,15 +57,15 @@ export default async function PricingPage() {
       <div className="grid gap-4 sm:gap-6 md:grid-cols-3">
         <PricingCard
           name="Jahresabo"
-          price="9,95€"
-          originalPrice="16,58€"
+          price="119,95€"
+          originalPrice="199,95€"
           discount="40%"
-          description="Monatlich, jährlich abgerechnet"
+          description="Jährlich abgerechnet"
           features={[
             "Unbegrenzte Leads",
             "Alle Features",
             "E-Mail Support",
-            "9,95€ pro Monat",
+            "9,99€ pro Monat",
             "Jährlich kündbar",
           ]}
           planType="yearly"
