@@ -96,8 +96,10 @@ export async function POST(request: Request) {
           .gte("created_at", periodStart)
           .lte("created_at", periodEnd);
 
-        if (eventsInPeriod && eventsInPeriod.length > 0) {
-          const eventIds = eventsInPeriod.map((e) => e.id);
+        const eventsInPeriodTyped = eventsInPeriod as { id: string }[] | null;
+
+        if (eventsInPeriodTyped && eventsInPeriodTyped.length > 0) {
+          const eventIds = eventsInPeriodTyped.map((e) => e.id);
 
           // 2. Zähle DISTINCT Events, die mindestens einen nicht-gelöschten Lead haben
           const { data: leadsData } = await supabase
