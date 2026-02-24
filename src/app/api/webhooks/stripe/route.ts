@@ -173,6 +173,14 @@ export async function POST(request: Request) {
             });
             updateData.subscription_current_period_end = null;
           }
+
+          // ✅ Hole auch current_period_start
+          const currentPeriodStart = (subscriptionTyped as any).current_period_start;
+          if (currentPeriodStart && typeof currentPeriodStart === 'number' && currentPeriodStart > 0) {
+            updateData.subscription_current_period_start = new Date(currentPeriodStart * 1000).toISOString();
+          } else {
+            updateData.subscription_current_period_start = null;
+          }
           
           // Setze seat_count basierend auf Subscription quantity
           const subscriptionQuantity = subscriptionTyped.items.data[0]?.quantity || seatCount;
@@ -232,7 +240,12 @@ export async function POST(request: Request) {
           // Hole quantity aus Subscription
           const quantity = subscription.items.data[0]?.quantity || 1;
 
-          // ✅ Prüfe current_period_end
+          // ✅ Prüfe current_period_start und current_period_end
+          const currentPeriodStart = (subscription as any).current_period_start;
+          const periodStartISO = currentPeriodStart && typeof currentPeriodStart === 'number' && currentPeriodStart > 0
+            ? new Date(currentPeriodStart * 1000).toISOString()
+            : null;
+
           const currentPeriodEnd = (subscription as any).current_period_end;
           const periodEndISO = currentPeriodEnd && typeof currentPeriodEnd === 'number' && currentPeriodEnd > 0
             ? new Date(currentPeriodEnd * 1000).toISOString()
@@ -243,6 +256,7 @@ export async function POST(request: Request) {
             .update({
               stripe_subscription_id: subscription.id,
               subscription_status: subscription.status,
+              subscription_current_period_start: periodStartISO,
               subscription_current_period_end: periodEndISO,
               subscription_cancel_at_period_end:
                 (subscription as any).cancel_at_period_end || false,
@@ -280,7 +294,12 @@ export async function POST(request: Request) {
             // Stripe wird die Änderung trotzdem durchführen, aber wir warnen
           }
 
-          // ✅ Prüfe current_period_end
+          // ✅ Prüfe current_period_start und current_period_end
+          const currentPeriodStart = (subscription as any).current_period_start;
+          const periodStartISO = currentPeriodStart && typeof currentPeriodStart === 'number' && currentPeriodStart > 0
+            ? new Date(currentPeriodStart * 1000).toISOString()
+            : null;
+
           const currentPeriodEnd = (subscription as any).current_period_end;
           const periodEndISO = currentPeriodEnd && typeof currentPeriodEnd === 'number' && currentPeriodEnd > 0
             ? new Date(currentPeriodEnd * 1000).toISOString()
@@ -290,6 +309,7 @@ export async function POST(request: Request) {
             .from("profiles") as any)
             .update({
               subscription_status: subscription.status,
+              subscription_current_period_start: periodStartISO,
               subscription_current_period_end: periodEndISO,
               subscription_cancel_at_period_end:
                 (subscription as any).cancel_at_period_end || false,
@@ -318,6 +338,7 @@ export async function POST(request: Request) {
             .update({
               subscription_status: "canceled",
               stripe_subscription_id: null,
+              subscription_current_period_start: null,
               subscription_current_period_end: null,
               subscription_cancel_at_period_end: false,
             })
@@ -345,7 +366,12 @@ export async function POST(request: Request) {
               subscriptionId
             );
             
-            // ✅ Prüfe current_period_end
+            // ✅ Prüfe current_period_start und current_period_end
+            const currentPeriodStart = (subscription as any).current_period_start;
+            const periodStartISO = currentPeriodStart && typeof currentPeriodStart === 'number' && currentPeriodStart > 0
+              ? new Date(currentPeriodStart * 1000).toISOString()
+              : null;
+
             const currentPeriodEnd = (subscription as any).current_period_end;
             const periodEndISO = currentPeriodEnd && typeof currentPeriodEnd === 'number' && currentPeriodEnd > 0
               ? new Date(currentPeriodEnd * 1000).toISOString()
@@ -354,6 +380,7 @@ export async function POST(request: Request) {
             await ((supabase
               .from("profiles") as any)
               .update({
+                subscription_current_period_start: periodStartISO,
                 subscription_current_period_end: periodEndISO,
                 subscription_status: subscription.status,
               })

@@ -66,18 +66,70 @@ export async function POST(request: Request) {
       );
     }
 
+    // ✅ Prüfe Jahresabo Event-Limit (10 Events pro Jahr)
+    // Events zählen nur, wenn sie mindestens einen Lead haben
     // Prüfe LTD Event-Limit (wird durch Datenbank-Trigger geprüft, aber hier als Fallback)
     const { data: profile } = await supabase
       .from("profiles")
-      .select("plan_type, ltd_events_used")
+      .select("plan_type, subscription_current_period_start, subscription_current_period_end, ltd_events_used")
       .eq("id", user.id)
       .maybeSingle();
 
     const profileTyped = profile as {
       plan_type: string | null;
+      subscription_current_period_start: string | null;
+      subscription_current_period_end: string | null;
       ltd_events_used: number | null;
     } | null;
 
+    // Nur für Jahresabo prüfen
+    if (profileTyped?.plan_type === "yearly") {
+      const periodStart = profileTyped.subscription_current_period_start;
+      const periodEnd = profileTyped.subscription_current_period_end;
+
+      if (periodStart && periodEnd) {
+        // 1. Hole alle Events im aktuellen Abo-Jahr
+        const { data: eventsInPeriod } = await supabase
+          .from("events")
+          .select("id")
+          .eq("user_id", user.id)
+          .gte("created_at", periodStart)
+          .lte("created_at", periodEnd);
+
+        if (eventsInPeriod && eventsInPeriod.length > 0) {
+          const eventIds = eventsInPeriod.map((e) => e.id);
+
+          // 2. Zähle DISTINCT Events, die mindestens einen nicht-gelöschten Lead haben
+          const { data: leadsData } = await supabase
+            .from("leads")
+            .select("event_id")
+            .in("event_id", eventIds)
+            .is("deleted_at", null);
+
+          // Erstelle Set für eindeutige Event-IDs (Events mit Leads)
+          const uniqueEventIds = new Set(
+            (leadsData || []).map((lead: { event_id: string }) => lead.event_id)
+          );
+
+          const activeEventCount = uniqueEventIds.size;
+          const MAX_YEARLY_EVENTS = 10;
+
+          if (activeEventCount >= MAX_YEARLY_EVENTS) {
+            return NextResponse.json(
+              {
+                error: "Event-Limit erreicht",
+                details: `Du hast das maximale Limit von ${MAX_YEARLY_EVENTS} Events pro Jahr für Jahresabo erreicht. Events zählen erst, wenn sie Leads haben.`,
+                maxEvents: MAX_YEARLY_EVENTS,
+                currentEvents: activeEventCount,
+              },
+              { status: 403 }
+            );
+          }
+        }
+      }
+    }
+
+    // Prüfe LTD Event-Limit
     if (profileTyped?.plan_type === "ltd" && (profileTyped.ltd_events_used ?? 0) >= 50) {
       return NextResponse.json(
         {

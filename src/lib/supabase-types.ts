@@ -21,6 +21,7 @@ export interface Database {
           stripe_price_id: string | null;
           subscription_status: string | null;
           plan_type: string | null;
+          subscription_current_period_start: string | null;
           subscription_current_period_end: string | null;
           subscription_cancel_at_period_end: boolean | null;
           trial_started_at: string | null;
@@ -41,6 +42,7 @@ export interface Database {
           stripe_price_id?: string | null;
           subscription_status?: string | null;
           plan_type?: string | null;
+          subscription_current_period_start?: string | null;
           subscription_current_period_end?: string | null;
           subscription_cancel_at_period_end?: boolean | null;
           trial_started_at?: string | null;
@@ -61,6 +63,7 @@ export interface Database {
           stripe_price_id?: string | null;
           subscription_status?: string | null;
           plan_type?: string | null;
+          subscription_current_period_start?: string | null;
           subscription_current_period_end?: string | null;
           subscription_cancel_at_period_end?: boolean | null;
           trial_started_at?: string | null;
