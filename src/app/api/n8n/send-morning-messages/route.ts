@@ -19,8 +19,18 @@ export async function GET(request: Request) {
         );
       }
 
+      // Vercel sendet x-vercel-cron-auth Header automatisch
+      const vercelCronAuth = request.headers.get("x-vercel-cron-auth");
+      // Fallback für manuelle Tests mit authorization Header
       const authHeader = request.headers.get("authorization");
-      if (authHeader !== `Bearer ${CRON_SECRET}`) {
+
+      // Unterstütze beide: Vercel's x-vercel-cron-auth und manuellen authorization Header
+      if (vercelCronAuth !== CRON_SECRET && authHeader !== `Bearer ${CRON_SECRET}`) {
+        console.error("Cron auth failed", {
+          has_vercel_header: !!vercelCronAuth,
+          has_auth_header: !!authHeader,
+          cron_secret_set: !!CRON_SECRET,
+        });
         return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
       }
     }

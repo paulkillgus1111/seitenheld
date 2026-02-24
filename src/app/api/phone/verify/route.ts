@@ -132,6 +132,12 @@ export async function POST(request: Request) {
     }
 
     // ✅ Sende Welcome-Nachricht nach erfolgreicher Verifizierung
+    console.log("🔍 [WELCOME] Starting welcome message flow", {
+      phone_number_id: validated.data.phone_number_id,
+      user_id: user.id,
+      timestamp: new Date().toISOString(),
+    });
+
     try {
       const { data: phoneNumberData } = await supabase
         .from("phone_numbers")
@@ -149,6 +155,12 @@ export async function POST(request: Request) {
 
       const profileTyped = profile as { full_name: string | null } | null;
 
+      console.log("🔍 [WELCOME] Data loaded", {
+        has_phone_number: !!phoneNumberDataTyped?.phone_number,
+        has_full_name: !!profileTyped?.full_name,
+        has_email: !!user.email,
+      });
+
       if (phoneNumberDataTyped?.phone_number) {
         const userName = profileTyped?.full_name || user.email || "Nutzer";
 
@@ -156,6 +168,18 @@ export async function POST(request: Request) {
         const N8N_WELCOME_WEBHOOK_URL =
           process.env.N8N_WELCOME_WEBHOOK_URL ||
           "https://seitenheld.app.n8n.cloud/webhook/[WEBHOOK_3]";
+
+        const webhookUrlIsDefault = N8N_WELCOME_WEBHOOK_URL.includes("[WEBHOOK_3]");
+
+        console.log("📤 [WELCOME] Preparing webhook call", {
+          webhook_url_set: !!process.env.N8N_WELCOME_WEBHOOK_URL,
+          webhook_url_is_default: webhookUrlIsDefault,
+          has_user_name: !!userName,
+        });
+
+        if (webhookUrlIsDefault) {
+          console.error("❌ [WELCOME] N8N_WELCOME_WEBHOOK_URL not set, using default placeholder");
+        }
 
         const payload = {
           type: "welcome_message",
@@ -179,18 +203,33 @@ export async function POST(request: Request) {
         })
           .then((response) => {
             clearTimeout(timeoutId);
+            console.log("📥 [WELCOME] Webhook response", {
+              status: response.status,
+              ok: response.ok,
+              statusText: response.statusText,
+            });
             if (!response.ok) {
-              console.error("n8n welcome webhook error:", response.status);
+              console.error("❌ [WELCOME] n8n welcome webhook error:", response.status);
+            } else {
+              console.log("✅ [WELCOME] Welcome message sent successfully");
             }
           })
           .catch((error) => {
             clearTimeout(timeoutId);
-            console.error("Error sending welcome message:", error);
+            console.error("❌ [WELCOME] Error sending welcome message:", {
+              error_name: error.name,
+              error_message: error.message,
+            });
             // Nicht kritisch - Verifizierung war erfolgreich
           });
+      } else {
+        console.warn("⚠️ [WELCOME] Phone number not found, skipping welcome message");
       }
     } catch (welcomeError) {
-      console.error("Welcome message error:", welcomeError);
+      console.error("❌ [WELCOME] Welcome message error:", {
+        error_name: welcomeError instanceof Error ? welcomeError.name : "Unknown",
+        error_message: welcomeError instanceof Error ? welcomeError.message : String(welcomeError),
+      });
       // Nicht kritisch
     }
 
