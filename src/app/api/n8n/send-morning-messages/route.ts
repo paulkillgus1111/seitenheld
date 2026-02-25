@@ -45,6 +45,7 @@ export async function GET(request: Request) {
       .from("events")
       .select(`
         id,
+        user_id,
         name,
         start_date,
         end_date,
@@ -53,10 +54,6 @@ export async function GET(request: Request) {
         phone_numbers:phone_number_id (
           phone_number,
           verified
-        ),
-        profiles:user_id (
-          full_name,
-          email
         )
       `)
       .not("phone_number_id", "is", null)
@@ -81,13 +78,13 @@ export async function GET(request: Request) {
     // Prüfe für jedes Event, ob es heute aktiv ist und 6 Uhr in dessen Zeitzone ist
     const eventsTyped = events as Array<{
       id: string;
+      user_id: string;
       name: string;
       start_date: string | null;
       end_date: string | null;
       timezone: string | null;
       last_morning_message_date: string | null;
       phone_numbers: Array<{ phone_number: string; verified: boolean }> | null;
-      profiles: { full_name: string | null; email: string | null } | null;
     }> | null;
     
     const eventsToSend: typeof eventsTyped = [];
@@ -159,11 +156,17 @@ export async function GET(request: Request) {
     const results = [];
     for (const event of eventsToSend) {
       const phoneNumber = (event.phone_numbers as any)?.[0];
-      const profile = (event.profiles as any)?.[0];
 
       if (!phoneNumber?.verified || !phoneNumber?.phone_number) {
         continue; // Überspringe nicht verifizierte Telefonnummern
       }
+
+      // Lade Profil des Event-Owners separat
+      const { data: profile } = await supabase
+        .from("profiles")
+        .select("full_name, email")
+        .eq("id", event.user_id)
+        .maybeSingle();
 
       const profileTyped = profile as { full_name: string | null; email: string | null } | null;
       const userName = profileTyped?.full_name || profileTyped?.email || "Nutzer";
