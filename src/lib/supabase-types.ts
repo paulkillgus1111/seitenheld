@@ -199,6 +199,26 @@ export interface Database {
           created_at?: string | null;
         };
       };
+      event_phone_numbers: {
+        Row: {
+          id: string;
+          event_id: string;
+          phone_number_id: string;
+          created_at: string | null;
+        };
+        Insert: {
+          id?: string;
+          event_id: string;
+          phone_number_id: string;
+          created_at?: string | null;
+        };
+        Update: {
+          id?: string;
+          event_id?: string;
+          phone_number_id?: string;
+          created_at?: string | null;
+        };
+      };
       integrations: {
         Row: {
           user_id: string;

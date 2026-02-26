@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { createSupabaseServerClient } from "@/lib/supabase-server";
+import { createSupabaseAdminClient } from "@/lib/supabase-server";
 
 const N8N_MORNING_MESSAGE_WEBHOOK_URL =
   process.env.N8N_MORNING_MESSAGE_WEBHOOK_URL ||
@@ -16,7 +16,7 @@ export async function GET(request: Request) {
     );
   }
 
-  const supabase = await createSupabaseServerClient();
+  const supabase = await createSupabaseAdminClient();
   
   // Heute
   const today = new Date();
@@ -33,13 +33,8 @@ export async function GET(request: Request) {
       start_date,
       end_date,
       timezone,
-      last_morning_message_date,
-      phone_numbers:phone_number_id (
-        phone_number,
-        verified
-      )
+      last_morning_message_date
     `)
-    .not("phone_number_id", "is", null)
     .not("start_date", "is", null);
 
   if (eventsError) {
@@ -65,7 +60,6 @@ export async function GET(request: Request) {
     end_date: string | null;
     timezone: string | null;
     last_morning_message_date: string | null;
-    phone_numbers: Array<{ phone_number: string; verified: boolean }> | null;
   }> | null;
 
   if (!eventsTyped) {
@@ -108,9 +102,34 @@ export async function GET(request: Request) {
   // Sende WhatsApp-Nachrichten
   const results = [];
   for (const event of eventsToSend) {
-    const phoneNumber = (event.phone_numbers as any)?.[0];
+    // Hole ALLE Phone Numbers über Junction Table
+    const { data: assignedPhoneNumbers } = await supabase
+      .from("event_phone_numbers")
+      .select(`
+        phone_numbers:phone_number_id (
+          phone_number,
+          verified,
+          is_active
+        )
+      `)
+      .eq("event_id", event.id);
 
-    if (!phoneNumber?.verified || !phoneNumber?.phone_number) {
+    const assignedPhoneNumbersTyped = assignedPhoneNumbers as Array<{
+      phone_numbers: {
+        phone_number: string;
+        verified: boolean;
+        is_active: boolean;
+      } | null;
+    }> | null;
+
+    const phoneNumbersToNotify = (assignedPhoneNumbersTyped || [])
+      .map((entry) => entry.phone_numbers)
+      .filter((pn): pn is NonNullable<typeof pn> => 
+        pn !== null && pn.verified && pn.is_active
+      )
+      .map((pn) => pn.phone_number);
+
+    if (phoneNumbersToNotify.length === 0) {
       continue;
     }
 
@@ -125,43 +144,46 @@ export async function GET(request: Request) {
     const userName = profileTyped?.full_name || profileTyped?.email || "Nutzer";
     const eventName = event.name;
 
-    try {
-      const payload = {
-        type: "morning_message",
-        phone_number: phoneNumber.phone_number,
-        user_name: userName,
-        event_name: eventName,
-        event_date: event.start_date,
-      };
+    // Sende an alle Nummern
+    for (const phoneNumber of phoneNumbersToNotify) {
+      try {
+        const payload = {
+          type: "morning_message",
+          phone_number: phoneNumber,
+          user_name: userName,
+          event_name: eventName,
+          event_date: event.start_date,
+        };
 
-      const controller = new AbortController();
-      const timeoutId = setTimeout(() => controller.abort(), 30000);
+        const controller = new AbortController();
+        const timeoutId = setTimeout(() => controller.abort(), 30000);
 
-      const response = await fetch(N8N_MORNING_MESSAGE_WEBHOOK_URL, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Accept: "application/json",
-          "User-Agent": "Seitenheld/1.0",
-        },
-        body: JSON.stringify(payload),
-        signal: controller.signal,
-      });
+        const response = await fetch(N8N_MORNING_MESSAGE_WEBHOOK_URL, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Accept: "application/json",
+            "User-Agent": "Seitenheld/1.0",
+          },
+          body: JSON.stringify(payload),
+          signal: controller.signal,
+        });
 
-      clearTimeout(timeoutId);
+        clearTimeout(timeoutId);
 
-      if (response.ok) {
-        await ((supabase
-          .from("events") as any)
-          .update({ last_morning_message_date: todayStr })
-          .eq("id", event.id));
+        if (response.ok) {
+          await ((supabase
+            .from("events") as any)
+            .update({ last_morning_message_date: todayStr })
+            .eq("id", event.id));
 
-        results.push({ event_id: event.id, status: "sent" });
-      } else {
-        results.push({ event_id: event.id, status: "failed" });
+          results.push({ event_id: event.id, status: "sent" });
+        } else {
+          results.push({ event_id: event.id, status: "failed" });
+        }
+      } catch (error) {
+        results.push({ event_id: event.id, status: "error" });
       }
-    } catch (error) {
-      results.push({ event_id: event.id, status: "error" });
     }
   }
 

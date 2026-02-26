@@ -42,7 +42,7 @@ const eventFormSchema = z.object({
       },
       "Budget muss eine Zahl ≥ 0 sein."
     ),
-  phone_number_id: z.string().uuid("Bitte wähle eine Telefonnummer aus."),
+  phone_number_ids: z.array(z.string().uuid()).min(1, "Mindestens eine Telefonnummer ist erforderlich"),
   timezone: z.string().optional(),
 });
 
@@ -84,7 +84,7 @@ export function EventForm() {
       startDate: "",
       endDate: "",
       budget: "",
-      phone_number_id: "",
+      phone_number_ids: [],
       timezone: "Europe/Berlin",
     },
   });
@@ -138,8 +138,8 @@ export function EventForm() {
         return;
       }
 
-      if (!transformedValues.phone_number_id) {
-        setError("Bitte wähle eine Telefonnummer aus.");
+      if (!transformedValues.phone_number_ids || transformedValues.phone_number_ids.length === 0) {
+        setError("Bitte wähle mindestens eine Telefonnummer aus.");
         return;
       }
 
@@ -155,7 +155,7 @@ export function EventForm() {
             transformedValues.budget === null || transformedValues.budget === undefined
               ? null
               : transformedValues.budget,
-          phone_number_id: transformedValues.phone_number_id,
+          phone_number_ids: transformedValues.phone_number_ids,
           timezone: transformedValues.timezone || "Europe/Berlin",
         }),
       });
@@ -187,27 +187,28 @@ export function EventForm() {
           logger.log("✅ [Event Form] Event starts today - attempting to send WhatsApp");
           
           try {
-            const { data: phoneNumber, error: phoneError } = await supabase
+            // Hole ALLE ausgewählten Phone Numbers
+            const { data: phoneNumbers, error: phoneError } = await supabase
               .from("phone_numbers")
-              .select("phone_number, verified")
-              .eq("id", values.phone_number_id)
-              .single();
+              .select("id, phone_number, verified")
+              .in("id", values.phone_number_ids)
+              .eq("user_id", user.id);
 
-            const phoneNumberTyped = phoneNumber as {
+            const phoneNumbersTyped = phoneNumbers as Array<{
+              id: string;
               phone_number: string | null;
               verified: boolean;
-            } | null;
+            }> | null;
 
-            logger.log("📞 [Event Form] Phone number check:", {
-              phone_number_id: values.phone_number_id,
-              phoneNumber,
+            logger.log("📞 [Event Form] Phone numbers check:", {
+              phone_number_ids: values.phone_number_ids,
+              phoneNumbers,
               phoneError: phoneError?.message,
-              is_verified: phoneNumberTyped?.verified,
-              has_phone: !!phoneNumberTyped?.phone_number,
+              count: phoneNumbersTyped?.length || 0,
             });
 
             if (phoneError) {
-              logger.error("❌ [Event Form] Error fetching phone number:", phoneError);
+              logger.error("❌ [Event Form] Error fetching phone numbers:", phoneError);
             }
 
             const { data: profile } = await supabase
@@ -221,51 +222,78 @@ export function EventForm() {
               email: string | null;
             } | null;
 
-            if (phoneNumberTyped?.verified && phoneNumberTyped?.phone_number) {
-              const userName = profileTyped?.full_name || user.email || "Nutzer";
+            const userName = profileTyped?.full_name || user.email || "Nutzer";
 
-              logger.log("📤 [Event Form] Sending event created message:", {
-                event_id: newEvent.id,
-                event_name: newEvent.name,
-                phone_number: phoneNumberTyped.phone_number,
-                user_name: userName,
-              });
-
-              const response = await fetch(
-                "/api/n8n/send-event-created-message",
-                {
-                  method: "POST",
-                  headers: { "Content-Type": "application/json" },
-                  body: JSON.stringify({
-                    event_id: newEvent.id,
-                    event_name: newEvent.name,
-                    phone_number: phoneNumberTyped.phone_number,
-                    user_name: userName,
-                  }),
-                }
+            // Sende an ALLE verifizierten Nummern
+            if (phoneNumbersTyped && phoneNumbersTyped.length > 0) {
+              const verifiedNumbers = phoneNumbersTyped.filter(
+                (pn) => pn.verified && pn.phone_number
               );
 
-              const responseData = await response.json();
-              logger.log("📥 [Event Form] Event created message response:", {
-                status: response.status,
-                ok: response.ok,
-                data: responseData,
-              });
-
-              if (response.ok) {
-                logger.log("✅ [Event Form] WhatsApp sent successfully, marking last_morning_message_date");
-                const todayStr = new Date().toISOString().split("T")[0]; // YYYY-MM-DD
-                await ((supabase.from("events") as any)
-                  .update({ last_morning_message_date: todayStr })
-                  .eq("id", newEvent.id));
+              if (verifiedNumbers.length === 0) {
+                logger.log("⚠️ [Event Form] No verified phone numbers found");
               } else {
-                logger.error("❌ [Event Form] Failed to send WhatsApp:", responseData);
+                logger.log("📤 [Event Form] Sending event created message to multiple numbers:", {
+                  event_id: newEvent.id,
+                  event_name: newEvent.name,
+                  phone_numbers_count: verifiedNumbers.length,
+                });
+
+                // Sende an alle verifizierten Nummern
+                const sendPromises = verifiedNumbers.map(async (phoneNumber) => {
+                  try {
+                    const response = await fetch(
+                      "/api/n8n/send-event-created-message",
+                      {
+                        method: "POST",
+                        headers: { "Content-Type": "application/json" },
+                        body: JSON.stringify({
+                          event_id: newEvent.id,
+                          event_name: newEvent.name,
+                          phone_number: phoneNumber.phone_number,
+                          user_name: userName,
+                        }),
+                      }
+                    );
+
+                    const responseData = await response.json();
+                    
+                    if (response.ok) {
+                      logger.log(`✅ [Event Form] WhatsApp sent to ${phoneNumber.phone_number}`);
+                      return { success: true, phone_number: phoneNumber.phone_number };
+                    } else {
+                      logger.error(`❌ [Event Form] Failed to send to ${phoneNumber.phone_number}:`, responseData);
+                      return { success: false, phone_number: phoneNumber.phone_number, error: responseData };
+                    }
+                  } catch (error) {
+                    logger.error(`❌ [Event Form] Error sending to ${phoneNumber.phone_number}:`, error);
+                    return { success: false, phone_number: phoneNumber.phone_number, error };
+                  }
+                });
+
+                // Warte auf alle Requests (parallel)
+                const results = await Promise.all(sendPromises);
+                const successCount = results.filter((r) => r.success).length;
+
+                logger.log("📥 [Event Form] Event created message results:", {
+                  total: verifiedNumbers.length,
+                  successful: successCount,
+                  failed: verifiedNumbers.length - successCount,
+                });
+
+                // Markiere als gesendet nur wenn mindestens eine Nachricht erfolgreich war
+                if (successCount > 0) {
+                  logger.log("✅ [Event Form] At least one WhatsApp sent successfully, marking last_morning_message_date");
+                  const todayStr = new Date().toISOString().split("T")[0];
+                  await ((supabase.from("events") as any)
+                    .update({ last_morning_message_date: todayStr })
+                    .eq("id", newEvent.id));
+                } else {
+                  logger.error("❌ [Event Form] All WhatsApp messages failed");
+                }
               }
             } else {
-              logger.log("⚠️ [Event Form] Phone number not verified or missing:", {
-                verified: phoneNumberTyped?.verified,
-                phone_number: phoneNumberTyped?.phone_number,
-              });
+              logger.log("⚠️ [Event Form] No phone numbers found");
             }
           } catch (error) {
             logger.error("❌ [Event Form] Error sending event created message:", error);
@@ -369,33 +397,49 @@ export function EventForm() {
 
           <FormField
             control={form.control}
-            name="phone_number_id"
+            name="phone_number_ids"
             render={({ field }) => (
               <FormItem className="md:col-span-2">
-                <FormLabel>Telefonnummer *</FormLabel>
+                <FormLabel>Telefonnummern *</FormLabel>
                 <FormControl>
-                  <Select
-                    value={field.value || ""}
-                    onValueChange={field.onChange}
-                    disabled={isLoadingPhoneNumbers || phoneNumbers.length === 0}
-                  >
-                    <SelectTrigger>
-                      <SelectValue placeholder="Wähle eine Telefonnummer" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      {phoneNumbers.length === 0 ? (
-                        <SelectItem value="no-seats" disabled>
-                          Keine Telefonnummern verfügbar
-                        </SelectItem>
-                      ) : (
-                        phoneNumbers.map((phone) => (
-                          <SelectItem key={phone.id} value={phone.id}>
-                            {phone.phone_number}
-                          </SelectItem>
-                        ))
-                      )}
-                    </SelectContent>
-                  </Select>
+                  <div className="space-y-2 border rounded-md p-4">
+                    {phoneNumbers.length === 0 ? (
+                      <p className="text-sm text-muted-foreground">
+                        Keine Telefonnummern verfügbar. Erstelle zuerst eine in den Seats.
+                      </p>
+                    ) : (
+                      phoneNumbers.map((phone) => {
+                        const isChecked = field.value?.includes(phone.id) || false;
+                        return (
+                          <div key={phone.id} className="flex items-center space-x-2">
+                            <input
+                              type="checkbox"
+                              id={`phone-${phone.id}`}
+                              checked={isChecked}
+                              onChange={(e) => {
+                                const currentValue = field.value || [];
+                                if (e.target.checked) {
+                                  field.onChange([...currentValue, phone.id]);
+                                } else {
+                                  field.onChange(
+                                    currentValue.filter((id: string) => id !== phone.id)
+                                  );
+                                }
+                              }}
+                              disabled={isLoadingPhoneNumbers}
+                              className="h-4 w-4 rounded border-gray-300"
+                            />
+                            <label
+                              htmlFor={`phone-${phone.id}`}
+                              className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                            >
+                              {phone.phone_number}
+                            </label>
+                          </div>
+                        );
+                      })
+                    )}
+                  </div>
                 </FormControl>
                 <FormMessage />
                 {phoneNumbers.length === 0 && (
@@ -405,7 +449,7 @@ export function EventForm() {
                 )}
                 {phoneNumbers.length > 0 && (
                   <p className="text-xs text-muted-foreground">
-                    Wähle eine Telefonnummer für dieses Event aus (erforderlich)
+                    Wähle mindestens eine Telefonnummer für dieses Event aus (erforderlich)
                   </p>
                 )}
               </FormItem>

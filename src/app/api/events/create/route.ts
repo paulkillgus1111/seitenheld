@@ -10,7 +10,7 @@ const createEventSchema = z.object({
   start_date: z.string().max(50).nullable().optional(),
   end_date: z.string().max(50).nullable().optional(),
   estimated_costs: z.number().nullable().optional(),
-  phone_number_id: z.string().uuid("Bitte wähle eine Telefonnummer aus."),
+  phone_number_ids: z.array(z.string().uuid()).min(1, "Mindestens eine Telefonnummer ist erforderlich"),
   timezone: z.string().default("Europe/Berlin"),
 });
 
@@ -51,19 +51,23 @@ export async function POST(request: Request) {
       );
     }
 
-    // Prüfe ob phone_number_id dem User gehört
-    const { data: phoneNumber } = await supabase
-      .from("phone_numbers")
-      .select("id, user_id")
-      .eq("id", validated.data.phone_number_id)
-      .eq("user_id", user.id)
-      .maybeSingle();
+    // Prüfe ob alle phone_number_ids dem User gehören
+    if (validated.data.phone_number_ids && validated.data.phone_number_ids.length > 0) {
+      const { data: userSeats } = await supabase
+        .from("phone_numbers")
+        .select("id, user_id")
+        .in("id", validated.data.phone_number_ids)
+        .eq("user_id", user.id);
 
-    if (!phoneNumber) {
-      return NextResponse.json(
-        { error: "Telefonnummer nicht gefunden oder Zugriff verweigert" },
-        { status: 404 }
-      );
+      const userSeatsTyped = userSeats as { id: string }[] | null;
+      const validSeatIds = userSeatsTyped?.map((s) => s.id) || [];
+
+      if (validSeatIds.length !== validated.data.phone_number_ids.length) {
+        return NextResponse.json(
+          { error: "Eine oder mehrere Telefonnummern gehören nicht zu deinem Account" },
+          { status: 403 }
+        );
+      }
     }
 
     // ✅ Prüfe Jahresabo Event-Limit (10 Events pro Jahr)
@@ -152,7 +156,6 @@ export async function POST(request: Request) {
         start_date: validated.data.start_date || null,
         end_date: validated.data.end_date || null,
         estimated_costs: validated.data.estimated_costs || null,
-        phone_number_id: validated.data.phone_number_id,
         timezone: validated.data.timezone || "Europe/Berlin",
         last_morning_message_date: null,
       })
@@ -175,6 +178,28 @@ export async function POST(request: Request) {
         { error: insertError.message },
         { status: 500 }
       );
+    }
+
+    // NEU: Füge Zuordnungen in Junction Table ein
+    if (validated.data.phone_number_ids && validated.data.phone_number_ids.length > 0) {
+      const junctionEntries = validated.data.phone_number_ids.map((phone_number_id) => ({
+        event_id: newEvent.id,
+        phone_number_id,
+      }));
+
+      const { error: junctionError } = await ((supabase
+        .from("event_phone_numbers") as any)
+        .insert(junctionEntries));
+
+      if (junctionError) {
+        console.error("Error creating event-phone-number assignments:", junctionError);
+        // Lösche Event wieder, wenn Zuordnung fehlschlägt
+        await ((supabase.from("events") as any).delete().eq("id", newEvent.id));
+        return NextResponse.json(
+          { error: "Fehler beim Zuordnen der Telefonnummern" },
+          { status: 500 }
+        );
+      }
     }
 
     return NextResponse.json({ success: true, event: newEvent });
